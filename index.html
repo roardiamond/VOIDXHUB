@@ -30,7 +30,7 @@ body {
 
 <a href="shop.html">Shop</a>
 <a href="tournament.html">Tournament</a>
-<a href="dashboard.html">Dashboard</a>
+<a href="dashboard.html" onclick="checkLogin(event)">Dashboard</a>
 
 <!-- AUTH BUTTONS -->
 <div id="authButtons" class="flex gap-3">
@@ -39,13 +39,29 @@ body {
 </div>
 
 <!-- PROFILE -->
-<div id="profileWrap" class="hidden flex items-center gap-2">
+<div id="profileWrap" class="hidden relative">
 
-<img id="profilePic" class="w-8 h-8 rounded-full border border-green-400">
+<button onclick="toggleMenu()" class="flex items-center gap-2">
+  <img id="profilePic" class="w-9 h-9 rounded-full border border-green-400">
+</button>
 
-<span id="profileName"></span>
+<!-- DROPDOWN -->
+<div id="dropdown" class="hidden absolute right-0 mt-3 w-44 bg-zinc-900 border border-green-500 rounded-xl shadow-lg">
 
-<button onclick="logout()" class="text-red-400 ml-2">Logout</button>
+  <a href="profile.html" class="block px-4 py-2 hover:bg-zinc-800">
+    👤 Profile
+  </a>
+
+  <a href="dashboard.html" class="block px-4 py-2 hover:bg-zinc-800">
+    📊 Dashboard
+  </a>
+
+  <button onclick="logout()" 
+  class="w-full text-left px-4 py-2 hover:bg-red-500/20 text-red-400">
+    🚪 Logout
+  </button>
+
+</div>
 
 </div>
 
@@ -61,7 +77,7 @@ body {
 Gaming Store • Wallet • Tournaments • Topups
 </p>
 
-<a href="dashboard.html" 
+<a href="dashboard.html" onclick="checkLogin(event)"
 class="bg-green-500 text-black px-6 py-3 rounded text-lg">
 Open Dashboard
 </a>
@@ -74,9 +90,10 @@ const supabase = window.supabase.createClient(
   "sb_publishable_RLEiyZlSxKgWSzYT517FlQ_iytHhAHr"
 );
 
-// 🔐 CHECK LOGIN
+// 🔐 AUTH CHECK
 async function checkAuth() {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data } = await supabase.auth.getSession();
+  const user = data.session?.user;
 
   const authButtons = document.getElementById("authButtons");
   const profileWrap = document.getElementById("profileWrap");
@@ -92,16 +109,41 @@ async function checkAuth() {
 
   const name = user.email.split("@")[0];
 
-  document.getElementById("profileName").innerText = name;
   document.getElementById("profilePic").src =
     `https://api.dicebear.com/7.x/initials/svg?seed=${name}`;
+}
+
+// 🔽 TOGGLE DROPDOWN
+function toggleMenu() {
+  document.getElementById("dropdown").classList.toggle("hidden");
 }
 
 // 🚪 LOGOUT
 async function logout() {
   await supabase.auth.signOut();
-  window.location.href = "login.html";
+  location.reload();
 }
+
+// 🔒 LOGIN CHECK
+function checkLogin(e) {
+  const session = localStorage.getItem("sb-abtgulackvuozotctahf-auth-token");
+
+  if (!session) {
+    e.preventDefault();
+    alert("❌ Please login first");
+    window.location.href = "login.html";
+  }
+}
+
+// CLOSE DROPDOWN CLICK OUTSIDE
+document.addEventListener("click", function(e) {
+  const dropdown = document.getElementById("dropdown");
+  const wrap = document.getElementById("profileWrap");
+
+  if (!wrap.contains(e.target)) {
+    dropdown.classList.add("hidden");
+  }
+});
 
 // INIT
 checkAuth();
