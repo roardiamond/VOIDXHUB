@@ -3,28 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <title>Login</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-black flex items-center justify-center h-screen text-white">
 
-<!-- Back Button -->
 <a href="index.html" 
-class="absolute top-5 left-5 px-4 py-2 bg-green-500 text-black font-bold rounded-lg shadow-lg shadow-green-500/50 hover:bg-green-400 transition">
-  ⬅ Back
+class="absolute top-5 left-5 px-4 py-2 bg-green-500 text-black font-bold rounded-lg shadow-lg">
+⬅ Back
 </a>
 
-<div class="bg-gray-900 p-6 rounded-xl shadow-lg w-80">
-  <h2 class="text-2xl mb-4 text-center">Login</h2>
+<div class="bg-gray-900 p-6 rounded-xl w-80">
 
-  <input type="email" id="email" placeholder="Email" class="w-full p-2 mb-3 rounded text-black">
-  <input type="password" id="password" placeholder="Password" class="w-full p-2 mb-3 rounded text-black">
+<h2 class="text-2xl mb-4 text-center">Login</h2>
 
-  <button onclick="loginUser()" 
-  class="w-full bg-green-500 hover:bg-green-400 text-black font-bold py-2 rounded-lg shadow-lg shadow-green-500/50">
-    Login
+<input id="email" type="email" placeholder="Email"
+class="w-full p-2 mb-3 rounded text-black">
+
+<!-- PASSWORD WITH SHOW/HIDE -->
+<div class="relative">
+  <input id="password" type="password" placeholder="Password"
+  class="w-full p-2 mb-3 rounded text-black">
+
+  <button onclick="togglePassword()" 
+  class="absolute right-2 top-2 text-black text-sm">
+    👁
   </button>
+</div>
+
+<button onclick="loginUser()" 
+class="w-full bg-green-500 text-black py-2 rounded mb-3">
+Login
+</button>
+
+<!-- OTP BUTTON -->
+<button onclick="sendOTP()" 
+class="w-full bg-blue-500 py-2 rounded mb-3">
+Login with OTP
+</button>
+
+<!-- OTP INPUT -->
+<div id="otpBox" class="hidden">
+  <input id="otp" placeholder="Enter OTP"
+  class="w-full p-2 mb-3 rounded text-black">
+
+  <button onclick="verifyOTP()" 
+  class="w-full bg-green-400 text-black py-2 rounded">
+    Verify OTP
+  </button>
+</div>
+
+<p id="forgotText" class="hidden text-center mt-3">
+  <a href="#" onclick="forgotPassword()" class="text-red-400">Forgot Password?</a>
+</p>
+
 </div>
 
 <script>
@@ -33,21 +67,82 @@ const supabase = window.supabase.createClient(
   "sb_publishable_RLEiyZlSxKgWSzYT517FlQ_iytHhAHr"
 );
 
+let failed = 0;
+let passwordVisible = false;
+
+// 👁 SHOW/HIDE PASSWORD
+function togglePassword() {
+  const pass = document.getElementById("password");
+
+  passwordVisible = !passwordVisible;
+  pass.type = passwordVisible ? "text" : "password";
+}
+
+// 🔐 NORMAL LOGIN
 async function loginUser() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = emailEl();
+  const password = passEl();
 
   const { error } = await supabase.auth.signInWithPassword({
-    email: email,
-    password: password
+    email,
+    password
+  });
+
+  if (error) {
+    failed++;
+    alert("❌ " + error.message);
+
+    if (failed >= 1) {
+      document.getElementById("forgotText").classList.remove("hidden");
+    }
+
+  } else {
+    window.location.href = "index.html";
+  }
+}
+
+// 📩 SEND OTP
+async function sendOTP() {
+  const email = emailEl();
+
+  const { error } = await supabase.auth.signInWithOtp({
+    email: email
   });
 
   if (error) {
     alert("❌ " + error.message);
   } else {
-    alert("✅ Login Success");
-    window.location.href = "index.html";
+    alert("📩 OTP sent to email");
+    document.getElementById("otpBox").classList.remove("hidden");
   }
+}
+
+// ✅ VERIFY OTP (magic link auto login hota hai)
+async function verifyOTP() {
+  alert("👉 Check your email & click login link (OTP auto verify)");
+}
+
+// 🔁 FORGOT PASSWORD
+async function forgotPassword() {
+  const email = emailEl();
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + "/login.html"
+  });
+
+  if (error) {
+    alert("❌ " + error.message);
+  } else {
+    alert("📩 Reset link sent");
+  }
+}
+
+// helpers
+function emailEl() {
+  return document.getElementById("email").value.trim();
+}
+function passEl() {
+  return document.getElementById("password").value.trim();
 }
 </script>
 
