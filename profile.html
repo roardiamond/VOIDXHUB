@@ -1,89 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Profile - VOIDXHUB</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile - VOIDXHUB</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
+
 <body class="min-h-screen bg-gradient-to-br from-black to-purple-950 text-white px-4 py-10">
-  <div class="max-w-3xl mx-auto">
-    <div class="flex justify-end mb-6">
-      <a href="index.html" class="bg-zinc-900 border border-green-500/40 text-green-400 px-4 py-2 rounded-xl font-semibold hover:bg-zinc-800">
-        <i class="fas fa-house mr-2"></i>Home
-      </a>
-    </div>
 
-    <section class="bg-zinc-900/95 border border-green-500/30 rounded-3xl p-8 mb-8">
-      <div class="flex flex-col sm:flex-row items-center gap-6">
-        <img id="profilePic" src="https://api.dicebear.com/7.x/initials/svg?seed=Player" alt="Profile picture" class="w-28 h-28 rounded-full border-4 border-green-400/70 bg-black">
-        <div class="text-center sm:text-left">
-          <h1 id="profileName" class="text-3xl font-black text-green-400">Player</h1>
-          <p id="profileEmail" class="text-gray-300 break-all">player@example.com</p>
-          <p id="profileRole" class="text-sm mt-2 text-green-300">Role: Customer</p>
-          <p id="profileBalance" class="text-lg font-bold mt-2">Wallet: ₹0.00</p>
-        </div>
-      </div>
-    </section>
+<div class="max-w-3xl mx-auto">
 
-    <section class="bg-zinc-900/95 border border-green-500/30 rounded-3xl p-8">
-      <h2 class="text-2xl font-bold text-green-400 mb-5">Quick Access</h2>
-      <div class="grid sm:grid-cols-2 gap-4">
-        <a href="dashboard.html" class="bg-zinc-800 hover:bg-zinc-700 rounded-2xl p-5 font-semibold">📊 Dashboard</a>
-        <a href="shop.html" class="bg-zinc-800 hover:bg-zinc-700 rounded-2xl p-5 font-semibold">🛒 GFX Store</a>
-        <a href="topup.html" class="bg-zinc-800 hover:bg-zinc-700 rounded-2xl p-5 font-semibold">⚡ Topup</a>
-        <a href="tournament.html" class="bg-zinc-800 hover:bg-zinc-700 rounded-2xl p-5 font-semibold">🏆 Tournaments</a>
-      </div>
-      <button id="logoutBtn" class="mt-6 w-full bg-red-500/90 hover:bg-red-600 rounded-2xl p-4 font-bold">Logout</button>
-    </section>
-  </div>
+<!-- HOME -->
+<div class="flex justify-end mb-6">
+  <a href="index.html" class="bg-zinc-900 border border-green-500 text-green-400 px-4 py-2 rounded-xl">
+    Home
+  </a>
+</div>
 
-  <script>
-    function normalizeEmail(email) {
-      return String(email || "").trim().toLowerCase();
-    }
+<!-- PROFILE -->
+<div class="bg-zinc-900 p-8 rounded-3xl border border-green-500/30">
 
-    function getDisplayName(email) {
-      const base = normalizeEmail(email).split("@")[0] || "player";
-      return base.replace(/[._-]+/g, " ").replace(/\b\w/g, c => c.toUpperCase());
-    }
+<div class="flex flex-col sm:flex-row items-center gap-6">
 
-    function requireLogin() {
-      const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-      if (!currentUser.email) {
-        alert("❌ Please login first.");
-        window.location.href = "login.html";
-        return null;
-      }
-      return currentUser;
-    }
+<img id="profilePic" class="w-28 h-28 rounded-full border-4 border-green-400">
 
-    function loadProfile() {
-      const currentUser = requireLogin();
-      if (!currentUser) return;
+<div class="text-center sm:text-left">
+  <h1 id="profileName" class="text-3xl text-green-400 font-bold">Loading...</h1>
+  <p id="profileEmail" class="text-gray-300"></p>
+  <p id="profileRole" class="text-green-300"></p>
+  <p id="profileBalance" class="text-xl font-bold mt-2"></p>
+</div>
 
-      const users = JSON.parse(localStorage.getItem("users") || "[]");
-      const storedUser = users.find(u => normalizeEmail(u.email) === normalizeEmail(currentUser.email));
-      const user = storedUser ? { ...currentUser, ...storedUser } : currentUser;
+</div>
 
-      const name = getDisplayName(user.email);
-      document.getElementById("profileName").textContent = name;
-      document.getElementById("profileEmail").textContent = user.email;
-      document.getElementById("profileRole").textContent = `Role: ${(user.role || "customer").toUpperCase()}`;
-      document.getElementById("profileBalance").textContent = `Wallet: ₹${Number(user.balance || 0).toFixed(2)}`;
-      document.getElementById("profilePic").src = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`;
-    }
+</div>
 
-    document.getElementById("logoutBtn").addEventListener("click", function() {
-      localStorage.removeItem("currentUser");
-      sessionStorage.removeItem("adminVerified");
-      sessionStorage.removeItem("impersonatingFromAdmin");
-      sessionStorage.removeItem("adminOriginalEmail");
-      window.location.href = "login.html";
+<!-- ACTIONS -->
+<div class="bg-zinc-900 p-8 rounded-3xl border border-green-500/30 mt-6">
+
+<h2 class="text-2xl text-green-400 mb-4">Quick Access</h2>
+
+<div class="grid grid-cols-2 gap-4">
+  <a href="dashboard.html" class="bg-zinc-800 p-4 rounded-xl">Dashboard</a>
+  <a href="shop.html" class="bg-zinc-800 p-4 rounded-xl">Shop</a>
+  <a href="topup.html" class="bg-zinc-800 p-4 rounded-xl">Topup</a>
+  <a href="tournament.html" class="bg-zinc-800 p-4 rounded-xl">Tournaments</a>
+</div>
+
+<button onclick="logout()" 
+class="w-full mt-6 bg-red-500 py-3 rounded-xl">
+Logout
+</button>
+
+</div>
+
+</div>
+
+<script>
+const supabase = window.supabase.createClient(
+  "https://abtgulackvuozotctahf.supabase.co",
+  "sb_publishable_RLEiyZlSxKgWSzYT517FlQ_iytHhAHr"
+);
+
+// 🔐 LOAD PROFILE
+async function loadProfile() {
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    alert("Login required");
+    window.location.href = "login.html";
+    return;
+  }
+
+  // user table se data lao
+  let { data } = await supabase
+    .from("users")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  if (!data) {
+    await supabase.from("users").insert({
+      id: user.id,
+      email: user.email,
+      wallet: 0,
+      role: "user"
     });
 
-    window.onload = loadProfile;
-  </script>
+    data = { wallet: 0, role: "user" };
+  }
+
+  const name = user.email.split("@")[0];
+
+  document.getElementById("profileName").innerText = name;
+  document.getElementById("profileEmail").innerText = user.email;
+  document.getElementById("profileRole").innerText = "Role: " + (data.role || "user");
+  document.getElementById("profileBalance").innerText = "Wallet: ₹" + data.wallet;
+
+  document.getElementById("profilePic").src =
+    `https://api.dicebear.com/7.x/initials/svg?seed=${name}`;
+}
+
+// 🚪 LOGOUT
+async function logout() {
+  await supabase.auth.signOut();
+  window.location.href = "login.html";
+}
+
+// INIT
+loadProfile();
+</script>
+
 </body>
 </html>
