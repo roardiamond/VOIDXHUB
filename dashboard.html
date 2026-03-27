@@ -1,161 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Dashboard - VOIDXHUB</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    body {
-      background: linear-gradient(135deg, #0a0a0a, #1a0033);
-      color: white;
-      font-family: system-ui;
-      min-height: 100vh;
-    }
-    .neon-text {
-      text-shadow: 0 0 30px #00ff9d;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - VOIDXHUB</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body {
+  background: linear-gradient(135deg, #0a0a0a, #1a0033);
+  color: white;
+}
+.neon-text {
+  text-shadow: 0 0 30px #00ff9d;
+}
+</style>
 </head>
+
 <body class="pt-20 px-4">
 
-  <!-- Back Button -->
-  <div class="fixed top-6 right-6 z-50">
-    <button onclick="goToHome()" 
-      class="bg-zinc-900 hover:bg-zinc-800 border border-green-500/50 text-green-400 px-5 py-3 rounded-2xl flex items-center gap-2 shadow-lg transition-all active:scale-95">
-      <i class="fas fa-arrow-left"></i>
-      <span class="font-bold">Back</span>
+<!-- BACK BUTTON -->
+<div class="fixed top-6 right-6">
+  <button onclick="goToHome()" 
+  class="bg-zinc-900 border border-green-500 text-green-400 px-4 py-2 rounded-xl">
+    ⬅ Back
+  </button>
+</div>
+
+<div class="max-w-md mx-auto">
+
+<h1 class="text-5xl text-green-400 text-center mb-10 neon-text">DASHBOARD</h1>
+
+<div class="bg-zinc-900 p-8 rounded-3xl border border-green-500/30">
+
+<p class="text-center text-gray-400">Wallet Balance</p>
+<h2 id="balance" class="text-6xl text-green-400 text-center my-6">₹0</h2>
+
+<button onclick="showAddMoney()" 
+class="w-full bg-green-500 text-black font-bold py-4 rounded-xl mb-6">
++ ADD MONEY
+</button>
+
+<div class="grid grid-cols-2 gap-4">
+  <a href="shop.html" class="bg-zinc-800 p-4 rounded-xl text-center">Shop</a>
+  <a href="tournament.html" class="bg-zinc-800 p-4 rounded-xl text-center">Tournament</a>
+</div>
+
+<!-- ADMIN -->
+<div id="adminSection" class="hidden mt-8">
+  <button onclick="goToAdmin()" 
+  class="w-full bg-red-500 py-3 rounded-xl">
+    👑 Admin Panel
+  </button>
+</div>
+
+</div>
+</div>
+
+<!-- QR MODAL -->
+<div id="qrModal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center">
+  <div class="bg-zinc-900 p-6 rounded-2xl w-80">
+
+    <h2 class="text-xl mb-4 text-center">Add Money</h2>
+
+    <input id="paidAmount" type="number" placeholder="Enter Amount"
+    class="w-full p-3 mb-4 bg-black rounded">
+
+    <button onclick="submitPayment()" 
+    class="w-full bg-green-500 text-black py-3 rounded">
+      Submit
     </button>
+
+    <button onclick="closeModal()" class="w-full mt-3 text-gray-400">
+      Close
+    </button>
+
   </div>
+</div>
 
-  <div class="max-w-md mx-auto">
-    <h1 class="text-5xl font-black neon-text text-green-400 text-center mb-10">DASHBOARD</h1>
-    
-    <div class="bg-zinc-900 rounded-3xl p-8 border border-green-500/30">
+<script>
+const supabase = window.supabase.createClient(
+  "https://abtgulackvuozotctahf.supabase.co",
+  "sb_publishable_RLEiyZlSxKgWSzYT517FlQ_iytHhAHr"
+);
 
-      <p class="text-gray-400 text-center text-lg">Your Wallet Balance</p>
-      <h2 id="balance" class="text-6xl font-black text-green-400 text-center my-8">₹0.00</h2>
-      
-      <button onclick="showAddMoney()"
-        class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-6 text-xl rounded-2xl mb-8">
-        + ADD MONEY (SCAN QR)
-      </button>
-      
-      <div class="grid grid-cols-2 gap-4">
-        <a href="shop.html" class="bg-zinc-800 hover:bg-zinc-700 p-6 rounded-2xl text-center text-lg font-bold">GFX Shop</a>
-        <a href="topup.html" class="bg-zinc-800 hover:bg-zinc-700 p-6 rounded-2xl text-center text-lg font-bold">Game Topup</a>
-      </div>
+const ADMIN_EMAIL = "yashrawat9873@gmail.com";
 
-      <!-- ADMIN SECTION (Sirf tere liye dikhega) -->
-      <div id="adminSection" class="hidden mt-10 pt-6 border-t border-green-500/30">
-        <h3 class="text-xl font-bold text-green-400 text-center mb-4">👑 ADMIN PANEL</h3>
-        <button onclick="goToAdmin()" 
-          class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-5 text-lg rounded-2xl">
-          Open Full Admin Panel
-        </button>
-      </div>
+// 🔐 CHECK USER
+async function checkUser() {
+  const { data: { user } } = await supabase.auth.getUser();
 
-    </div>
-  </div>
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
 
-  <!-- QR Modal (same as before) -->
-  <div id="qrModal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50 px-4">
-    <div class="bg-zinc-900 rounded-3xl p-8 max-w-sm w-full border border-green-500/50">
-      <h2 class="text-3xl font-bold text-center mb-6">ADD MONEY</h2>
-      <div class="flex justify-center mb-6">
-        <img src="https://drive.google.com/uc?id=16qenbyLAI0c-8mOf7G_7wGTMMG0LvzCw"
-             class="w-64 h-64 rounded-2xl border-4 border-green-400" alt="UPI QR Code">
-      </div>
-      <p class="text-center text-gray-300 mb-6 text-base">
-        Scan this QR with any UPI App<br>
-        <span class="text-green-400 font-medium">After payment, fill below details</span>
-      </p>
-      <input id="userEmail" type="text" placeholder="Your Email or Username"
-        class="w-full bg-black p-4 rounded-2xl mb-4 text-lg outline-none">
-      <input id="paidAmount" type="number" placeholder="Amount You Paid (₹)"
-        class="w-full bg-black p-4 rounded-2xl mb-6 text-lg outline-none">
-      <button onclick="submitPayment()"
-        class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-5 text-xl rounded-2xl mb-3">
-        I HAVE PAID - SUBMIT
-      </button>
-      <button onclick="closeModal()"
-        class="w-full text-gray-400 py-3 text-base">Close Window</button>
-    </div>
-  </div>
+  loadWallet(user);
+  checkAdmin(user);
+}
 
-  <script>
-    // === ADMIN LOGIN CHECK ===
-    const ADMIN_EMAIL = "yashrawat9873@gmail.com";
-    const ADMIN_PASS = "9873987036@yash";
+// 💰 LOAD WALLET
+async function loadWallet(user) {
+  let { data } = await supabase
+    .from("users")
+    .select("wallet")
+    .eq("id", user.id)
+    .single();
 
-    function checkAdminAccess() {
-      const savedUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-      
-      // Agar admin email hai to admin section dikhao
-      if (savedUser.email === ADMIN_EMAIL) {
-        document.getElementById("adminSection").classList.remove("hidden");
-      }
-    }
+  if (!data) {
+    await supabase.from("users").insert({
+      id: user.id,
+      email: user.email,
+      wallet: 0
+    });
+    data = { wallet: 0 };
+  }
 
-    function goToAdmin() {
-      const enteredPass = prompt("Enter Admin Password:");
-      if (enteredPass === ADMIN_PASS) {
-        window.location.href = "admin.html";
-      } else {
-        alert("❌ Wrong Password! Access Denied.");
-      }
-    }
+  document.getElementById("balance").innerText = "₹" + data.wallet;
+}
 
-    // Baaki functions (same as before)
-    function loadBalance() {
-      const user = JSON.parse(localStorage.getItem("currentUser") || "{}");
-      const bal = user.balance || 0;
-      document.getElementById("balance").innerText = "₹" + bal.toFixed(2);
-    }
+// 👑 ADMIN CHECK
+function checkAdmin(user) {
+  if (user.email === ADMIN_EMAIL) {
+    document.getElementById("adminSection").classList.remove("hidden");
+  }
+}
 
-    function showAddMoney() {
-      document.getElementById("qrModal").classList.remove("hidden");
-    }
+// 💳 PAYMENT REQUEST
+async function submitPayment() {
+  const { data: { user } } = await supabase.auth.getUser();
+  const amount = parseInt(document.getElementById("paidAmount").value);
 
-    function closeModal() {
-      document.getElementById("qrModal").classList.add("hidden");
-    }
+  if (!amount || amount <= 0) {
+    alert("Enter valid amount");
+    return;
+  }
 
-    function submitPayment() {
-      const email = document.getElementById("userEmail").value.trim();
-      const amount = parseFloat(document.getElementById("paidAmount").value);
-      if (!email) {
-        alert("❌ Please enter your Email or Username");
-        return;
-      }
-      if (!amount || amount <= 0) {
-        alert("❌ Please enter valid amount");
-        return;
-      }
-      let requests = JSON.parse(localStorage.getItem("paymentRequests") || "[]");
-      requests.push({
-        email: email,
-        amount: amount,
-        time: new Date().toLocaleString(),
-        status: "Pending"
-      });
-      localStorage.setItem("paymentRequests", JSON.stringify(requests));
-      alert(`✅ Payment Request Submitted!\nAmount: ₹${amount}\nEmail: ${email}\n\nAdmin will verify and add balance soon.`);
-      closeModal();
-      document.getElementById("userEmail").value = "";
-      document.getElementById("paidAmount").value = "";
-    }
+  await supabase.from("payment_requests").insert({
+    user_id: user.id,
+    email: user.email,
+    amount: amount,
+    status: "pending"
+  });
 
-    function goToHome() {
-      window.location.href = "index.html";
-    }
+  alert("Request Sent 🔥");
+  closeModal();
+}
 
-    // Page load pe balance + admin check dono karo
-    window.onload = function() {
-      loadBalance();
-      checkAdminAccess();
-    };
-  </script>
+// MODAL
+function showAddMoney() {
+  document.getElementById("qrModal").classList.remove("hidden");
+}
+function closeModal() {
+  document.getElementById("qrModal").classList.add("hidden");
+}
+
+// NAV
+function goToHome() {
+  window.location.href = "index.html";
+}
+function goToAdmin() {
+  window.location.href = "admin.html";
+}
+
+// INIT
+checkUser();
+</script>
+
 </body>
 </html>
