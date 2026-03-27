@@ -2,73 +2,50 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register - VOIDXHUB</title>
-
+  <title>Register</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    body { background: linear-gradient(135deg, #0a0a0a, #1a0033); color: white; }
-    .neon-text { text-shadow: 0 0 30px #00ff9d; }
-  </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center">
+<body class="bg-black flex items-center justify-center h-screen text-white">
 
-  <div class="bg-zinc-900 p-10 rounded-3xl w-full max-w-md border border-green-500/30">
-    
-    <h1 class="text-4xl font-bold neon-text text-green-400 text-center mb-8">
-      CREATE ACCOUNT
-    </h1>
-    
-    <input id="email" type="email" placeholder="Email Address" 
-      class="w-full bg-black p-4 mb-4 rounded-xl">
-    
-    <input id="pass" type="password" placeholder="Password (min 6)" 
-      class="w-full bg-black p-4 mb-6 rounded-xl">
-    
-    <button onclick="registerUser()" 
-      class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-4 rounded-xl">
-      REGISTER
-    </button>
-    
-    <p class="text-center mt-6">
-      Already have account? 
-      <a href="login.html" class="text-green-400">Login</a>
-    </p>
+<!-- Back Button -->
+<a href="index.html" 
+class="absolute top-5 left-5 px-4 py-2 bg-green-500 text-black font-bold rounded-lg shadow-lg shadow-green-500/50 hover:bg-green-400 transition">
+  ⬅ Back
+</a>
 
-  </div>
+<div class="bg-gray-900 p-6 rounded-xl shadow-lg w-80">
+  <h2 class="text-2xl mb-4 text-center">Register</h2>
+
+  <input type="email" id="email" placeholder="Email" class="w-full p-2 mb-3 rounded text-black">
+  <input type="password" id="password" placeholder="Password" class="w-full p-2 mb-3 rounded text-black">
+
+  <button onclick="registerUser()" 
+  class="w-full bg-green-500 hover:bg-green-400 text-black font-bold py-2 rounded-lg shadow-lg shadow-green-500/50">
+    Register
+  </button>
+</div>
 
 <script>
 const supabase = window.supabase.createClient(
-  'https://abtgulackvuozotctahf.supabase.co',
-  'sb_publishable_RLEiyZLSxKgWSzYT517FlQ_iytl'
+  "https://abtgulackvuozotctahf.supabase.co",
+  "sb_publishable_RLEiyZlSxKgWSzYT517FlQ_iytHhAHr"
 );
 
 async function registerUser() {
-  const email = document.getElementById("email").value.trim();
-  const pass = document.getElementById("pass").value.trim();
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-  if (!email || !pass) {
-    alert("❌ Fill all fields");
-    return;
-  }
-
-  if (pass.length < 6) {
-    alert("❌ Password must be at least 6 characters");
-    return;
-  }
-
-  const { data, error } = await supabase.auth.signUp({
+  const { error } = await supabase.auth.signUp({
     email: email,
-    password: pass
+    password: password
   });
 
   if (error) {
     alert("❌ " + error.message);
   } else {
-    alert("✅ Account Created! Now login.");
+    alert("✅ Account Created");
     window.location.href = "login.html";
   }
 }
