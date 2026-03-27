@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - VOIDXHUB</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0a0a0a, #1a0033);
+      color: white;
+      font-family: system-ui;
+    }
+    .neon-text {
+      text-shadow: 0 0 30px #00ff9d;
+    }
+  </style>
+</head>
+<body class="min-h-screen pt-10 px-4">
+  
+  <!-- Back Button - Top Right -->
+  <div class="fixed top-6 right-6 z-50">
+    <button onclick="goToDashboard()" 
+      class="bg-zinc-900 hover:bg-zinc-800 border border-green-500/50 text-green-400 px-5 py-3 rounded-2xl flex items-center gap-2 shadow-lg transition-all active:scale-95">
+      <i class="fas fa-arrow-left"></i>
+      <span class="font-bold">Back to Dashboard</span>
+    </button>
+  </div>
+
+  <div class="max-w-2xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-4xl font-black neon-text text-green-400">ADMIN PANEL</h1>
+    </div>
+
+    <div class="bg-zinc-900 rounded-3xl p-8 border border-green-500/30">
+      <h2 class="text-2xl font-bold mb-6 text-center">Add Balance to Customer</h2>
+      
+      <div class="space-y-6">
+        <div>
+          <label class="block text-gray-400 mb-2">Customer Email or Username</label>
+          <input id="customerId" type="text" placeholder="yashrawat9873@gmail.com"
+            class="w-full bg-black p-5 rounded-2xl text-lg outline-none border border-green-500/30">
+        </div>
+
+        <div>
+          <label class="block text-gray-400 mb-2">Amount to Add (₹)</label>
+          <input id="addAmount" type="number" placeholder="500"
+            class="w-full bg-black p-5 rounded-2xl text-lg outline-none border border-green-500/30">
+        </div>
+
+        <button onclick="addBalance()" 
+          class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-6 text-xl rounded-2xl">
+          ADD BALANCE TO CUSTOMER
+        </button>
+      </div>
+    </div>
+
+    <!-- Payment Requests Section -->
+    <div class="mt-10 bg-zinc-900 rounded-3xl p-8 border border-green-500/30">
+      <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+        <i class="fas fa-list"></i> Pending Payment Requests
+      </h2>
+      <div id="requestsList" class="space-y-4">
+        <!-- Requests yahan aayenge -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function addBalance() {
+      const customerId = document.getElementById("customerId").value.trim();
+      const amount = parseFloat(document.getElementById("addAmount").value);
+
+      if (!customerId) {
+        alert("❌ Please enter Customer Email or Username");
+        return;
+      }
+      if (!amount || amount <= 0) {
+        alert("❌ Please enter valid amount");
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem("users") || "[]");
+      let user = users.find(u => u.email === customerId || u.username === customerId);
+
+      if (!user) {
+        user = {
+          email: customerId,
+          username: customerId,
+          balance: 0
+        };
+        users.push(user);
+      }
+
+      user.balance = (user.balance || 0) + amount;
+      localStorage.setItem("users", JSON.stringify(users));
+
+      const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+      if (currentUser.email === customerId || currentUser.username === customerId) {
+        currentUser.balance = user.balance;
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      }
+
+      alert(`✅ Success! ₹${amount} added to ${customerId}\nNew Balance: ₹${user.balance}`);
+      
+      document.getElementById("addAmount").value = "";
+      loadRequests();
+    }
+
+    function loadRequests() {
+      const requests = JSON.parse(localStorage.getItem("paymentRequests") || "[]");
+      const container = document.getElementById("requestsList");
+      container.innerHTML = "";
+
+      if (requests.length === 0) {
+        container.innerHTML = `<p class="text-center text-gray-500 py-8">No pending requests yet</p>`;
+        return;
+      }
+
+      requests.forEach((req, index) => {
+        const div = document.createElement("div");
+        div.className = "bg-zinc-800 p-6 rounded-2xl border border-green-500/20";
+        div.innerHTML = `
+          <div class="flex justify-between">
+            <div>
+              <p class="font-medium">${req.email}</p>
+              <p class="text-green-400 text-xl font-bold">₹${req.amount}</p>
+              <p class="text-xs text-gray-500">${req.time}</p>
+            </div>
+            <div>
+              <button onclick="approvePayment(${index})" 
+                class="bg-green-500 text-black px-6 py-3 rounded-xl font-bold text-sm hover:bg-green-600">
+                APPROVE
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function approvePayment(index) {
+      let requests = JSON.parse(localStorage.getItem("paymentRequests") || "[]");
+      const req = requests[index];
+
+      let users = JSON.parse(localStorage.getItem("users") || "[]");
+      let user = users.find(u => u.email === req.email || u.username === req.email);
+
+      if (!user) {
+        user = { email: req.email, username: req.email, balance: 0 };
+        users.push(user);
+      }
+
+      user.balance = (user.balance || 0) + req.amount;
+      localStorage.setItem("users", JSON.stringify(users));
+
+      requests.splice(index, 1);
+      localStorage.setItem("paymentRequests", JSON.stringify(requests));
+
+      alert(`✅ Payment Approved! ₹${req.amount} added to ${req.email}`);
+      loadRequests();
+    }
+
+    function goToDashboard() {
+      window.location.href = "dashboard.html";
+    }
+
+    // Page load pe requests load karo
+    window.onload = loadRequests;
+  </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>GFX & SENSIBOOST SHOP - VOIDXHUB</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body { 
+      background: linear-gradient(135deg, #0a0a0a, #1a0033); 
+      color: white; 
+      font-family: system-ui; 
+      min-height: 100vh; 
+    }
+    .neon-text { 
+      text-shadow: 0 0 30px #00ff9d; 
+    }
+    .item-card { 
+      transition: all 0.4s; 
+    }
+    .item-card:hover { 
+      transform: translateY(-8px); 
+      box-shadow: 0 0 40px #00ff9d; 
+    }
+  </style>
+</head>
+<body class="pt-20 px-4">
+
+  <!-- Back Button - Top Right -->
+  <div class="fixed top-6 right-6 z-50">
+    <button onclick="goToHome()" 
+      class="bg-zinc-900 hover:bg-zinc-800 border border-green-500/50 text-green-400 px-5 py-3 rounded-2xl flex items-center gap-2 shadow-lg transition-all active:scale-95">
+      <i class="fas fa-arrow-left"></i>
+      <span class="font-bold">Back</span>
+    </button>
+  </div>
+
+  <div class="max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-10">
+      <h1 class="text-5xl font-black neon-text text-green-400">GFX & SENSIBOOST SHOP</h1>
+      <button onclick="toggleCart()" class="relative flex items-center gap-3 bg-zinc-900 px-6 py-3 rounded-2xl border border-green-500/30">
+        <i class="fas fa-shopping-cart text-2xl"></i>
+        <span class="text-xl">Cart</span>
+        <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full">0</span>
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="shopItems"></div>
+  </div>
+
+  <!-- Cart Sidebar -->
+  <div id="cartSidebar" class="hidden fixed top-0 right-0 h-full w-full md:w-96 bg-zinc-900 border-l border-green-500/50 shadow-2xl z-50 overflow-y-auto">
+    <div class="p-6">
+      <div class="flex justify-between mb-8">
+        <h2 class="text-3xl font-bold">Your Cart</h2>
+        <button onclick="toggleCart()" class="text-3xl">✕</button>
+      </div>
+      <div id="cartItems" class="space-y-6 mb-8"></div>
+      <div class="border-t border-green-500/30 pt-6">
+        <div class="flex justify-between text-2xl font-bold mb-6">
+          <span>Total</span>
+          <span id="cartTotal">₹0</span>
+        </div>
+        <button onclick="proceedToPay()" class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-6 text-xl rounded-2xl">
+          PROCEED TO PAY
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let cart = [];
+    const items = [
+      { id: 1, name: "BGMI 90 FPS GFX Pack", price: 149, desc: "Ultra smooth + No recoil" },
+      { id: 2, name: "Free Fire Pro Sensi Booster", price: 99, desc: "Laser aim + Zero lag" },
+      { id: 3, name: "CODM Legendary HUD + GFX", price: 199, desc: "Max visibility pack" },
+      { id: 4, name: "All Games Mega Sensi Bundle", price: 299, desc: "BGMI + FF + CODM" },
+      { id: 5, name: "Custom Recoil Script", price: 79, desc: "Perfect spray control" }
+    ];
+
+    function loadShop() {
+      const container = document.getElementById("shopItems");
+      container.innerHTML = "";
+      items.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "bg-zinc-900 rounded-3xl p-6 item-card border border-green-500/30";
+        card.innerHTML = `
+          <div class="text-green-400 text-6xl mb-4">🎮</div>
+          <h3 class="text-2xl font-bold mb-2">${item.name}</h3>
+          <p class="text-gray-400 mb-6">${item.desc}</p>
+          <div class="flex justify-between items-center">
+            <span class="text-4xl font-black text-green-400">₹${item.price}</span>
+            <button onclick="addToCart(${item.id})" class="bg-green-500 hover:bg-green-600 text-black font-bold px-6 py-3 rounded-2xl">Add to Cart</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function addToCart(id) {
+      const item = items.find(i => i.id === id);
+      cart.push(item);
+      updateCartCount();
+      alert(`${item.name} added to cart!`);
+    }
+
+    function updateCartCount() {
+      document.getElementById("cartCount").innerText = cart.length;
+    }
+
+    function toggleCart() {
+      const sidebar = document.getElementById("cartSidebar");
+      sidebar.classList.toggle("hidden");
+      if (!sidebar.classList.contains("hidden")) renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById("cartItems");
+      container.innerHTML = "";
+      let total = 0;
+      cart.forEach((item, index) => {
+        total += item.price;
+        const div = document.createElement("div");
+        div.className = "flex justify-between items-center bg-zinc-800 p-4 rounded-2xl";
+        div.innerHTML = `
+          <div>
+            <p>${item.name}</p>
+            <p class="text-green-400">₹${item.price}</p>
+          </div>
+          <button onclick="removeFromCart(${index})" class="text-red-400">Remove</button>
+        `;
+        container.appendChild(div);
+      });
+      document.getElementById("cartTotal").innerText = `₹${total}`;
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartCount();
+      renderCart();
+    }
+
+    function proceedToPay() {
+      if (cart.length === 0) return alert("Cart is empty!");
+      let total = cart.reduce((sum, item) => sum + item.price, 0);
+      let user = JSON.parse(localStorage.getItem("currentUser") || "{}");
+      if ((user.balance || 0) < total) return alert("❌ Insufficient Balance!");
+      user.balance -= total;
+      localStorage.setItem("currentUser", JSON.stringify(user));
+      alert(`✅ Order Placed Successfully!\n₹${total} deducted from wallet.\nItems added to your account.`);
+      cart = [];
+      updateCartCount();
+      toggleCart();
+    }
+
+    function goToHome() {
+      window.location.href = "index.html";
+    }
+
+    window.onload = loadShop;
+  </script>
+</body>
+</html>

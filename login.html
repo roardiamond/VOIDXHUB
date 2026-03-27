@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - VOIDXHUB</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body { background: linear-gradient(135deg, #0a0a0a, #1a0033); color: white; }
+    .neon-text { text-shadow: 0 0 30px #00ff9d; }
+  </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center">
+
+  <div class="bg-zinc-900 p-10 rounded-3xl w-full max-w-md border border-green-500/30">
+    
+    <h1 class="text-4xl font-bold neon-text text-green-400 text-center mb-8">
+      LOGIN
+    </h1>
+    
+    <input id="email" type="email" placeholder="Email Address" 
+      class="w-full bg-black p-4 mb-4 rounded-xl">
+    
+    <input id="pass" type="password" placeholder="Password" 
+      class="w-full bg-black p-4 mb-6 rounded-xl">
+    
+    <button onclick="loginUser()" 
+      class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-4 rounded-xl">
+      LOGIN
+    </button>
+    
+    <p class="text-center mt-6">
+      Don't have account? 
+      <a href="register.html" class="text-green-400">Register</a>
+    </p>
+
+  </div>
+
+<script>
+const supabase = window.supabase.createClient(
+  'https://abtgulackvuozotctahf.supabase.co',
+  'sb_publishable_RLEiyZLSxKgWSzYT517FlQ_iytl'
+);
+
+async function loginUser() {
+  const email = document.getElementById("email").value.trim();
+  const pass = document.getElementById("pass").value.trim();
+
+  if (!email || !pass) {
+    alert("❌ Fill all fields");
+    return;
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: pass
+  });
+
+  if (error) {
+    alert("❌ " + error.message);
+  } else {
+    alert("✅ Login Successful!");
+    window.location.href = "index.html";
+  }
+}
+</script>
+
+</body>
+</html>
