@@ -2,120 +2,127 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Register</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Register - VOIDXHUB</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { 
+      background: linear-gradient(135deg, #0a0a0a, #1a0033); 
+      color: white; 
+    }
+    .neon-text { 
+      text-shadow: 0 0 30px #00ff9d, 0 0 60px #00ff9d; 
+    }
+  </style>
 </head>
+<body class="min-h-screen flex items-center justify-center pt-10">
 
-<body class="bg-black flex items-center justify-center h-screen text-white">
+  <div class="bg-zinc-900 p-8 rounded-3xl w-full max-w-md border border-green-500/30 shadow-2xl">
+    <!-- Back Button -->
+    <a href="index.html" 
+       class="inline-flex items-center gap-2 text-green-400 hover:text-green-300 mb-6">
+      ← Back to Home
+    </a>
 
-<!-- Back Button -->
-<a href="index.html" 
-class="absolute top-5 left-5 px-4 py-2 bg-green-500 text-black font-bold rounded-lg shadow-lg shadow-green-500/50 hover:bg-green-400 transition">
-  ⬅ Back
-</a>
+    <h1 class="text-4xl font-black neon-text text-green-400 text-center mb-8">CREATE ACCOUNT</h1>
+    
+    <input id="email" type="email" placeholder="Email Address" 
+      class="w-full bg-black p-4 rounded-2xl mb-5 text-lg outline-none border border-green-500/30 focus:border-green-400">
 
-<div class="bg-gray-900 p-6 rounded-xl shadow-lg w-80">
+    <div class="relative mb-8">
+      <input id="password" type="password" placeholder="Password (min 6 characters)" 
+        class="w-full bg-black p-4 rounded-2xl text-lg outline-none border border-green-500/30 focus:border-green-400">
+      <button onclick="togglePassword()" 
+        class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white">
+        👁
+      </button>
+    </div>
 
-<h2 class="text-2xl mb-4 text-center">Register</h2>
+    <button onclick="registerUser()" 
+      class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-6 text-xl rounded-2xl transition-all mb-4">
+      REGISTER NOW
+    </button>
 
-<input id="email" type="email" placeholder="Email"
-class="w-full p-2 mb-3 rounded text-black">
+    <!-- OTP Signup -->
+    <button onclick="signupOTP()" 
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-6 text-xl rounded-2xl transition-all">
+      SIGNUP WITH OTP
+    </button>
 
-<!-- PASSWORD WITH SHOW/HIDE -->
-<div class="relative">
-  <input id="password" type="password" placeholder="Password"
-  class="w-full p-2 mb-3 rounded text-black">
+    <p id="otpMsg" class="hidden text-center text-green-400 mt-6 text-sm">
+      📩 Check your email for OTP to complete signup
+    </p>
 
-  <button onclick="togglePassword()" 
-  class="absolute right-2 top-2 text-black text-sm">
-    👁
-  </button>
-</div>
+    <p class="text-center mt-8 text-gray-400">
+      Already have an account? 
+      <a href="login.html" class="text-green-400 hover:underline">Login Here</a>
+    </p>
+  </div>
 
-<button onclick="registerUser()" 
-class="w-full bg-green-500 text-black py-2 rounded mb-3">
-Register
-</button>
+  <script>
+    const supabaseUrl = 'https://abtgulackvuozotctahf.supabase.co';
+    const supabaseKey = 'sb_publishable_RLEiyZLSxKgWSzYT517FlQ_iytl';
 
-<!-- OTP SIGNUP -->
-<button onclick="signupOTP()" 
-class="w-full bg-blue-500 py-2 rounded mb-3">
-Signup with OTP
-</button>
+    const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
 
-<!-- OTP INFO -->
-<p id="otpMsg" class="hidden text-center text-green-400 mt-2">
-  📩 Check your email to complete signup
-</p>
+    let passwordVisible = false;
 
-</div>
+    function togglePassword() {
+      const passInput = document.getElementById("password");
+      passwordVisible = !passwordVisible;
+      passInput.type = passwordVisible ? "text" : "password";
+    }
 
-<script>
-const supabase = window.supabase.createClient(
-  "https://abtgulackvuozotctahf.supabase.co",
-  "sb_publishable_RLEiyZlSxKgWSzYT517FlQ_iytHhAHr"
-);
+    async function registerUser() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
 
-let passwordVisible = false;
+      if (!email || !password) {
+        alert("❌ Please fill both Email and Password");
+        return;
+      }
+      if (password.length < 6) {
+        alert("❌ Password must be at least 6 characters");
+        return;
+      }
 
-// 👁 SHOW/HIDE PASSWORD
-function togglePassword() {
-  const pass = document.getElementById("password");
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email: email,
+          password: password
+        });
 
-  passwordVisible = !passwordVisible;
-  pass.type = passwordVisible ? "text" : "password";
-}
+        if (error) throw error;
 
-// 🔐 NORMAL REGISTER
-async function registerUser() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
+        alert(`✅ Account Created Successfully!\n\nEmail: ${email}\n\nNow go to Login page.`);
+        window.location.href = "login.html";
 
-  if (!email || !password) {
-    alert("❌ Fill all fields");
-    return;
-  }
+      } catch (error) {
+        alert("❌ Registration Failed: " + error.message);
+      }
+    }
 
-  if (password.length < 6) {
-    alert("❌ Password must be at least 6 characters");
-    return;
-  }
+    async function signupOTP() {
+      const email = document.getElementById("email").value.trim();
+      if (!email) {
+        alert("❌ Please enter email first");
+        return;
+      }
 
-  const { error } = await supabase.auth.signUp({
-    email,
-    password
-  });
+      try {
+        const { error } = await supabase.auth.signInWithOtp({
+          email: email
+        });
 
-  if (error) {
-    alert("❌ " + error.message);
-  } else {
-    alert("✅ Account Created");
-    window.location.href = "login.html";
-  }
-}
+        if (error) throw error;
 
-// 📩 OTP SIGNUP
-async function signupOTP() {
-  const email = document.getElementById("email").value.trim();
-
-  if (!email) {
-    alert("❌ Enter email first");
-    return;
-  }
-
-  const { error } = await supabase.auth.signInWithOtp({
-    email: email
-  });
-
-  if (error) {
-    alert("❌ " + error.message);
-  } else {
-    document.getElementById("otpMsg").classList.remove("hidden");
-  }
-}
-</script>
-
+        document.getElementById("otpMsg").classList.remove("hidden");
+        alert("📩 OTP sent to your email. Check inbox/spam.");
+      } catch (error) {
+        alert("❌ OTP Error: " + error.message);
+      }
+    }
+  </script>
 </body>
 </html>
