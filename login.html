@@ -12,55 +12,56 @@
       color: white; 
     }
     .neon-text { 
-      text-shadow: 0 0 30px #00ff9d; 
+      text-shadow: 0 0 30px #00ff9d, 0 0 60px #00ff9d; 
     }
   </style>
 </head>
 <body class="min-h-screen flex items-center justify-center pt-10">
 
-  <div class="bg-zinc-900 p-8 rounded-3xl w-full max-w-md border border-green-500/30 shadow-2xl">
+  <div class="bg-zinc-900 p-12 rounded-3xl w-full max-w-md border border-green-500/30 shadow-2xl">
+    
     <!-- Back Button -->
     <a href="index.html" 
        class="inline-flex items-center gap-2 text-green-400 hover:text-green-300 mb-6">
       ← Back to Home
     </a>
 
-    <h1 class="text-4xl font-black neon-text text-green-400 text-center mb-8">LOGIN</h1>
+    <h1 class="text-5xl font-black neon-text text-green-400 text-center mb-10">LOGIN</h1>
+   
+    <input id="email" type="email" placeholder="Email Address"
+      class="w-full bg-black p-5 rounded-2xl mb-5 text-lg outline-none border border-green-500/30 focus:border-green-400">
     
-    <input id="email" type="email" placeholder="Email Address" 
-      class="w-full bg-black p-4 rounded-2xl mb-5 text-lg outline-none border border-green-500/30 focus:border-green-400">
-
     <div class="relative mb-8">
-      <input id="password" type="password" placeholder="Password" 
-        class="w-full bg-black p-4 rounded-2xl text-lg outline-none border border-green-500/30 focus:border-green-400">
+      <input id="password" type="password" placeholder="Password"
+        class="w-full bg-black p-5 rounded-2xl text-lg outline-none border border-green-500/30 focus:border-green-400">
       <button onclick="togglePassword()" 
-        class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-xl">
+        class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-2xl">
         👁
       </button>
     </div>
 
     <button onclick="loginUser()" 
-      class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-6 text-xl rounded-2xl mb-4">
+      class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-6 text-2xl rounded-2xl transition-all mb-4">
       LOGIN NOW
     </button>
 
     <!-- OTP Login -->
     <button onclick="sendOTP()" 
-      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-6 text-xl rounded-2xl mb-4">
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-6 text-2xl rounded-2xl mb-4">
       LOGIN WITH OTP
     </button>
 
-    <!-- OTP Input Box -->
+    <!-- OTP Box -->
     <div id="otpBox" class="hidden mt-4">
       <input id="otp" placeholder="Enter OTP sent to email" 
-        class="w-full bg-black p-4 rounded-2xl mb-4 text-lg outline-none">
+        class="w-full bg-black p-5 rounded-2xl mb-4 text-lg outline-none">
       <button onclick="verifyOTP()" 
-        class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-4 text-lg rounded-2xl">
+        class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-5 text-xl rounded-2xl">
         VERIFY OTP
       </button>
     </div>
 
-    <p class="text-center mt-6 text-gray-400">
+    <p class="text-center mt-8 text-gray-400">
       Don't have account? 
       <a href="register.html" class="text-green-400 hover:underline">Register Here</a>
     </p>
@@ -113,10 +114,7 @@
       }
 
       try {
-        const { error } = await supabase.auth.signInWithOtp({
-          email: email
-        });
-
+        const { error } = await supabase.auth.signInWithOtp({ email: email });
         if (error) throw error;
 
         document.getElementById("otpBox").classList.remove("hidden");
@@ -127,8 +125,7 @@
     }
 
     async function verifyOTP() {
-      alert("🔄 For OTP login, check your email and click the magic link.\n\n(Supabase handles OTP verification automatically)");
-      // Note: Supabase OTP usually uses magic link, not manual OTP input
+      alert("🔄 Supabase OTP usually works via magic link.\nCheck your email and click the login link.");
     }
   </script>
 </body>
