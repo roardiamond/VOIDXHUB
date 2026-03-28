@@ -12,15 +12,13 @@
       color: white; 
     }
     .neon-text { 
-      text-shadow: 0 0 30px #00ff9d, 0 0 60px #00ff9d; 
+      text-shadow: 0 0 30px #00ff9d; 
     }
   </style>
 </head>
 <body class="min-h-screen flex items-center justify-center pt-10">
 
   <div class="bg-zinc-900 p-12 rounded-3xl w-full max-w-md border border-green-500/30 shadow-2xl">
-    
-    <!-- Back Button -->
     <a href="index.html" 
        class="inline-flex items-center gap-2 text-green-400 hover:text-green-300 mb-6">
       ← Back to Home
@@ -41,25 +39,9 @@
     </div>
 
     <button onclick="loginUser()" 
-      class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-6 text-2xl rounded-2xl transition-all mb-4">
+      class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-6 text-2xl rounded-2xl transition-all">
       LOGIN NOW
     </button>
-
-    <!-- OTP Login -->
-    <button onclick="sendOTP()" 
-      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-6 text-2xl rounded-2xl mb-4">
-      LOGIN WITH OTP
-    </button>
-
-    <!-- OTP Box -->
-    <div id="otpBox" class="hidden mt-4">
-      <input id="otp" placeholder="Enter OTP sent to email" 
-        class="w-full bg-black p-5 rounded-2xl mb-4 text-lg outline-none">
-      <button onclick="verifyOTP()" 
-        class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-5 text-xl rounded-2xl">
-        VERIFY OTP
-      </button>
-    </div>
 
     <p class="text-center mt-8 text-gray-400">
       Don't have account? 
@@ -96,36 +78,15 @@
           password: password
         });
 
-        if (error) throw error;
-
-        alert(`✅ Login Successful! Welcome back.`);
-        window.location.href = "index.html";   // Direct Home Page
-
-      } catch (error) {
-        alert("❌ Login Failed: " + error.message);
+        if (error) {
+          alert("❌ Login Failed: " + error.message);
+        } else {
+          alert("✅ Login Successful! Welcome back.");
+          window.location.href = "index.html";
+        }
+      } catch (err) {
+        alert("Error: " + err.message);
       }
-    }
-
-    async function sendOTP() {
-      const email = document.getElementById("email").value.trim();
-      if (!email) {
-        alert("❌ Please enter email first");
-        return;
-      }
-
-      try {
-        const { error } = await supabase.auth.signInWithOtp({ email: email });
-        if (error) throw error;
-
-        document.getElementById("otpBox").classList.remove("hidden");
-        alert("📩 OTP sent to your email. Check inbox/spam.");
-      } catch (error) {
-        alert("❌ OTP Error: " + error.message);
-      }
-    }
-
-    async function verifyOTP() {
-      alert("🔄 Supabase OTP usually works via magic link.\nCheck your email and click the login link.");
     }
   </script>
 </body>
