@@ -2,149 +2,134 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Login - VOIDXHUB</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { 
+      background: linear-gradient(135deg, #0a0a0a, #1a0033); 
+      color: white; 
+    }
+    .neon-text { 
+      text-shadow: 0 0 30px #00ff9d; 
+    }
+  </style>
 </head>
+<body class="min-h-screen flex items-center justify-center pt-10">
 
-<body class="bg-black flex items-center justify-center h-screen text-white">
+  <div class="bg-zinc-900 p-8 rounded-3xl w-full max-w-md border border-green-500/30 shadow-2xl">
+    <!-- Back Button -->
+    <a href="index.html" 
+       class="inline-flex items-center gap-2 text-green-400 hover:text-green-300 mb-6">
+      ← Back to Home
+    </a>
 
-<a href="index.html" 
-class="absolute top-5 left-5 px-4 py-2 bg-green-500 text-black font-bold rounded-lg shadow-lg">
-⬅ Back
-</a>
+    <h1 class="text-4xl font-black neon-text text-green-400 text-center mb-8">LOGIN</h1>
+    
+    <input id="email" type="email" placeholder="Email Address" 
+      class="w-full bg-black p-4 rounded-2xl mb-5 text-lg outline-none border border-green-500/30 focus:border-green-400">
 
-<div class="bg-gray-900 p-6 rounded-xl w-80">
+    <div class="relative mb-8">
+      <input id="password" type="password" placeholder="Password" 
+        class="w-full bg-black p-4 rounded-2xl text-lg outline-none border border-green-500/30 focus:border-green-400">
+      <button onclick="togglePassword()" 
+        class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-xl">
+        👁
+      </button>
+    </div>
 
-<h2 class="text-2xl mb-4 text-center">Login</h2>
+    <button onclick="loginUser()" 
+      class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-6 text-xl rounded-2xl mb-4">
+      LOGIN NOW
+    </button>
 
-<input id="email" type="email" placeholder="Email"
-class="w-full p-2 mb-3 rounded text-black">
+    <!-- OTP Login -->
+    <button onclick="sendOTP()" 
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-6 text-xl rounded-2xl mb-4">
+      LOGIN WITH OTP
+    </button>
 
-<!-- PASSWORD WITH SHOW/HIDE -->
-<div class="relative">
-  <input id="password" type="password" placeholder="Password"
-  class="w-full p-2 mb-3 rounded text-black">
+    <!-- OTP Input Box -->
+    <div id="otpBox" class="hidden mt-4">
+      <input id="otp" placeholder="Enter OTP sent to email" 
+        class="w-full bg-black p-4 rounded-2xl mb-4 text-lg outline-none">
+      <button onclick="verifyOTP()" 
+        class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-4 text-lg rounded-2xl">
+        VERIFY OTP
+      </button>
+    </div>
 
-  <button onclick="togglePassword()" 
-  class="absolute right-2 top-2 text-black text-sm">
-    👁
-  </button>
-</div>
+    <p class="text-center mt-6 text-gray-400">
+      Don't have account? 
+      <a href="register.html" class="text-green-400 hover:underline">Register Here</a>
+    </p>
+  </div>
 
-<button onclick="loginUser()" 
-class="w-full bg-green-500 text-black py-2 rounded mb-3">
-Login
-</button>
+  <script>
+    const supabaseUrl = 'https://abtgulackvuozotctahf.supabase.co';
+    const supabaseKey = 'sb_publishable_RLEiyZLSxKgWSzYT517FlQ_iytl';
 
-<!-- OTP BUTTON -->
-<button onclick="sendOTP()" 
-class="w-full bg-blue-500 py-2 rounded mb-3">
-Login with OTP
-</button>
+    const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
 
-<!-- OTP INPUT -->
-<div id="otpBox" class="hidden">
-  <input id="otp" placeholder="Enter OTP"
-  class="w-full p-2 mb-3 rounded text-black">
+    let passwordVisible = false;
 
-  <button onclick="verifyOTP()" 
-  class="w-full bg-green-400 text-black py-2 rounded">
-    Verify OTP
-  </button>
-</div>
-
-<p id="forgotText" class="hidden text-center mt-3">
-  <a href="#" onclick="forgotPassword()" class="text-red-400">Forgot Password?</a>
-</p>
-
-</div>
-
-<script>
-const supabase = window.supabase.createClient(
-  "https://abtgulackvuozotctahf.supabase.co",
-  "sb_publishable_RLEiyZlSxKgWSzYT517FlQ_iytHhAHr"
-);
-
-let failed = 0;
-let passwordVisible = false;
-
-// 👁 SHOW/HIDE PASSWORD
-function togglePassword() {
-  const pass = document.getElementById("password");
-
-  passwordVisible = !passwordVisible;
-  pass.type = passwordVisible ? "text" : "password";
-}
-
-// 🔐 NORMAL LOGIN
-async function loginUser() {
-  const email = emailEl();
-  const password = passEl();
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    failed++;
-    alert("❌ " + error.message);
-
-    if (failed >= 1) {
-      document.getElementById("forgotText").classList.remove("hidden");
+    function togglePassword() {
+      const passInput = document.getElementById("password");
+      passwordVisible = !passwordVisible;
+      passInput.type = passwordVisible ? "text" : "password";
     }
 
-  } else {
-    window.location.href = "index.html";
-  }
-}
+    async function loginUser() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
 
-// 📩 SEND OTP
-async function sendOTP() {
-  const email = emailEl();
+      if (!email || !password) {
+        alert("❌ Please fill both Email and Password");
+        return;
+      }
 
-  const { error } = await supabase.auth.signInWithOtp({
-    email: email
-  });
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
 
-  if (error) {
-    alert("❌ " + error.message);
-  } else {
-    alert("📩 OTP sent to email");
-    document.getElementById("otpBox").classList.remove("hidden");
-  }
-}
+        if (error) throw error;
 
-// ✅ VERIFY OTP (magic link auto login hota hai)
-async function verifyOTP() {
-  alert("👉 Check your email & click login link (OTP auto verify)");
-}
+        alert(`✅ Login Successful! Welcome back.`);
+        window.location.href = "index.html";   // Direct Home Page
 
-// 🔁 FORGOT PASSWORD
-async function forgotPassword() {
-  const email = emailEl();
+      } catch (error) {
+        alert("❌ Login Failed: " + error.message);
+      }
+    }
 
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + "/login.html"
-  });
+    async function sendOTP() {
+      const email = document.getElementById("email").value.trim();
+      if (!email) {
+        alert("❌ Please enter email first");
+        return;
+      }
 
-  if (error) {
-    alert("❌ " + error.message);
-  } else {
-    alert("📩 Reset link sent");
-  }
-}
+      try {
+        const { error } = await supabase.auth.signInWithOtp({
+          email: email
+        });
 
-// helpers
-function emailEl() {
-  return document.getElementById("email").value.trim();
-}
-function passEl() {
-  return document.getElementById("password").value.trim();
-}
-</script>
+        if (error) throw error;
 
+        document.getElementById("otpBox").classList.remove("hidden");
+        alert("📩 OTP sent to your email. Check inbox/spam.");
+      } catch (error) {
+        alert("❌ OTP Error: " + error.message);
+      }
+    }
+
+    async function verifyOTP() {
+      alert("🔄 For OTP login, check your email and click the magic link.\n\n(Supabase handles OTP verification automatically)");
+      // Note: Supabase OTP usually uses magic link, not manual OTP input
+    }
+  </script>
 </body>
 </html>
