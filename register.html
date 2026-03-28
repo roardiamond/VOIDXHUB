@@ -18,41 +18,29 @@
 </head>
 <body class="min-h-screen flex items-center justify-center pt-10">
 
-  <div class="bg-zinc-900 p-8 rounded-3xl w-full max-w-md border border-green-500/30 shadow-2xl">
-    <!-- Back Button -->
-    <a href="index.html" 
-       class="inline-flex items-center gap-2 text-green-400 hover:text-green-300 mb-6">
+  <div class="bg-zinc-900 p-12 rounded-3xl w-full max-w-md border border-green-500/30 shadow-2xl">
+    <a href="index.html" class="inline-flex items-center gap-2 text-green-400 hover:text-green-300 mb-6">
       ← Back to Home
     </a>
 
-    <h1 class="text-4xl font-black neon-text text-green-400 text-center mb-8">CREATE ACCOUNT</h1>
+    <h1 class="text-5xl font-black neon-text text-green-400 text-center mb-10">CREATE ACCOUNT</h1>
+   
+    <input id="email" type="email" placeholder="Email Address"
+      class="w-full bg-black p-5 rounded-2xl mb-5 text-lg outline-none border border-green-500/30 focus:border-green-400">
     
-    <input id="email" type="email" placeholder="Email Address" 
-      class="w-full bg-black p-4 rounded-2xl mb-5 text-lg outline-none border border-green-500/30 focus:border-green-400">
-
     <div class="relative mb-8">
-      <input id="password" type="password" placeholder="Password (min 6 characters)" 
-        class="w-full bg-black p-4 rounded-2xl text-lg outline-none border border-green-500/30 focus:border-green-400">
+      <input id="password" type="password" placeholder="Password (min 6 characters)"
+        class="w-full bg-black p-5 rounded-2xl text-lg outline-none border border-green-500/30 focus:border-green-400">
       <button onclick="togglePassword()" 
-        class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white">
+        class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-2xl">
         👁
       </button>
     </div>
 
     <button onclick="registerUser()" 
-      class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-6 text-xl rounded-2xl transition-all mb-4">
+      class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-6 text-2xl rounded-2xl transition-all">
       REGISTER NOW
     </button>
-
-    <!-- OTP Signup -->
-    <button onclick="signupOTP()" 
-      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-6 text-xl rounded-2xl transition-all">
-      SIGNUP WITH OTP
-    </button>
-
-    <p id="otpMsg" class="hidden text-center text-green-400 mt-6 text-sm">
-      📩 Check your email for OTP to complete signup
-    </p>
 
     <p class="text-center mt-8 text-gray-400">
       Already have an account? 
@@ -61,6 +49,7 @@
   </div>
 
   <script>
+    // Supabase Config
     const supabaseUrl = 'https://abtgulackvuozotctahf.supabase.co';
     const supabaseKey = 'sb_publishable_RLEiyZLSxKgWSzYT517FlQ_iytl';
 
@@ -93,34 +82,14 @@
           password: password
         });
 
-        if (error) throw error;
-
-        alert(`✅ Account Created Successfully!\n\nEmail: ${email}\n\nNow go to Login page.`);
-        window.location.href = "login.html";
-
-      } catch (error) {
-        alert("❌ Registration Failed: " + error.message);
-      }
-    }
-
-    async function signupOTP() {
-      const email = document.getElementById("email").value.trim();
-      if (!email) {
-        alert("❌ Please enter email first");
-        return;
-      }
-
-      try {
-        const { error } = await supabase.auth.signInWithOtp({
-          email: email
-        });
-
-        if (error) throw error;
-
-        document.getElementById("otpMsg").classList.remove("hidden");
-        alert("📩 OTP sent to your email. Check inbox/spam.");
-      } catch (error) {
-        alert("❌ OTP Error: " + error.message);
+        if (error) {
+          alert("❌ " + error.message);
+        } else {
+          alert("✅ Account Created Successfully!\nPlease check your email (if confirmation is required).");
+          window.location.href = "login.html";
+        }
+      } catch (err) {
+        alert("Error: " + err.message);
       }
     }
   </script>
