@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOIDXHUB - CS 1V1</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: #05050a;
+      color: #e0e0ff;
+      overflow-x: hidden;
+    }
+    .glow-red {
+      box-shadow: 0 0 50px rgba(248, 113, 113, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-blackhole fixed inset-0 z-[-3]" style="background: radial-gradient(circle at center, #1a0033 10%, #000000 85%);"></div>
+
+  <div class="relative z-10 py-12 px-6 max-w-4xl mx-auto">
+   
+    <!-- Banner -->
+    <div class="mb-12 rounded-3xl overflow-hidden border-4 border-red-500 glow-red">
+      <img src="cs.jpg" class="w-full h-auto object-cover" alt="CS 1v1">
+    </div>
+
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <div class="inline-block bg-gradient-to-r from-red-600 to-pink-600 text-white text-sm font-bold px-8 py-3 rounded-full mb-4 tracking-widest">
+        CS 1V1
+      </div>
+      <h1 class="text-5xl md:text-6xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-pink-400">
+        1V1 CLASH SQUAD
+      </h1>
+      <p class="text-orange-300 text-xl mt-4">One vs One • Winner Takes All</p>
+    </div>
+
+    <!-- Rules -->
+    <div class="bg-zinc-950 border border-red-500/50 p-8 rounded-3xl mb-12">
+      <h2 class="text-3xl font-bold text-red-400 mb-6 text-center">1V1 RULES</h2>
+      <ul class="space-y-4 text-lg">
+        <li>• 13 Rounds</li>
+        <li>• Players must record their screen while playing and must send screen recording to confirm</li>
+        <li>• No teamups allowed, if found teaming then no prize will be given</li>
+        <li>• Players should not invite other players that are not registered</li>
+        <li>• Players are not allowed to reconnect during the match</li>
+        <li>• No hacks, mods or glitches allowed</li>
+        <li>• Entry fee non-refundable</li>
+        <li>• Winner takes full prize pool</li>
+      </ul>
+    </div>
+
+    <!-- Input Fields -->
+    <div class="max-w-md mx-auto space-y-6">
+      <input id="uid" type="text" placeholder="Free Fire UID" 
+             class="w-full px-6 py-4 bg-zinc-900 border border-red-500 rounded-2xl text-lg focus:outline-none focus:border-red-400">
+
+      <input id="ingame" type="text" placeholder="In-Game Name" 
+             class="w-full px-6 py-4 bg-zinc-900 border border-red-500 rounded-2xl text-lg focus:outline-none focus:border-red-400">
+
+      <button onclick="joinNow()" 
+              class="w-full py-8 text-2xl font-black bg-gradient-to-r from-red-600 to-pink-600 rounded-3xl hover:scale-105 transition-all shadow-2xl">
+        JOIN 1V1 NOW - WIN CASH 💰
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function joinNow() {
+      const uid = document.getElementById('uid').value.trim();
+      const ingame = document.getElementById('ingame').value.trim();
+
+      if (!uid || !ingame) {
+        alert("Please enter both Free Fire UID and In-Game Name!");
+        return;
+      }
+
+      if (confirm(`Join CS 1V1?\n\nUID: ${uid}\nIn-Game Name: ${ingame}`)) {
+        // Bot ko notification + Group redirect
+        const format = "cs1v1";
+        const botLink = `https://t.me/VOIDXHUBCSSCRIMBOT?start=${format}_${encodeURIComponent(uid)}_${encodeURIComponent(ingame)}`;
+        
+        // Bot pe redirect
+        window.open(botLink, '_blank');
+
+        // Agar Telegram Group pe bhi le jaana hai toh yeh uncomment kar do
+        // window.open('https://t.me/YOUR_ESPORTS_GROUP_LINK', '_blank');
+      }
+    }
+  </script>
+</body>
+</html>

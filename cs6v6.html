@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOIDXHUB - CS 6V6</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: #05050a;
+      color: #e0e0ff;
+      overflow-x: hidden;
+    }
+    .glow-red {
+      box-shadow: 0 0 50px rgba(248, 113, 113, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-blackhole fixed inset-0 z-[-3]" style="background: radial-gradient(circle at center, #1a0033 10%, #000000 85%);"></div>
+
+  <div class="relative z-10 py-12 px-6 max-w-4xl mx-auto">
+   
+    <!-- Banner -->
+    <div class="mb-12 rounded-3xl overflow-hidden border-4 border-emerald-500 glow-red">
+      <img src="cs.jpg" class="w-full h-auto object-cover" alt="CS 6v6">
+    </div>
+
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <div class="inline-block bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm font-bold px-8 py-3 rounded-full mb-4 tracking-widest">
+        CS 6V6
+      </div>
+      <h1 class="text-5xl md:text-6xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
+        6V6 CLASH SQUAD
+      </h1>
+      <p class="text-orange-300 text-xl mt-4">Massive War • Winner Takes All</p>
+    </div>
+
+    <!-- Rules -->
+    <div class="bg-zinc-950 border border-emerald-500/50 p-8 rounded-3xl mb-12">
+      <h2 class="text-3xl font-bold text-emerald-400 mb-6 text-center">6V6 RULES</h2>
+      <ul class="space-y-4 text-lg">
+        <li>• 13 Rounds</li>
+        <li>• Players must record their screen while playing and must send screen recording to confirm</li>
+        <li>• No teamups allowed, if found teaming then no prize will be given</li>
+        <li>• Players should not invite other players that are not registered</li>
+        <li>• Players are not allowed to reconnect during the match</li>
+        <li>• No hacks, mods or glitches allowed</li>
+        <li>• Entry fee non-refundable</li>
+        <li>• Winner takes full prize pool</li>
+      </ul>
+    </div>
+
+    <!-- 6 Players Input -->
+    <div class="max-w-2xl mx-auto space-y-8">
+      <h3 class="text-2xl font-bold text-center text-emerald-400">Enter Team Details (6 Players)</h3>
+      
+      <div class="space-y-6">
+        <!-- Player 1 -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Player 1 - Free Fire UID</label>
+            <input id="uid1" type="text" placeholder="UID Player 1" 
+                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Player 1 - In-Game Name</label>
+            <input id="name1" type="text" placeholder="Name Player 1" 
+                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
+          </div>
+        </div>
+
+        <!-- Player 2 -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Player 2 - Free Fire UID</label>
+            <input id="uid2" type="text" placeholder="UID Player 2" 
+                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Player 2 - In-Game Name</label>
+            <input id="name2" type="text" placeholder="Name Player 2" 
+                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
+          </div>
+        </div>
+
+        <!-- Player 3 -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Player 3 - Free Fire UID</label>
+            <input id="uid3" type="text" placeholder="UID Player 3" 
+                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Player 3 - In-Game Name</label>
+            <input id="name3" type="text" placeholder="Name Player 3" 
+                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
+          </div>
+        </div>
+
+        <!-- Player 4 -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Player 4 - Free Fire UID</label>
+            <input id="uid4" type="text" placeholder="UID Player 4" 
+                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Player 4 - In-Game Name</label>
+            <input id="name4" type="text" placeholder="Name Player 4" 
+                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
+          </div>
+        </div>
+
+        <!-- Player 5 -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Player 5 - Free Fire UID</label>
+            <input id="uid5" type="text" placeholder="UID Player 5" 
+                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Player 5 - In-Game Name</label>
+            <input id="name5" type="text" placeholder="Name Player 5" 
+                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
+          </div>
+        </div>
+
+        <!-- Player 6 -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Player 6 - Free Fire UID</label>
+            <input id="uid6" type="text" placeholder="UID Player 6" 
+                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Player 6 - In-Game Name</label>
+            <input id="name6" type="text" placeholder="Name Player 6" 
+                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
+          </div>
+        </div>
+      </div>
+
+      <button onclick="joinMatch()" 
+              class="w-full py-8 text-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl hover:scale-105 transition-all shadow-2xl">
+        JOIN 6V6 NOW - WIN CASH 💰
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function joinMatch() {
+      const uid1 = document.getElementById('uid1').value.trim();
+      const name1 = document.getElementById('name1').value.trim();
+      const uid2 = document.getElementById('uid2').value.trim();
+      const name2 = document.getElementById('name2').value.trim();
+      const uid3 = document.getElementById('uid3').value.trim();
+      const name3 = document.getElementById('name3').value.trim();
+      const uid4 = document.getElementById('uid4').value.trim();
+      const name4 = document.getElementById('name4').value.trim();
+      const uid5 = document.getElementById('uid5').value.trim();
+      const name5 = document.getElementById('name5').value.trim();
+      const uid6 = document.getElementById('uid6').value.trim();
+      const name6 = document.getElementById('name6').value.trim();
+
+      if (!uid1 || !name1 || !uid2 || !name2 || !uid3 || !name3 || !uid4 || !name4 || !uid5 || !name5 || !uid6 || !name6) {
+        alert("Please fill all fields for all 6 players!");
+        return;
+      }
+
+      if (confirm(`Confirm joining CS 6V6 with 6 players?`)) {
+
+        let msg = `🔥 NEW REGISTRATION 🔥\nFormat: CS 6V6\n\n`;
+        msg += `Player 1:\nUID: ${uid1}\nName: ${name1}\n\n`;
+        msg += `Player 2:\nUID: ${uid2}\nName: ${name2}\n\n`;
+        msg += `Player 3:\nUID: ${uid3}\nName: ${name3}\n\n`;
+        msg += `Player 4:\nUID: ${uid4}\nName: ${name4}\n\n`;
+        msg += `Player 5:\nUID: ${uid5}\nName: ${name5}\n\n`;
+        msg += `Player 6:\nUID: ${uid6}\nName: ${name6}\n\n`;
+        msg += `Time: ${new Date().toLocaleString()}`;
+
+        // Admin ko notification
+        fetch(`https://api.telegram.org/bot8647618078:AAHBAKL0K5jxef6TIP8jti1wrPA2cdutNN8/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: "7994843509",
+            text: msg,
+            parse_mode: 'HTML'
+          })
+        }).catch(() => {});
+
+        // User ko group pe redirect (apna real group link daal dena)
+        window.open('https://t.me/+UPHlOjXDQV04NzNl', '_blank');
+      }
+    }
+  </script>
+</body>
+</html>
