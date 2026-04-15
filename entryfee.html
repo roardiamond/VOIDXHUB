@@ -7,10 +7,28 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; }
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: #05050a;
+      color: #e0e0ff;
+      overflow-x: hidden;
+    }
     .glow { box-shadow: 0 0 60px rgba(248, 113, 113, 0.8); }
-    .popup { animation: pop 0.4s ease; }
-    @keyframes pop { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    /* Popup Styling */
+    .popup {
+      animation: pop 0.3s ease forwards;
+    }
+    @keyframes pop {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Background lock when popup is open */
+    .no-scroll {
+      overflow: hidden !important;
+      height: 100vh;
+    }
   </style>
 </head>
 <body>
@@ -42,27 +60,31 @@
   </div>
 
   <!-- Payment Popup -->
-  <div id="paymentPopup" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50">
-    <div class="bg-zinc-900 border border-red-500 rounded-3xl p-8 max-w-md w-full mx-4 popup">
+  <div id="paymentPopup" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-50 overflow-y-auto">
+    <div class="bg-zinc-900 border border-red-500 rounded-3xl p-8 max-w-md w-full mx-4 my-8 popup">
       <h2 class="text-2xl font-bold text-center mb-6 text-red-400">SCAN QR OR COPY UPI</h2>
       
-      <div class="grid grid-cols-1 gap-10" id="upiOptions"></div>
+      <div class="grid grid-cols-1 gap-10 max-h-[65vh] overflow-y-auto pr-2" id="upiOptions">
+        <!-- JS se fill hoga -->
+      </div>
 
-      <div class="mt-10">
+      <div class="mt-10 sticky bottom-0 bg-zinc-900 pt-4">
         <label class="block text-sm text-gray-400 mb-2">Enter Transaction ID / UTR Number</label>
         <input id="txnId" type="text" placeholder="Enter UTR / Transaction ID" 
                class="w-full px-6 py-4 bg-zinc-800 border border-red-500 rounded-2xl text-lg focus:outline-none focus:border-green-400">
       </div>
 
       <div class="flex gap-4 mt-8">
-        <button onclick="hidePaymentPopup()" class="flex-1 py-4 text-lg font-bold bg-zinc-800 hover:bg-zinc-700 rounded-2xl">CANCEL</button>
-        <button onclick="submitTransaction()" class="flex-1 py-4 text-lg font-black bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl">SUBMIT PAYMENT</button>
+        <button onclick="hidePaymentPopup()" 
+                class="flex-1 py-4 text-lg font-bold bg-zinc-800 hover:bg-zinc-700 rounded-2xl">CANCEL</button>
+        <button onclick="submitTransaction()" 
+                class="flex-1 py-4 text-lg font-black bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl">SUBMIT PAYMENT</button>
       </div>
     </div>
   </div>
 
   <!-- Success Popup -->
-  <div id="successPopup" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50">
+  <div id="successPopup" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-50">
     <div class="bg-zinc-900 border border-green-500 rounded-3xl p-10 max-w-md w-full mx-4 popup text-center">
       <h2 class="text-3xl font-bold text-green-400 mb-4">✅ PAYMENT SUBMITTED!</h2>
       <p class="text-xl mb-8">Admin will verify your payment soon.</p>
@@ -74,8 +96,7 @@
       
       <p class="text-sm text-gray-400 mt-6">Join this group for Room ID & Password</p>
       
-      <button onclick="hideSuccessPopup()" 
-              class="mt-8 text-gray-400 hover:text-white">Close</button>
+      <button onclick="hideSuccessPopup()" class="mt-8 text-gray-400 hover:text-white text-lg">Close</button>
     </div>
   </div>
 
@@ -102,7 +123,6 @@
     const format = (urlParams.get('format') || "1v1").toLowerCase();
     const data = pricing[format] || pricing["1v1"];
 
-    // Auto update amount
     document.getElementById('formatTitle').textContent = format.toUpperCase() + " ENTRY";
     document.getElementById('payAmount').textContent = `₹${data.entry}`;
 
@@ -127,6 +147,8 @@
     document.getElementById('details').innerHTML = detailsHTML;
 
     function showPaymentPopup() {
+      document.body.classList.add('no-scroll');   // Background lock
+
       const container = document.getElementById('upiOptions');
       container.innerHTML = '';
 
@@ -147,6 +169,7 @@
     }
 
     function hidePaymentPopup() {
+      document.body.classList.remove('no-scroll');   // Unlock background
       document.getElementById('paymentPopup').classList.add('hidden');
     }
 
@@ -162,24 +185,18 @@
         return;
       }
 
-      const message = `🔥 NEW PAYMENT RECEIVED 🔥\n\n` +
-                      `Format: ${format.toUpperCase()}\n` +
-                      `Amount: ₹${data.entry}\n` +
-                      `Transaction ID: ${txnId}\n` +
-                      `Time: ${new Date().toLocaleString('en-IN')}`;
+      const message = `🔥 NEW PAYMENT RECEIVED 🔥\n\nFormat: ${format.toUpperCase()}\nAmount: ₹${data.entry}\nTransaction ID: ${txnId}\nTime: ${new Date().toLocaleString('en-IN')}`;
 
       fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML' })
+        body: JSON.stringify({ chat_id: CHAT_ID, text: message })
       })
       .then(() => {
         hidePaymentPopup();
         document.getElementById('successPopup').classList.remove('hidden');
       })
-      .catch(() => {
-        alert("Bot error! Please send screenshot + UTR manually to admin.");
-      });
+      .catch(() => alert("Bot error! Please send screenshot manually."));
     }
 
     function hideSuccessPopup() {
