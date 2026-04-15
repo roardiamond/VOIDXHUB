@@ -7,28 +7,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Orbitron', sans-serif;
-      background: #05050a;
-      color: #e0e0ff;
-      overflow-x: hidden;
-    }
+    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; overflow-x: hidden; }
     .glow { box-shadow: 0 0 60px rgba(248, 113, 113, 0.8); }
-
-    /* Popup Styling */
-    .popup {
-      animation: pop 0.3s ease forwards;
-    }
-    @keyframes pop {
-      from { transform: scale(0.8); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    /* Background lock when popup is open */
-    .no-scroll {
-      overflow: hidden !important;
-      height: 100vh;
-    }
+    .popup { animation: pop 0.3s ease forwards; }
+    @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .no-scroll { overflow: hidden !important; height: 100vh; }
   </style>
 </head>
 <body>
@@ -42,7 +25,7 @@
       <p id="formatTitle" class="text-2xl mt-3 text-orange-300 font-bold"></p>
     </div>
 
-    <!-- Amount to be Paid -->
+    <!-- Amount -->
     <div class="bg-zinc-950 border border-green-500/50 p-6 rounded-3xl mb-8 text-center glow">
       <p class="text-gray-400 text-sm">Amount to be Paid</p>
       <p id="payAmount" class="text-5xl font-black text-green-400 mt-2">₹30</p>
@@ -64,21 +47,31 @@
     <div class="bg-zinc-900 border border-red-500 rounded-3xl p-8 max-w-md w-full mx-4 my-8 popup">
       <h2 class="text-2xl font-bold text-center mb-6 text-red-400">SCAN QR OR COPY UPI</h2>
       
-      <div class="grid grid-cols-1 gap-10 max-h-[65vh] overflow-y-auto pr-2" id="upiOptions">
-        <!-- JS se fill hoga -->
+      <div class="grid grid-cols-1 gap-10 max-h-[55vh] overflow-y-auto pr-2" id="upiOptions"></div>
+
+      <!-- Player Details (Auto Filled) -->
+      <div class="mt-8 border-t border-red-500/30 pt-6">
+        <h3 class="text-lg font-bold text-red-400 mb-4 text-center">YOUR REGISTRATION DETAILS</h3>
+        <div id="playerDetails" class="space-y-4 text-sm"></div>
       </div>
 
-      <div class="mt-10 sticky bottom-0 bg-zinc-900 pt-4">
+      <!-- Telegram Username -->
+      <div class="mt-6">
+        <label class="block text-sm text-gray-400 mb-2">Your Telegram Username (Mandatory)</label>
+        <input id="telegram" type="text" placeholder="@yourusername" 
+               class="w-full px-6 py-4 bg-zinc-800 border border-red-500 rounded-2xl text-lg focus:outline-none focus:border-green-400">
+      </div>
+
+      <!-- Txn ID -->
+      <div class="mt-6">
         <label class="block text-sm text-gray-400 mb-2">Enter Transaction ID / UTR Number</label>
         <input id="txnId" type="text" placeholder="Enter UTR / Transaction ID" 
                class="w-full px-6 py-4 bg-zinc-800 border border-red-500 rounded-2xl text-lg focus:outline-none focus:border-green-400">
       </div>
 
       <div class="flex gap-4 mt-8">
-        <button onclick="hidePaymentPopup()" 
-                class="flex-1 py-4 text-lg font-bold bg-zinc-800 hover:bg-zinc-700 rounded-2xl">CANCEL</button>
-        <button onclick="submitTransaction()" 
-                class="flex-1 py-4 text-lg font-black bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl">SUBMIT PAYMENT</button>
+        <button onclick="hidePaymentPopup()" class="flex-1 py-4 text-lg font-bold bg-zinc-800 hover:bg-zinc-700 rounded-2xl">CANCEL</button>
+        <button onclick="submitTransaction()" class="flex-1 py-4 text-lg font-black bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl">SUBMIT PAYMENT</button>
       </div>
     </div>
   </div>
@@ -88,88 +81,93 @@
     <div class="bg-zinc-900 border border-green-500 rounded-3xl p-10 max-w-md w-full mx-4 popup text-center">
       <h2 class="text-3xl font-bold text-green-400 mb-4">✅ PAYMENT SUBMITTED!</h2>
       <p class="text-xl mb-8">Admin will verify your payment soon.</p>
-      
-      <a href="https://t.me/voidxhubscrims" target="_blank"
-         class="block w-full py-5 text-2xl font-black bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl hover:scale-105 transition-all">
+      <a href="https://t.me/voidxhubscrims" target="_blank" class="block w-full py-5 text-2xl font-black bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl hover:scale-105 transition-all">
         JOIN TELEGRAM GROUP
       </a>
-      
       <p class="text-sm text-gray-400 mt-6">Join this group for Room ID & Password</p>
-      
       <button onclick="hideSuccessPopup()" class="mt-8 text-gray-400 hover:text-white text-lg">Close</button>
     </div>
   </div>
 
   <script>
     const pricing = {
-      "1v1": { entry: 30, total: 60, win: 55, org: 5 },
-      "2v2": { entry: 40, total: 160, win: 130, org: 30 },
-      "3v3": { entry: 35, total: 210, win: 170, org: 40 },
-      "4v4": { entry: 30, total: 240, win: 190, org: 50 },
-      "5v5": { entry: 25, total: 250, win: 200, org: 50 },
-      "6v6": { entry: 25, total: 300, win: 240, org: 60 }
+      "1v1": { entry: 30, total: 60, win: 55, org: 5, players: 1 },
+      "2v2": { entry: 40, total: 160, win: 130, org: 30, players: 2 },
+      "3v3": { entry: 35, total: 210, win: 170, org: 40, players: 3 },
+      "4v4": { entry: 30, total: 240, win: 190, org: 50, players: 4 },
+      "5v5": { entry: 25, total: 250, win: 200, org: 50, players: 5 },
+      "6v6": { entry: 25, total: 300, win: 240, org: 60, players: 6 }
     };
 
     const BOT_TOKEN = "8647618078:AAHBAKL0K5jxef6TIP8jti1wrPA2cdutNN8";
     const CHAT_ID = "7994843509";
 
     const upiList = [
-      { name: "Paytm",      id: "770386021@axl",      qr: "paytm.jpeg" },
-      { name: "PhonePe",    id: "7703860211@pthdfc",  qr: "phonepay.jpeg" },
-      { name: "Google Pay", id: "dv5124950@okaxis",   qr: "gpay.jpeg" }
+      { name: "Paytm", id: "770386021@axl", qr: "paytm.jpeg" },
+      { name: "PhonePe", id: "7703860211@pthdfc", qr: "phonepay.jpeg" },
+      { name: "Google Pay", id: "dv5124950@okaxis", qr: "gpay.jpeg" }
     ];
 
     const urlParams = new URLSearchParams(window.location.search);
     const format = (urlParams.get('format') || "1v1").toLowerCase();
     const data = pricing[format] || pricing["1v1"];
 
+    // Get player data from URL
+    let playerData = [];
+    for (let i = 1; i <= data.players; i++) {
+      const uid = urlParams.get(`uid${i}`) || urlParams.get('uid');
+      const name = urlParams.get(`name${i}`) || urlParams.get('name');
+      if (uid && name) playerData.push({ uid, name });
+    }
+
+    // If single player (1v1)
+    if (playerData.length === 0 && urlParams.get('uid') && urlParams.get('name')) {
+      playerData.push({
+        uid: urlParams.get('uid'),
+        name: urlParams.get('name')
+      });
+    }
+
     document.getElementById('formatTitle').textContent = format.toUpperCase() + " ENTRY";
     document.getElementById('payAmount').textContent = `₹${data.entry}`;
 
     const detailsHTML = `
-      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl">
-        <span>Entry Fee (Per Player)</span>
-        <span class="text-green-400 font-black">₹${data.entry}</span>
-      </div>
-      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl">
-        <span>Total Entry</span>
-        <span class="text-green-400 font-black">₹${data.total}</span>
-      </div>
-      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl">
-        <span>Winning Prize</span>
-        <span class="text-green-400 font-black">₹${data.win}</span>
-      </div>
-      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl">
-        <span>Organizing Fees</span>
-        <span class="text-red-400 font-black">₹${data.org}</span>
-      </div>
+      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Entry Fee (Per Player)</span><span class="text-green-400 font-black">₹${data.entry}</span></div>
+      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Total Entry</span><span class="text-green-400 font-black">₹${data.total}</span></div>
+      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Winning Prize</span><span class="text-green-400 font-black">₹${data.win}</span></div>
+      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Organizing Fees</span><span class="text-red-400 font-black">₹${data.org}</span></div>
     `;
     document.getElementById('details').innerHTML = detailsHTML;
 
     function showPaymentPopup() {
-      document.body.classList.add('no-scroll');   // Background lock
+      document.body.classList.add('no-scroll');
 
+      // Fill UPI
       const container = document.getElementById('upiOptions');
       container.innerHTML = '';
-
       upiList.forEach(upi => {
         const div = document.createElement('div');
         div.className = "text-center border border-red-500/30 rounded-2xl p-4";
         div.innerHTML = `
           <img src="${upi.qr}" class="w-56 h-56 mx-auto rounded-2xl border-4 border-red-500 mb-4" alt="${upi.name}">
           <p class="text-xl font-bold mb-1">${upi.name}</p>
-          <p onclick="copyUPI('${upi.id}')" class="text-green-400 text-lg font-mono break-all cursor-pointer hover:text-green-300">
-            ${upi.id}
-          </p>
+          <p onclick="copyUPI('${upi.id}')" class="text-green-400 text-lg font-mono break-all cursor-pointer hover:text-green-300">${upi.id}</p>
         `;
         container.appendChild(div);
       });
+
+      // Fill Player Details
+      let html = '';
+      playerData.forEach((p, i) => {
+        html += `<div class="bg-zinc-800 p-4 rounded-xl"><span class="text-red-400">Player ${i+1}:</span><br>UID: ${p.uid}<br>Name: ${p.name}</div>`;
+      });
+      document.getElementById('playerDetails').innerHTML = html || '<p class="text-red-400 text-center">No player data received</p>';
 
       document.getElementById('paymentPopup').classList.remove('hidden');
     }
 
     function hidePaymentPopup() {
-      document.body.classList.remove('no-scroll');   // Unlock background
+      document.body.classList.remove('no-scroll');
       document.getElementById('paymentPopup').classList.add('hidden');
     }
 
@@ -180,12 +178,36 @@
 
     function submitTransaction() {
       const txnId = document.getElementById('txnId').value.trim();
+      const telegram = document.getElementById('telegram').value.trim();
+
       if (!txnId) {
         alert("Please enter Transaction ID / UTR Number");
         return;
       }
+      if (!telegram) {
+        alert("Please enter your Telegram Username (@username)");
+        return;
+      }
 
-      const message = `🔥 NEW PAYMENT RECEIVED 🔥\n\nFormat: ${format.toUpperCase()}\nAmount: ₹${data.entry}\nTransaction ID: ${txnId}\nTime: ${new Date().toLocaleString('en-IN')}`;
+      // Confirm all details
+      let confirmMsg = `Confirm Payment?\n\nFormat: ${format.toUpperCase()}\nAmount: ₹${data.entry}\nTxn ID: ${txnId}\nTelegram: ${telegram}\n\nPlayers:\n`;
+      playerData.forEach((p, i) => {
+        confirmMsg += `Player ${i+1}: ${p.name} (${p.uid})\n`;
+      });
+
+      if (!confirm(confirmMsg)) return;
+
+      // Send to Bot
+      let message = `🔥 NEW PAYMENT + REGISTRATION 🔥\n\n`;
+      message += `Format: ${format.toUpperCase()}\n`;
+      message += `Amount: ₹${data.entry}\n`;
+      message += `Transaction ID: ${txnId}\n`;
+      message += `Telegram: @${telegram.replace('@','')}\n\n`;
+      message += `Players:\n`;
+      playerData.forEach((p, i) => {
+        message += `Player ${i+1}:\nUID: ${p.uid}\nName: ${p.name}\n\n`;
+      });
+      message += `Time: ${new Date().toLocaleString('en-IN')}`;
 
       fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
@@ -196,7 +218,7 @@
         hidePaymentPopup();
         document.getElementById('successPopup').classList.remove('hidden');
       })
-      .catch(() => alert("Bot error! Please send screenshot manually."));
+      .catch(() => alert("Bot error! Please send screenshot + details manually."));
     }
 
     function hideSuccessPopup() {
