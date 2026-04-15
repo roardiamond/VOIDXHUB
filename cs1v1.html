@@ -76,8 +76,24 @@
       </ul>
     </div>
 
-    <!-- Pay Entry Button -->
-    <div class="max-w-md mx-auto">
+    <!-- Player Details Section -->
+    <div class="max-w-md mx-auto space-y-8">
+      <h3 class="text-2xl font-bold text-center text-red-400">Enter Your Details</h3>
+      
+      <div class="space-y-6">
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Free Fire UID</label>
+          <input id="uid" type="text" placeholder="Enter your UID" 
+                 class="w-full px-6 py-4 bg-zinc-900 border border-red-500 rounded-2xl text-lg focus:outline-none focus:border-red-400">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">In-Game Name</label>
+          <input id="name" type="text" placeholder="Enter your In-Game Name" 
+                 class="w-full px-6 py-4 bg-zinc-900 border border-red-500 rounded-2xl text-lg focus:outline-none focus:border-red-400">
+        </div>
+      </div>
+
+      <!-- Pay Entry Button -->
       <button onclick="payEntry()"
               class="w-full py-8 text-2xl font-black bg-gradient-to-r from-red-600 to-pink-600 rounded-3xl hover:scale-105 transition-all shadow-2xl">
         PAY ENTRY FEES - ₹30 💰
@@ -87,9 +103,17 @@
 
   <script>
     function payEntry() {
-      if (confirm("Pay ₹30 Entry Fee for CS 1V1 Tournament?\n\nYou will be redirected to payment page.")) {
-        // Auto detect ke liye format pass kiya
-        window.location.href = "entryfee.html?format=1v1";
+      const uid = document.getElementById('uid').value.trim();
+      const ingame = document.getElementById('name').value.trim();
+
+      if (!uid || !ingame) {
+        alert("Please enter both Free Fire UID and In-Game Name!");
+        return;
+      }
+
+      if (confirm(`Confirm Registration for CS 1V1?\n\nUID: ${uid}\nIn-Game Name: ${ingame}\n\nAmount: ₹30\n\nAfter payment you will be redirected to UPI payment page.`)) {
+        // Bot ko message bhejne ke liye format + details pass kar rahe hain
+        window.location.href = `entryfee.html?format=1v1&uid=${encodeURIComponent(uid)}&name=${encodeURIComponent(ingame)}`;
       }
     }
   </script>
