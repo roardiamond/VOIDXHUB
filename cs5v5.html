@@ -49,14 +49,28 @@
 
     <div class="max-w-2xl mx-auto space-y-8">
       <h3 class="text-2xl font-bold text-center text-cyan-400">Enter Team Details (5 Players)</h3>
+      
       <div class="space-y-6">
-        <!-- Player 1 to 5 inputs (same structure) -->
         <div class="grid grid-cols-2 gap-4">
           <div><label class="block text-sm text-gray-400 mb-1">Player 1 - Free Fire UID</label><input id="uid1" type="text" placeholder="UID Player 1" class="w-full px-6 py-4 bg-zinc-900 border border-cyan-500 rounded-2xl text-lg focus:outline-none focus:border-cyan-400"></div>
           <div><label class="block text-sm text-gray-400 mb-1">Player 1 - In-Game Name</label><input id="name1" type="text" placeholder="Name Player 1" class="w-full px-6 py-4 bg-zinc-900 border border-cyan-500 rounded-2xl text-lg focus:outline-none focus:border-cyan-400"></div>
         </div>
-        <!-- Player 2,3,4,5 same grid pattern repeat kar sakta hai, short rakh raha hoon -->
-        <!-- ... (baaki 4 players ke inputs same tarah add kar lena) ... -->
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="block text-sm text-gray-400 mb-1">Player 2 - Free Fire UID</label><input id="uid2" type="text" placeholder="UID Player 2" class="w-full px-6 py-4 bg-zinc-900 border border-cyan-500 rounded-2xl text-lg focus:outline-none focus:border-cyan-400"></div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 2 - In-Game Name</label><input id="name2" type="text" placeholder="Name Player 2" class="w-full px-6 py-4 bg-zinc-900 border border-cyan-500 rounded-2xl text-lg focus:outline-none focus:border-cyan-400"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="block text-sm text-gray-400 mb-1">Player 3 - Free Fire UID</label><input id="uid3" type="text" placeholder="UID Player 3" class="w-full px-6 py-4 bg-zinc-900 border border-cyan-500 rounded-2xl text-lg focus:outline-none focus:border-cyan-400"></div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 3 - In-Game Name</label><input id="name3" type="text" placeholder="Name Player 3" class="w-full px-6 py-4 bg-zinc-900 border border-cyan-500 rounded-2xl text-lg focus:outline-none focus:border-cyan-400"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="block text-sm text-gray-400 mb-1">Player 4 - Free Fire UID</label><input id="uid4" type="text" placeholder="UID Player 4" class="w-full px-6 py-4 bg-zinc-900 border border-cyan-500 rounded-2xl text-lg focus:outline-none focus:border-cyan-400"></div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 4 - In-Game Name</label><input id="name4" type="text" placeholder="Name Player 4" class="w-full px-6 py-4 bg-zinc-900 border border-cyan-500 rounded-2xl text-lg focus:outline-none focus:border-cyan-400"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="block text-sm text-gray-400 mb-1">Player 5 - Free Fire UID</label><input id="uid5" type="text" placeholder="UID Player 5" class="w-full px-6 py-4 bg-zinc-900 border border-cyan-500 rounded-2xl text-lg focus:outline-none focus:border-cyan-400"></div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 5 - In-Game Name</label><input id="name5" type="text" placeholder="Name Player 5" class="w-full px-6 py-4 bg-zinc-900 border border-cyan-500 rounded-2xl text-lg focus:outline-none focus:border-cyan-400"></div>
+        </div>
       </div>
 
       <button onclick="payEntry()" class="w-full py-8 text-2xl font-black bg-gradient-to-r from-cyan-600 to-teal-600 rounded-3xl hover:scale-105 transition-all shadow-2xl">
@@ -67,11 +81,24 @@
 
   <script>
     function payEntry() {
-      // All 5 players check (short version)
-      if (true) {  // Full check add kar sakta hai
-        if (confirm(`Pay ₹25 Entry Fee for CS 5V5?\n\nAfter payment you will be redirected to payment page.`)) {
-          window.location.href = "entryfee.html?format=5v5";
-        }
+      const uid1 = document.getElementById('uid1').value.trim();
+      const name1 = document.getElementById('name1').value.trim();
+      const uid2 = document.getElementById('uid2').value.trim();
+      const name2 = document.getElementById('name2').value.trim();
+      const uid3 = document.getElementById('uid3').value.trim();
+      const name3 = document.getElementById('name3').value.trim();
+      const uid4 = document.getElementById('uid4').value.trim();
+      const name4 = document.getElementById('name4').value.trim();
+      const uid5 = document.getElementById('uid5').value.trim();
+      const name5 = document.getElementById('name5').value.trim();
+
+      if (!uid1 || !name1 || !uid2 || !name2 || !uid3 || !name3 || !uid4 || !name4 || !uid5 || !name5) {
+        alert("Please fill all fields for all 5 players before paying!");
+        return;
+      }
+
+      if (confirm(`Pay ₹25 Entry Fee for CS 5V5?\n\nAfter payment you will be redirected to payment page.`)) {
+        window.location.href = "entryfee.html?format=5v5";
       }
     }
   </script>
