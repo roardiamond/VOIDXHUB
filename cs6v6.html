@@ -7,61 +7,32 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Orbitron', sans-serif;
-      background: #05050a;
-      color: #e0e0ff;
-      overflow-x: hidden;
-    }
-    .glow-red {
-      box-shadow: 0 0 50px rgba(248, 113, 113, 0.7);
-    }
+    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; overflow-x: hidden; }
+    .glow-red { box-shadow: 0 0 50px rgba(248, 113, 113, 0.7); }
   </style>
 </head>
 <body>
   <div class="bg-blackhole fixed inset-0 z-[-3]" style="background: radial-gradient(circle at center, #1a0033 10%, #000000 85%);"></div>
   <div class="relative z-10 py-12 px-6 max-w-4xl mx-auto">
-  
-    <!-- Banner -->
     <div class="mb-12 rounded-3xl overflow-hidden border-4 border-emerald-500 glow-red">
       <img src="cs.jpg" class="w-full h-auto object-cover" alt="CS 6v6">
     </div>
-
-    <!-- Header -->
     <div class="text-center mb-12">
-      <div class="inline-block bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm font-bold px-8 py-3 rounded-full mb-4 tracking-widest">
-        CS 6V6
-      </div>
-      <h1 class="text-5xl md:text-6xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
-        6V6 CLASH SQUAD
-      </h1>
+      <div class="inline-block bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm font-bold px-8 py-3 rounded-full mb-4 tracking-widest">CS 6V6</div>
+      <h1 class="text-5xl md:text-6xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">6V6 CLASH SQUAD</h1>
       <p class="text-orange-300 text-xl mt-4">Massive War • Winner Takes All</p>
     </div>
 
-    <!-- Prize Structure -->
     <div class="bg-zinc-950 border border-emerald-500/50 p-8 rounded-3xl mb-12">
       <h2 class="text-3xl font-bold text-emerald-400 mb-6 text-center">PRIZE STRUCTURE</h2>
       <div class="space-y-4 text-lg">
-        <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl border border-emerald-500/30">
-          <span class="font-bold">Entry Fee (Per Player)</span>
-          <span class="text-green-400 font-black">₹25</span>
-        </div>
-        <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl border border-emerald-500/30">
-          <span class="font-bold">Total Entry (Per Match)</span>
-          <span class="text-green-400 font-black">₹300</span>
-        </div>
-        <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl border border-emerald-500/30">
-          <span class="font-bold">Winning Prize (To Winner Team)</span>
-          <span class="text-green-400 font-black">₹240</span>
-        </div>
-        <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl border border-emerald-500/30">
-          <span class="font-bold">Organizing Fees</span>
-          <span class="text-red-400 font-black">₹60</span>
-        </div>
+        <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl border border-emerald-500/30"><span class="font-bold">Entry Fee (Per Player)</span><span class="text-green-400 font-black">₹25</span></div>
+        <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl border border-emerald-500/30"><span class="font-bold">Total Entry</span><span class="text-green-400 font-black">₹300</span></div>
+        <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl border border-emerald-500/30"><span class="font-bold">Winning Prize</span><span class="text-green-400 font-black">₹240</span></div>
+        <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl border border-emerald-500/30"><span class="font-bold">Organizing Fees</span><span class="text-red-400 font-black">₹60</span></div>
       </div>
     </div>
 
-    <!-- Rules -->
     <div class="bg-zinc-950 border border-emerald-500/50 p-8 rounded-3xl mb-12">
       <h2 class="text-3xl font-bold text-emerald-400 mb-6 text-center">6V6 RULES</h2>
       <ul class="space-y-4 text-lg">
@@ -76,94 +47,37 @@
       </ul>
     </div>
 
-    <!-- Team Details -->
     <div class="max-w-2xl mx-auto space-y-8">
       <h3 class="text-2xl font-bold text-center text-emerald-400">Enter Team Details (6 Players)</h3>
-     
+      
       <div class="space-y-6">
-        <!-- Player 1 -->
         <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Player 1 - Free Fire UID</label>
-            <input id="uid1" type="text" placeholder="UID Player 1"
-                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
-          </div>
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Player 1 - In-Game Name</label>
-            <input id="name1" type="text" placeholder="Name Player 1"
-                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
-          </div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 1 - Free Fire UID</label><input id="uid1" type="text" placeholder="UID Player 1" class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400"></div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 1 - In-Game Name</label><input id="name1" type="text" placeholder="Name Player 1" class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400"></div>
         </div>
-        <!-- Player 2 -->
         <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Player 2 - Free Fire UID</label>
-            <input id="uid2" type="text" placeholder="UID Player 2"
-                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
-          </div>
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Player 2 - In-Game Name</label>
-            <input id="name2" type="text" placeholder="Name Player 2"
-                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
-          </div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 2 - Free Fire UID</label><input id="uid2" type="text" placeholder="UID Player 2" class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400"></div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 2 - In-Game Name</label><input id="name2" type="text" placeholder="Name Player 2" class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400"></div>
         </div>
-        <!-- Player 3 -->
         <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Player 3 - Free Fire UID</label>
-            <input id="uid3" type="text" placeholder="UID Player 3"
-                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
-          </div>
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Player 3 - In-Game Name</label>
-            <input id="name3" type="text" placeholder="Name Player 3"
-                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
-          </div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 3 - Free Fire UID</label><input id="uid3" type="text" placeholder="UID Player 3" class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400"></div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 3 - In-Game Name</label><input id="name3" type="text" placeholder="Name Player 3" class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400"></div>
         </div>
-        <!-- Player 4 -->
         <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Player 4 - Free Fire UID</label>
-            <input id="uid4" type="text" placeholder="UID Player 4"
-                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
-          </div>
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Player 4 - In-Game Name</label>
-            <input id="name4" type="text" placeholder="Name Player 4"
-                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
-          </div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 4 - Free Fire UID</label><input id="uid4" type="text" placeholder="UID Player 4" class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400"></div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 4 - In-Game Name</label><input id="name4" type="text" placeholder="Name Player 4" class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400"></div>
         </div>
-        <!-- Player 5 -->
         <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Player 5 - Free Fire UID</label>
-            <input id="uid5" type="text" placeholder="UID Player 5"
-                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
-          </div>
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Player 5 - In-Game Name</label>
-            <input id="name5" type="text" placeholder="Name Player 5"
-                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
-          </div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 5 - Free Fire UID</label><input id="uid5" type="text" placeholder="UID Player 5" class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400"></div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 5 - In-Game Name</label><input id="name5" type="text" placeholder="Name Player 5" class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400"></div>
         </div>
-        <!-- Player 6 -->
         <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Player 6 - Free Fire UID</label>
-            <input id="uid6" type="text" placeholder="UID Player 6"
-                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
-          </div>
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Player 6 - In-Game Name</label>
-            <input id="name6" type="text" placeholder="Name Player 6"
-                   class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
-          </div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 6 - Free Fire UID</label><input id="uid6" type="text" placeholder="UID Player 6" class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400"></div>
+          <div><label class="block text-sm text-gray-400 mb-1">Player 6 - In-Game Name</label><input id="name6" type="text" placeholder="Name Player 6" class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400"></div>
         </div>
       </div>
 
-      <!-- Pay Entry Button -->
-      <button onclick="payEntry()"
-              class="w-full py-8 text-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl hover:scale-105 transition-all shadow-2xl">
+      <button onclick="payEntry()" class="w-full py-8 text-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl hover:scale-105 transition-all shadow-2xl">
         PAY ENTRY FEES - ₹25 💰
       </button>
     </div>
@@ -189,8 +103,8 @@
         return;
       }
 
-      if (confirm(`Pay ₹25 Entry Fee for CS 6V6?\n\nPlayer 1: ${name1} (${uid1})\nPlayer 2: ${name2} (${uid2})\nPlayer 3: ${name3} (${uid3})\nPlayer 4: ${name4} (${uid4})\nPlayer 5: ${name5} (${uid5})\nPlayer 6: ${name6} (${uid6})\n\nAfter payment you will be redirected to complete registration.`)) {
-        window.location.href = "entryfee.html";
+      if (confirm(`Pay ₹25 Entry Fee for CS 6V6?\n\nAfter payment you will be redirected to payment page.`)) {
+        window.location.href = "entryfee.html?format=6v6";
       }
     }
   </script>
