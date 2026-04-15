@@ -21,7 +21,7 @@
 <body>
   <div class="bg-blackhole fixed inset-0 z-[-3]" style="background: radial-gradient(circle at center, #1a0033 10%, #000000 85%);"></div>
   <div class="relative z-10 py-12 px-6 max-w-4xl mx-auto">
-  
+ 
     <!-- Banner -->
     <div class="mb-12 rounded-3xl overflow-hidden border-4 border-orange-500 glow-red">
       <img src="cs.jpg" class="w-full h-auto object-cover" alt="CS 2v2">
@@ -79,7 +79,7 @@
     <!-- Team Details -->
     <div class="max-w-2xl mx-auto space-y-8">
       <h3 class="text-2xl font-bold text-center text-orange-400">Enter Team Details (2 Players)</h3>
-     
+    
       <div class="space-y-6">
         <!-- Player 1 -->
         <div class="grid grid-cols-2 gap-4">
@@ -129,9 +129,9 @@
         return;
       }
 
-      if (confirm(`Pay ₹40 Entry Fee for CS 2V2?\n\nPlayer 1: ${name1} (${uid1})\nPlayer 2: ${name2} (${uid2})\n\nAfter payment you will be redirected to complete registration.`)) {
-        // Redirect to entryfee.html
-        window.location.href = "entryfee.html";
+      if (confirm(`Pay ₹40 Entry Fee for CS 2V2?\n\nPlayer 1: ${name1} (${uid1})\nPlayer 2: ${name2} (${uid2})\n\nAfter payment you will be redirected to payment page.`)) {
+        // Format pass kiya taaki entryfee page pe amount auto update ho
+        window.location.href = "entryfee.html?format=2v2";
       }
     }
   </script>
