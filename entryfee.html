@@ -21,11 +21,13 @@
     }
     .no-scroll { overflow: hidden !important; height: 100vh; }
 
+    /* Bahut Bade aur Clear QR Codes */
     .qr-container img {
-      width: 280px !important;
-      height: 280px !important;
-      border: 8px solid #ef4444;
-      border-radius: 20px;
+      width: 320px !important;     /* aur bada kiya */
+      height: 320px !important;
+      border: 10px solid #ef4444;
+      border-radius: 24px;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
     }
   </style>
 </head>
@@ -40,13 +42,11 @@
       <p id="formatTitle" class="text-2xl mt-3 text-orange-300 font-bold"></p>
     </div>
 
-    <!-- Amount -->
     <div class="bg-zinc-950 border border-green-500/50 p-6 rounded-3xl mb-8 text-center glow">
       <p class="text-gray-400 text-sm">Amount to be Paid</p>
       <p id="payAmount" class="text-5xl font-black text-green-400 mt-2">₹30</p>
     </div>
 
-    <!-- Prize Details -->
     <div class="bg-zinc-950 border border-red-500/50 p-8 rounded-3xl mb-10 glow">
       <div id="details" class="space-y-5 text-lg"></div>
     </div>
@@ -64,9 +64,9 @@
       
       <div class="grid grid-cols-1 gap-12" id="upiOptions"></div>
 
-      <!-- Auto Player Details -->
+      <!-- Player Details -->
       <div class="mt-10 border-t border-red-500/30 pt-6">
-        <h3 class="text-lg font-bold text-red-400 mb-4 text-center">YOUR REGISTRATION DETAILS</h3>
+        <h3 class="text-lg font-bold text-red-400 mb-4 text-center">REGISTRATION DETAILS</h3>
         <div id="playerDetails" class="space-y-4 text-sm bg-zinc-800 p-5 rounded-xl"></div>
       </div>
 
@@ -127,19 +127,18 @@
     const format = (urlParams.get('format') || "1v1").toLowerCase();
     const data = pricing[format] || pricing["1v1"];
 
-    // Auto collect player data from URL
     let playerData = [];
     for (let i = 1; i <= data.players; i++) {
       const uid = urlParams.get(`uid${i}`) || urlParams.get('uid');
       const name = urlParams.get(`name${i}`) || urlParams.get('name');
-      if (uid && name) playerData.push({ uid, name, playerNo: i });
+      if (uid && name) playerData.push({ playerNo: i, uid: uid, name: name });
     }
 
     document.getElementById('formatTitle').textContent = format.toUpperCase() + " ENTRY";
     document.getElementById('payAmount').textContent = `₹${data.entry}`;
 
     const detailsHTML = `
-      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Entry Fee (Per Player)</span><span class="text-green-400 font-black">₹${data.entry}</span></div>
+      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Entry Fee</span><span class="text-green-400 font-black">₹${data.entry}</span></div>
       <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Total Entry</span><span class="text-green-400 font-black">₹${data.total}</span></div>
       <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Winning Prize</span><span class="text-green-400 font-black">₹${data.win}</span></div>
       <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Organizing Fees</span><span class="text-red-400 font-black">₹${data.org}</span></div>
@@ -149,7 +148,6 @@
     function showPaymentPopup() {
       document.body.classList.add('no-scroll');
 
-      // Big QR Codes
       const container = document.getElementById('upiOptions');
       container.innerHTML = '';
       upiList.forEach(upi => {
@@ -163,7 +161,6 @@
         container.appendChild(div);
       });
 
-      // Show Player Details
       let html = '';
       playerData.forEach(p => {
         html += `<div class="bg-zinc-800 p-4 rounded-xl text-sm"><span class="text-red-400">Player ${p.playerNo}:</span><br>UID: ${p.uid}<br>Name: ${p.name}</div>`;
@@ -192,7 +189,7 @@
         return;
       }
       if (!telegram) {
-        alert("Please enter your Telegram Username (@username)");
+        alert("Please enter your Telegram Username");
         return;
       }
 
@@ -203,13 +200,12 @@
 
       if (!confirm(confirmMsg)) return;
 
-      // Send full message to bot
       let message = `🔥 NEW PAYMENT + REGISTRATION 🔥\n\n`;
       message += `Format: ${format.toUpperCase()}\n`;
       message += `Amount: ₹${data.entry}\n`;
       message += `Transaction ID: ${txnId}\n`;
       message += `Telegram: @${telegram}\n\n`;
-      message += `Players Details:\n`;
+      message += `=== PLAYER DETAILS ===\n`;
       playerData.forEach(p => {
         message += `Player ${p.playerNo}:\nUID: ${p.uid}\nName: ${p.name}\n\n`;
       });
@@ -224,7 +220,7 @@
         hidePaymentPopup();
         document.getElementById('successPopup').classList.remove('hidden');
       })
-      .catch(() => alert("Bot error! Please send screenshot manually to admin."));
+      .catch(() => alert("Bot error! Please send screenshot manually."));
     }
 
     function hideSuccessPopup() {
