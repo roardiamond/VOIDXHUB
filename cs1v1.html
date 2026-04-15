@@ -21,7 +21,7 @@
 <body>
   <div class="bg-blackhole fixed inset-0 z-[-3]" style="background: radial-gradient(circle at center, #1a0033 10%, #000000 85%);"></div>
   <div class="relative z-10 py-12 px-6 max-w-4xl mx-auto">
-  
+ 
     <!-- Banner -->
     <div class="mb-12 rounded-3xl overflow-hidden border-4 border-red-500 glow-red">
       <img src="cs.jpg" class="w-full h-auto object-cover" alt="CS 1v1">
@@ -87,9 +87,9 @@
 
   <script>
     function payEntry() {
-      if (confirm("Pay ₹30 Entry Fee for CS 1V1 Tournament?\n\nAfter payment you will be redirected to registration.")) {
-        // Redirect to entryfee.html
-        window.location.href = "entryfee.html";
+      if (confirm("Pay ₹30 Entry Fee for CS 1V1 Tournament?\n\nYou will be redirected to payment page.")) {
+        // Auto detect ke liye format pass kiya
+        window.location.href = "entryfee.html?format=1v1";
       }
     }
   </script>
