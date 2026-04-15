@@ -76,10 +76,10 @@
       </ul>
     </div>
 
-    <!-- Team Details -->
+    <!-- Team Details Section -->
     <div class="max-w-2xl mx-auto space-y-8">
       <h3 class="text-2xl font-bold text-center text-orange-400">Enter Team Details (2 Players)</h3>
-    
+      
       <div class="space-y-6">
         <!-- Player 1 -->
         <div class="grid grid-cols-2 gap-4">
@@ -129,9 +129,9 @@
         return;
       }
 
-      if (confirm(`Pay ₹40 Entry Fee for CS 2V2?\n\nPlayer 1: ${name1} (${uid1})\nPlayer 2: ${name2} (${uid2})\n\nAfter payment you will be redirected to payment page.`)) {
-        // Format pass kiya taaki entryfee page pe amount auto update ho
-        window.location.href = "entryfee.html?format=2v2";
+      if (confirm(`Confirm Registration for CS 2V2?\n\nPlayer 1: ${name1} (${uid1})\nPlayer 2: ${name2} (${uid2})\n\nAmount: ₹40\n\nAfter payment you will be redirected to UPI payment page.`)) {
+        // Details ke saath redirect (entryfee page pe auto show hoga)
+        window.location.href = `entryfee.html?format=2v2&uid1=${encodeURIComponent(uid1)}&name1=${encodeURIComponent(name1)}&uid2=${encodeURIComponent(uid2)}&name2=${encodeURIComponent(name2)}`;
       }
     }
   </script>
