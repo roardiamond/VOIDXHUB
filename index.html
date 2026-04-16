@@ -13,86 +13,68 @@
       color: #e0e0ff;
       overflow-x: hidden;
     }
+
     .hero {
       min-height: 100vh;
-      background: radial-gradient(circle at center, #1a0033 10%, #000000 80%);
+      background: linear-gradient(rgba(5, 5, 10, 0.75), rgba(5, 5, 10, 0.85)),
+                  url('sQz8x (1).jpg') center/cover no-repeat fixed;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
     }
+
     .scanline {
       position: absolute;
       inset: 0;
-      background: linear-gradient(transparent 50%, rgba(0, 255, 255, 0.05) 50%);
-      background-size: 100% 6px;
-      animation: scan 10s linear infinite;
+      background: linear-gradient(transparent 50%, rgba(0, 255, 255, 0.06) 50%);
+      background-size: 100% 8px;
+      animation: scan 14s linear infinite;
       pointer-events: none;
+      opacity: 0.7;
     }
+
     @keyframes scan {
       0% { transform: translateY(-100%); }
-      100% { transform: translateY(300%); }
+      100% { transform: translateY(400%); }
     }
+
     .glitch {
-      animation: glitch 2s infinite alternate;
-      text-shadow: 0 0 15px #00ffff, 0 0 30px #ff00ff;
+      animation: glitch 2.5s infinite alternate;
+      text-shadow: 0 0 20px #00ffff, 0 0 40px #ff00ff;
     }
+
     @keyframes glitch {
       0%,100% { transform: translate(0); }
-      20% { transform: translate(-4px,4px); }
-      40% { transform: translate(4px,-4px); }
-      60% { transform: translate(-2px,2px); }
+      20% { transform: translate(-5px,5px); }
+      40% { transform: translate(5px,-5px); }
+      60% { transform: translate(-3px,3px); }
     }
+
     .neon-btn {
       transition: all 0.4s ease;
       box-shadow: 0 0 25px #00ffff;
     }
     .neon-btn:hover {
       transform: scale(1.08);
-      box-shadow: 0 0 50px #ff00ff, 0 0 70px #00ffff;
-    }
-    .tournament-card {
-      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-    .tournament-card:hover {
-      transform: translateY(-20px) scale(1.05);
-      box-shadow: 0 0 80px rgba(236, 72, 153, 0.7);
-    }
-    .coming-soon {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.85);
-      color: #f87171;
-      font-weight: bold;
-      padding: 8px 24px;
-      border-radius: 9999px;
-      border: 2px solid #f87171;
-      letter-spacing: 2px;
-      z-index: 10;
-      font-size: 14px;
-      box-shadow: 0 0 20px rgba(248, 113, 113, 0.6);
-    }
-    .grayscale {
-      filter: grayscale(100%) brightness(0.7);
+      box-shadow: 0 0 50px #ff00ff, 0 0 80px #00ffff;
     }
   </style>
 </head>
-<body class="scroll-smooth">
+<body>
 
-  <!-- Hero Section -->
+  <!-- Hero Section with VoidXHub Logo Background -->
   <div class="hero">
     <div class="scanline"></div>
-  
-    <!-- Top Right - Ads Free Offer -->
+
+    <!-- Top Right Join TG Button -->
     <div class="absolute top-6 right-6 z-50">
-      <a href="https://www.profitablecpmratenetwork.com/e1rqh2mer?key=ea55d922341ad2c27a744cc11bc9b6a6"
-         target="_blank"
-         class="block bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-yellow-500 hover:to-amber-500 text-black font-bold px-6 py-3 rounded-2xl text-sm shadow-xl border border-white/30 transition-all hover:scale-105">
-        🚀 Go Ads-Free for just ₹299
-      </a>
+      <button onclick="showTGPopup()" 
+              class="neon-btn flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-purple-600 hover:to-cyan-500 text-white font-bold px-8 py-4 rounded-2xl shadow-2xl border border-white/30 transition-all">
+        <span class="text-2xl">🚀</span>
+        <span>JOIN TELEGRAM</span>
+      </button>
     </div>
 
     <div class="relative z-10 max-w-4xl px-6 py-20">
@@ -100,140 +82,61 @@
         VOID<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">X</span>HUB
       </h1>
       <p class="text-3xl md:text-4xl text-cyan-300 mb-6 tracking-widest">UNDETECTABLE • POWERFUL • PREMIUM</p>
+      
       <div class="mt-8 text-2xl text-gray-300 leading-relaxed">
         Welcome to VoidXHub<br>
         The underground hub for high-success automation tools.
       </div>
+
       <div class="mt-16">
         <button onclick="window.location.href='tools.html'"
                 class="neon-btn px-12 py-6 text-xl font-bold border-2 border-cyan-400 bg-transparent rounded-2xl hover:bg-cyan-400 hover:text-black">
           BROWSE TOOLS
         </button>
       </div>
-      <div class="mt-20 text-sm opacity-60">Built By YASHXCHI • VoidXHub 2026</div>
+
+      <div class="mt-24 text-sm opacity-60">Built By YASHXCHI • VoidXHub 2026</div>
     </div>
   </div>
 
-  <!-- 🔥 ATTRACTIVE TOURNAMENT HUB SECTION -->
-  <div class="py-20 px-6 bg-black/80">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <div class="inline-block bg-gradient-to-r from-red-600 to-orange-600 text-white text-sm font-bold px-8 py-3 rounded-full mb-4 tracking-widest">
-          🔥 LIVE TOURNAMENTS
-        </div>
-        <h2 class="text-5xl md:text-6xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400">
-          PAID SCRIMS &amp; TOURNAMENTS
-        </h2>
-        <p class="text-xl text-orange-300 mt-4">Real Cash Prizes • Daily &amp; Weekly Events • Free Fire + BGMI</p>
+  <!-- Telegram Popup -->
+  <div id="tgPopup" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-[100]">
+    <div class="bg-zinc-900 border-2 border-purple-500 rounded-3xl p-10 max-w-md w-full mx-4 text-center popup">
+      <div class="text-6xl mb-6">🚀</div>
+      <h2 class="text-3xl font-black text-purple-400 mb-6">JOIN VOIDXHUB COMMUNITY</h2>
+      
+      <div class="space-y-4">
+        <a href="https://t.me/voidxhubscrims" target="_blank" 
+           class="block w-full py-5 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold text-xl rounded-2xl hover:scale-105 transition-all">
+          📢 SCRIMS GROUP
+        </a>
+        
+        <a href="https://t.me/voidxhub" target="_blank" 
+           class="block w-full py-5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-xl rounded-2xl hover:scale-105 transition-all">
+          📣 OFFICIAL CHANNEL
+        </a>
+        
+        <a href="https://t.me/Voidxhubsupport_bot" target="_blank" 
+           class="block w-full py-5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-xl rounded-2xl hover:scale-105 transition-all">
+          💬 SUPPORT BOT
+        </a>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
-       
-        <!-- Free Fire Tournament Card -->
-        <div onclick="window.location.href='scrims.html'"
-             class="tournament-card bg-gradient-to-br from-zinc-950 to-black border-2 border-pink-500 rounded-3xl overflow-hidden cursor-pointer relative">
-          <div class="relative h-80">
-            <img src="ff-tournament.jpg" class="w-full h-full object-cover" alt="Free Fire Tournament">
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
-           
-            <div class="absolute bottom-0 left-0 right-0 p-8">
-              <div class="flex items-center gap-3 mb-4">
-                <span class="text-5xl">🔥</span>
-                <h3 class="text-4xl font-black text-pink-400">FREE FIRE SCRIMS</h3>
-              </div>
-              <p class="text-2xl text-white mb-2">Daily Paid Tournaments</p>
-              <p class="text-emerald-400 text-lg">₹500 - ₹10,000+ Cash Prizes</p>
-            </div>
-          </div>
-          <div class="p-6 text-center">
-            <button class="w-full py-5 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold text-xl rounded-2xl">
-              JOIN FREE FIRE TOURNAMENTS NOW
-            </button>
-          </div>
-        </div>
-
-        <!-- BGMI Tournament Card (Black & White + Coming Soon) -->
-        <div onclick="window.location.href='tools.html'"
-             class="tournament-card bg-gradient-to-br from-zinc-950 to-black border-2 border-cyan-400 rounded-3xl overflow-hidden cursor-pointer relative">
-          
-          <!-- Coming Soon Banner -->
-          <div class="coming-soon">
-            COMING SOON
-          </div>
-
-          <div class="relative h-80">
-            <img src="bgmi-tournament.jpg" class="w-full h-full object-cover grayscale" alt="BGMI Tournament">
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
-           
-            <div class="absolute bottom-0 left-0 right-0 p-8">
-              <div class="flex items-center gap-3 mb-4">
-                <span class="text-5xl">💀</span>
-                <h3 class="text-4xl font-black text-cyan-400">BGMI SCRIMS</h3>
-              </div>
-              <p class="text-2xl text-white mb-2">Daily Paid Tournaments</p>
-              <p class="text-emerald-400 text-lg">₹1,000 - ₹20,000+ Cash Prizes</p>
-            </div>
-          </div>
-          <div class="p-6 text-center">
-            <button class="w-full py-5 bg-gradient-to-r from-cyan-500 to-teal-600 text-white font-bold text-xl rounded-2xl opacity-75">
-              COMING SOON
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="text-center mt-12">
-        <p class="text-emerald-400 text-lg font-medium">Click any card to enter Tournament Hub →</p>
-      </div>
+      <button onclick="closeTGPopup()" 
+              class="mt-8 text-gray-400 hover:text-white text-lg">Close</button>
     </div>
   </div>
 
-  <!-- Anti-Ban & Reviews Section -->
-  <div class="section py-20 px-6">
-    <div class="max-w-5xl mx-auto">
-      <h2 class="text-4xl font-bold text-center mb-12 text-cyan-400 tracking-wider">ANTI-BAN CONFIGS & REVIEWS</h2>
-     
-      <div class="grid md:grid-cols-2 gap-8">
-        <div class="bg-black/60 border border-cyan-900/50 p-8 rounded-2xl">
-          <h3 class="text-2xl text-emerald-400 mb-4">BGMI Anti-Ban Configs</h3>
-          <p class="text-gray-300 leading-relaxed">
-            Our configs are regularly tested and updated. They help you maintain stable high FPS on low-end devices while minimizing detection risk.
-          </p>
-          <div class="mt-6 text-sm text-emerald-300">
-            ★★★★★ "Best config I've used in 2026. no ban from 3 months!" -
-          </div>
-        </div>
-        <div class="bg-black/60 border border-cyan-900/50 p-8 rounded-2xl">
-          <h3 class="text-2xl text-emerald-400 mb-4">Free Fire Safe Automation</h3>
-          <p class="text-gray-300 leading-relaxed">
-            Headshot accuracy boost + smooth recoil control tools. Works well with latest OB updates and gives clean gameplay feel.
-          </p>
-          <div class="mt-6 text-sm text-emerald-300">
-            ★★★★☆ "Magic bullet + zombie mode combo is insane. Highly recommended for rank push." -
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <script>
+    function showTGPopup() {
+      document.getElementById('tgPopup').classList.remove('hidden');
+      document.getElementById('tgPopup').classList.add('flex');
+    }
 
-  <!-- Native Banner Ad -->
-  <div class="ad-container max-w-5xl mx-auto my-8 px-6 py-4 rounded-2xl">
-    <script async="async" data-cfasync="false" src="https://pl29104379.profitablecpmratenetwork.com/0cd435fcfe7ec5cc8ba7d248ffba136e/invoke.js"></script>
-    <div id="container-0cd435fcfe7ec5cc8ba7d248ffba136e"></div>
-  </div>
-
-  <!-- Support Button -->
-  <div class="fixed bottom-6 right-6 z-50">
-    <button onclick="window.open('https://t.me/Voidxhubsupport_bot', '_blank')"
-            class="neon-btn flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-pink-600 hover:to-purple-600 text-white font-bold px-8 py-4 rounded-2xl shadow-2xl border border-white/30">
-      <span>💬 Need Help?</span>
-      <span class="text-lg">→</span>
-    </button>
-  </div>
-
-  <!-- Ad Scripts -->
-  <script src="https://pl29104380.profitablecpmratenetwork.com/36/7c/29/367c29b9f0a459a06487c504eacff633.js"></script>
-  <script async="async" data-cfasync="false" src="https://pl29104379.profitablecpmratenetwork.com/0cd435fcfe7ec5cc8ba7d248ffba136e/invoke.js"></script>
+    function closeTGPopup() {
+      document.getElementById('tgPopup').classList.add('hidden');
+      document.getElementById('tgPopup').classList.remove('flex');
+    }
+  </script>
 </body>
 </html>
