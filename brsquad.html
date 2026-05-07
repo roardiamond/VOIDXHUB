@@ -20,9 +20,8 @@
 </head>
 <body>
   <div class="bg-blackhole fixed inset-0 z-[-3]" style="background: radial-gradient(circle at center, #1a0033 10%, #000000 85%);"></div>
-
   <div class="relative z-10 py-12 px-6 max-w-4xl mx-auto">
-   
+  
     <!-- Banner -->
     <div class="mb-12 rounded-3xl overflow-hidden border-4 border-emerald-500 glow-red">
       <img src="br.jpg" class="w-full h-auto object-cover" alt="BR Squad">
@@ -57,74 +56,71 @@
     <!-- 4 Players Input -->
     <div class="max-w-2xl mx-auto space-y-8">
       <h3 class="text-2xl font-bold text-center text-emerald-400">Enter Team Details (4 Players)</h3>
-      
+     
       <div class="space-y-6">
         <!-- Player 1 -->
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-sm text-gray-400 mb-1">Player 1 - Free Fire UID</label>
-            <input id="uid1" type="text" placeholder="UID Player 1" 
+            <input id="uid1" type="text" placeholder="UID Player 1"
                    class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
           </div>
           <div>
             <label class="block text-sm text-gray-400 mb-1">Player 1 - In-Game Name</label>
-            <input id="name1" type="text" placeholder="Name Player 1" 
+            <input id="name1" type="text" placeholder="Name Player 1"
                    class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
           </div>
         </div>
-
         <!-- Player 2 -->
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-sm text-gray-400 mb-1">Player 2 - Free Fire UID</label>
-            <input id="uid2" type="text" placeholder="UID Player 2" 
+            <input id="uid2" type="text" placeholder="UID Player 2"
                    class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
           </div>
           <div>
             <label class="block text-sm text-gray-400 mb-1">Player 2 - In-Game Name</label>
-            <input id="name2" type="text" placeholder="Name Player 2" 
+            <input id="name2" type="text" placeholder="Name Player 2"
                    class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
           </div>
         </div>
-
         <!-- Player 3 -->
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-sm text-gray-400 mb-1">Player 3 - Free Fire UID</label>
-            <input id="uid3" type="text" placeholder="UID Player 3" 
+            <input id="uid3" type="text" placeholder="UID Player 3"
                    class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
           </div>
           <div>
             <label class="block text-sm text-gray-400 mb-1">Player 3 - In-Game Name</label>
-            <input id="name3" type="text" placeholder="Name Player 3" 
+            <input id="name3" type="text" placeholder="Name Player 3"
                    class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
           </div>
         </div>
-
         <!-- Player 4 -->
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-sm text-gray-400 mb-1">Player 4 - Free Fire UID</label>
-            <input id="uid4" type="text" placeholder="UID Player 4" 
+            <input id="uid4" type="text" placeholder="UID Player 4"
                    class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
           </div>
           <div>
             <label class="block text-sm text-gray-400 mb-1">Player 4 - In-Game Name</label>
-            <input id="name4" type="text" placeholder="Name Player 4" 
+            <input id="name4" type="text" placeholder="Name Player 4"
                    class="w-full px-6 py-4 bg-zinc-900 border border-emerald-500 rounded-2xl text-lg focus:outline-none focus:border-emerald-400">
           </div>
         </div>
       </div>
 
-      <button onclick="joinMatch()" 
+      <button onclick="payEntry()"
               class="w-full py-8 text-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl hover:scale-105 transition-all shadow-2xl">
-        JOIN BR SQUAD NOW - WIN CASH 💰
+        PAY ENTRY FEE - JOIN NOW 💰
       </button>
     </div>
   </div>
 
   <script>
-    function joinMatch() {
+    function payEntry() {
       const uid1 = document.getElementById('uid1').value.trim();
       const name1 = document.getElementById('name1').value.trim();
       const uid2 = document.getElementById('uid2').value.trim();
@@ -139,28 +135,8 @@
         return;
       }
 
-      if (confirm(`Confirm joining BR Squad with 4 players?`)) {
-
-        let msg = `🔥 NEW REGISTRATION 🔥\nFormat: BR Squad\n\n`;
-        msg += `Player 1:\nUID: ${uid1}\nName: ${name1}\n\n`;
-        msg += `Player 2:\nUID: ${uid2}\nName: ${name2}\n\n`;
-        msg += `Player 3:\nUID: ${uid3}\nName: ${name3}\n\n`;
-        msg += `Player 4:\nUID: ${uid4}\nName: ${name4}\n\n`;
-        msg += `Time: ${new Date().toLocaleString()}`;
-
-        // Admin ko notification
-        fetch(`https://api.telegram.org/bot8647618078:AAHBAKL0K5jxef6TIP8jti1wrPA2cdutNN8/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: "7994843509",
-            text: msg,
-            parse_mode: 'HTML'
-          })
-        }).catch(() => {});
-
-        // User ko group pe redirect (apna real group link daal dena)
-        window.open('https://t.me/+UPHlOjXDQV04NzNl', '_blank');
+      if (confirm(`BR Squad Registration\n\nPlayer 1: ${name1} (${uid1})\nPlayer 2: ${name2} (${uid2})\nPlayer 3: ${name3} (${uid3})\nPlayer 4: ${name4} (${uid4})\n\nPlease pay your entry fee on the next page to complete registration.`)) {
+        window.location.href = `entryfee.html?format=brsquad&uid1=${encodeURIComponent(uid1)}&name1=${encodeURIComponent(name1)}&uid2=${encodeURIComponent(uid2)}&name2=${encodeURIComponent(name2)}&uid3=${encodeURIComponent(uid3)}&name3=${encodeURIComponent(name3)}&uid4=${encodeURIComponent(uid4)}&name4=${encodeURIComponent(name4)}`;
       }
     }
   </script>
