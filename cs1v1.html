@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOIDXHUB - CS 1V1</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: #05050a;
+      color: #e0e0ff;
+      overflow-x: hidden;
+    }
+    .glow-red {
+      box-shadow: 0 0 50px rgba(248, 113, 113, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-blackhole fixed inset-0 z-[-3]" style="background: radial-gradient(circle at center, #1a0033 10%, #000000 85%);"></div>
+  <div class="relative z-10 py-12 px-6 max-w-4xl mx-auto">
+ 
+    <!-- Banner -->
+    <div class="mb-12 rounded-3xl overflow-hidden border-4 border-red-500 glow-red">
+      <img src="cs.jpg" class="w-full h-auto object-cover" alt="CS 1v1">
+    </div>
+
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <div class="inline-block bg-gradient-to-r from-red-600 to-pink-600 text-white text-sm font-bold px-8 py-3 rounded-full mb-4 tracking-widest">
+        CS 1V1
+      </div>
+      <h1 class="text-5xl md:text-6xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-pink-400">
+        1V1 CLASH SQUAD
+      </h1>
+      <p class="text-orange-300 text-xl mt-4">One vs One • Winner Takes All</p>
+    </div>
+
+    <!-- Prize Structure -->
+    <div class="bg-zinc-950 border border-red-500/50 p-8 rounded-3xl mb-12">
+      <h2 class="text-3xl font-bold text-red-400 mb-6 text-center">PRIZE STRUCTURE</h2>
+      <div class="space-y-4 text-lg">
+        <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl border border-red-500/30">
+          <span class="font-bold">Entry Fee (Per Player)</span>
+          <span class="text-green-400 font-black">₹30</span>
+        </div>
+        <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl border border-red-500/30">
+          <span class="font-bold">Total Entry (Per Match)</span>
+          <span class="text-green-400 font-black">₹60</span>
+        </div>
+        <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl border border-red-500/30">
+          <span class="font-bold">Winning Prize (To Winner)</span>
+          <span class="text-green-400 font-black">₹55</span>
+        </div>
+        <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl border border-red-500/30">
+          <span class="font-bold">Organizing Fees</span>
+          <span class="text-red-400 font-black">₹5</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rules -->
+    <div class="bg-zinc-950 border border-red-500/50 p-8 rounded-3xl mb-12">
+      <h2 class="text-3xl font-bold text-red-400 mb-6 text-center">1V1 RULES</h2>
+      <ul class="space-y-4 text-lg">
+        <li>• 13 Rounds</li>
+        <li>• Players must record their screen while playing and must send screen recording to confirm</li>
+        <li>• No teamups allowed, if found teaming then no prize will be given</li>
+        <li>• Players should not invite other players that are not registered</li>
+        <li>• Players are not allowed to reconnect during the match</li>
+        <li>• No hacks, mods or glitches allowed</li>
+        <li>• Entry fee non-refundable</li>
+        <li>• Winner takes full prize pool</li>
+      </ul>
+    </div>
+
+    <!-- Player Details Section -->
+    <div class="max-w-md mx-auto space-y-8">
+      <h3 class="text-2xl font-bold text-center text-red-400">Enter Your Details</h3>
+      
+      <div class="space-y-6">
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Free Fire UID</label>
+          <input id="uid" type="text" placeholder="Enter your UID" 
+                 class="w-full px-6 py-4 bg-zinc-900 border border-red-500 rounded-2xl text-lg focus:outline-none focus:border-red-400">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">In-Game Name</label>
+          <input id="name" type="text" placeholder="Enter your In-Game Name" 
+                 class="w-full px-6 py-4 bg-zinc-900 border border-red-500 rounded-2xl text-lg focus:outline-none focus:border-red-400">
+        </div>
+      </div>
+
+      <!-- Pay Entry Button -->
+      <button onclick="payEntry()"
+              class="w-full py-8 text-2xl font-black bg-gradient-to-r from-red-600 to-pink-600 rounded-3xl hover:scale-105 transition-all shadow-2xl">
+        PAY ENTRY FEES - ₹30 💰
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function payEntry() {
+      const uid = document.getElementById('uid').value.trim();
+      const ingame = document.getElementById('name').value.trim();
+
+      if (!uid || !ingame) {
+        alert("Please enter both Free Fire UID and In-Game Name!");
+        return;
+      }
+
+      if (confirm(`Confirm Registration for CS 1V1?\n\nUID: ${uid}\nIn-Game Name: ${ingame}\n\nAmount: ₹30\n\nAfter payment you will be redirected to UPI payment page.`)) {
+        // Bot ko message bhejne ke liye format + details pass kar rahe hain
+        window.location.href = `entryfee.html?format=1v1&uid=${encodeURIComponent(uid)}&name=${encodeURIComponent(ingame)}`;
+      }
+    }
+  </script>
+</body>
+</html>
