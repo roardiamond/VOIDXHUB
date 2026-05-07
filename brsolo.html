@@ -20,9 +20,8 @@
 </head>
 <body>
   <div class="bg-blackhole fixed inset-0 z-[-3]" style="background: radial-gradient(circle at center, #1a0033 10%, #000000 85%);"></div>
-
   <div class="relative z-10 py-12 px-6 max-w-4xl mx-auto">
-   
+  
     <!-- Banner -->
     <div class="mb-12 rounded-3xl overflow-hidden border-4 border-red-500 glow-red">
       <img src="br.jpg" class="w-full h-auto object-cover" alt="BR Solo">
@@ -56,33 +55,30 @@
 
     <!-- Input Fields -->
     <div class="max-w-md mx-auto space-y-6">
-      <input id="uid" type="text" placeholder="Free Fire UID" 
+      <input id="uid" type="text" placeholder="Free Fire UID"
              class="w-full px-6 py-4 bg-zinc-900 border border-red-500 rounded-2xl text-lg focus:outline-none focus:border-red-400">
-
-      <input id="ingame" type="text" placeholder="In-Game Name" 
+      <input id="ingame" type="text" placeholder="In-Game Name"
              class="w-full px-6 py-4 bg-zinc-900 border border-red-500 rounded-2xl text-lg focus:outline-none focus:border-red-400">
-
-      <button onclick="joinNow()" 
+      
+      <button onclick="payEntry()"
               class="w-full py-8 text-2xl font-black bg-gradient-to-r from-red-600 to-pink-600 rounded-3xl hover:scale-105 transition-all shadow-2xl">
-        JOIN BR SOLO NOW - WIN CASH 💰
+        PAY ENTRY FEE - JOIN NOW 💰
       </button>
     </div>
   </div>
 
   <script>
-    function joinNow() {
+    function payEntry() {
       const uid = document.getElementById('uid').value.trim();
       const ingame = document.getElementById('ingame').value.trim();
-
+      
       if (!uid || !ingame) {
-        alert("Please enter both Free Fire UID and In-Game Name!");
+        alert("Bhai UID aur In-Game Name dono daal!");
         return;
       }
 
-      if (confirm(`Join BR Solo?\n\nUID: ${uid}\nIn-Game Name: ${ingame}`)) {
-        const format = "brsolo";
-        const botLink = `https://t.me/VOIDXHUBCSSCRIMBOT?start=${format}_${encodeURIComponent(uid)}_${encodeURIComponent(ingame)}`;
-        window.open(botLink, '_blank');
+      if (confirm(`BR Solo Join Confirm?\n\nUID: ${uid}\nName: ${ingame}\n\nEntry Fee Pay Karne ke liye entryfee.html pe ja raha hai...`)) {
+        window.location.href = `entryfee.html?format=brsolo&uid=${encodeURIComponent(uid)}&name=${encodeURIComponent(ingame)}`;
       }
     }
   </script>
