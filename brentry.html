@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOIDXHUB - BR Entry Fee</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: #05050a;
+      color: #e0e0ff;
+      overflow-x: hidden;
+    }
+    .glow { box-shadow: 0 0 60px rgba(248, 113, 113, 0.8); }
+    .popup { animation: pop 0.3s ease forwards; }
+    @keyframes pop {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .no-scroll {
+      overflow: hidden !important;
+      height: 100vh;
+      position: fixed;
+      width: 100%;
+    }
+    .qr-container img {
+      width: 320px !important;
+      height: 320px !important;
+      border: 10px solid #ef4444;
+      border-radius: 24px;
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.6);
+    }
+  </style>
+</head>
+<body>
+  <div class="fixed inset-0 bg-black/90 z-[-1]"></div>
+  <div class="relative z-10 py-12 px-6 max-w-lg mx-auto">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-black tracking-wider bg-gradient-to-r from-red-400 to-pink-400 bg-clip-text text-transparent">
+        BR ENTRY FEE PAYMENT
+      </h1>
+      <p id="formatTitle" class="text-2xl mt-3 text-orange-300 font-bold"></p>
+    </div>
+
+    <div class="bg-zinc-950 border border-green-500/50 p-6 rounded-3xl mb-8 text-center glow">
+      <p class="text-gray-400 text-sm">Amount to be Paid (Total)</p>
+      <p id="payAmount" class="text-5xl font-black text-green-400 mt-2">₹60</p>
+    </div>
+
+    <div class="bg-zinc-950 border border-red-500/50 p-8 rounded-3xl mb-10 glow">
+      <div id="details" class="space-y-5 text-lg"></div>
+    </div>
+
+    <button onclick="showPaymentPopup()"
+            class="w-full py-8 text-3xl font-black bg-gradient-to-r from-green-500 via-emerald-500 to-teal-600 rounded-3xl hover:scale-105 transition-all shadow-2xl">
+      TAP TO PAY USING UPI 💸
+    </button>
+  </div>
+
+  <!-- Payment Popup -->
+  <div id="paymentPopup" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-50 overflow-hidden">
+    <div class="bg-zinc-900 border border-red-500 rounded-3xl p-8 max-w-md w-full mx-4 my-auto max-h-[92vh] overflow-y-auto popup">
+      <h2 class="text-2xl font-bold text-center mb-6 text-red-400">SCAN QR TO PAY</h2>
+      <div class="grid grid-cols-1 gap-12" id="upiOptions"></div>
+
+      <div class="mt-10 border-t border-red-500/30 pt-6">
+        <h3 class="text-lg font-bold text-red-400 mb-4 text-center">REGISTRATION DETAILS</h3>
+        <div id="playerDetails" class="space-y-4 text-sm bg-zinc-800 p-5 rounded-xl"></div>
+      </div>
+
+      <div class="mt-6">
+        <label class="block text-sm text-gray-400 mb-2">Your Telegram Username <span class="text-red-400">(Mandatory)</span></label>
+        <input id="telegram" type="text" placeholder="@yourusername" class="w-full px-6 py-4 bg-zinc-800 border border-red-500 rounded-2xl text-lg focus:outline-none focus:border-green-400">
+      </div>
+
+      <div class="mt-6">
+        <label class="block text-sm text-gray-400 mb-2">Enter Transaction ID / UTR Number</label>
+        <input id="txnId" type="text" placeholder="Enter UTR / Transaction ID" class="w-full px-6 py-4 bg-zinc-800 border border-red-500 rounded-2xl text-lg focus:outline-none focus:border-green-400">
+      </div>
+
+      <div class="flex gap-4 mt-8 sticky bottom-0 bg-zinc-900 pt-4 pb-2">
+        <button onclick="hidePaymentPopup()" class="flex-1 py-4 text-lg font-bold bg-zinc-800 hover:bg-zinc-700 rounded-2xl">CANCEL</button>
+        <button onclick="submitTransaction()" class="flex-1 py-4 text-lg font-black bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl">SUBMIT PAYMENT</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Popup -->
+  <div id="successPopup" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-50">
+    <div class="bg-zinc-900 border border-green-500 rounded-3xl p-10 max-w-md w-full mx-4 popup text-center">
+      <h2 class="text-3xl font-bold text-green-400 mb-4">✅ PAYMENT SUBMITTED!</h2>
+      <p class="text-xl mb-8">Admin will verify your payment soon.</p>
+      <a href="https://t.me/voidxhubscrims" target="_blank" class="block w-full py-5 text-2xl font-black bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl hover:scale-105 transition-all">
+        JOIN TELEGRAM GROUP
+      </a>
+      <button onclick="hideSuccessPopup()" class="mt-8 text-gray-400 hover:text-white text-lg">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const pricing = {
+      "brsolo":  { entry: 60, prizePool: 110, orgFee: 10,  name: "BR SOLO" },
+      "brduo":   { entry: 55, prizePool: 200, orgFee: 20,  name: "BR DUO" },
+      "brsquad": { entry: 45, prizePool: 320, orgFee: 40,  name: "BR SQUAD" }
+    };
+
+    const BOT_TOKEN = "8647618078:AAHBAKL0K5jxef6TIP8jti1wrPA2cdutNN8";
+    const CHAT_ID = "7994843509";
+
+    const upiList = [
+      { name: "Paytm",    id: "770386021@axl",     qr: "paytm.jpeg" },
+      { name: "PhonePe",  id: "7703860211@pthdfc", qr: "phonepe.jpeg" },
+      { name: "Google Pay", id: "dv5124950@okaxis", qr: "gpay.jpeg" }
+    ];
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const format = (urlParams.get('format') || "brsolo").toLowerCase();
+    
+    const config = pricing[format] || pricing["brsolo"];
+    
+    let playerCount = format === "brsquad" ? 4 : format === "brduo" ? 2 : 1;
+    const totalAmount = config.entry * playerCount;
+
+    let playerData = [];
+    for (let i = 1; i <= playerCount; i++) {
+      const uid = urlParams.get(`uid${i}`) || urlParams.get('uid');
+      const name = urlParams.get(`name${i}`) || urlParams.get('name');
+      if (uid && name) playerData.push({ playerNo: i, uid: uid, name: name });
+    }
+
+    document.getElementById('formatTitle').textContent = config.name + " ENTRY";
+    document.getElementById('payAmount').textContent = `₹${totalAmount}`;
+
+    // Smart Prize Pool Display
+    const detailsHTML = `
+      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Entry Fee (Per Player)</span><span class="text-green-400 font-black">₹${config.entry}</span></div>
+      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Players</span><span class="text-green-400 font-black">${playerCount}</span></div>
+      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Total Amount</span><span class="text-green-400 font-black">₹${totalAmount}</span></div>
+      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl border border-yellow-400/50"><span>🏆 Prize Pool</span><span class="text-yellow-400 font-black">₹${config.prizePool}</span></div>
+      <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Organizing Fee</span><span class="text-red-400 font-black">₹${config.orgFee}</span></div>
+    `;
+    document.getElementById('details').innerHTML = detailsHTML;
+
+    // Rest same functions
+    function showPaymentPopup() {
+      document.body.classList.add('no-scroll');
+      const container = document.getElementById('upiOptions');
+      container.innerHTML = '';
+      upiList.forEach(upi => {
+        const div = document.createElement('div');
+        div.className = "text-center qr-container";
+        div.innerHTML = `
+          <img src="${upi.qr}" alt="${upi.name}">
+          <p class="text-xl font-bold mt-4 mb-1">${upi.name}</p>
+          <p onclick="copyUPI('${upi.id}')" class="text-green-400 text-lg font-mono break-all cursor-pointer hover:text-green-300">${upi.id}</p>
+        `;
+        container.appendChild(div);
+      });
+
+      let html = '';
+      playerData.forEach(p => {
+        html += `<div class="bg-zinc-800 p-4 rounded-xl text-sm"><span class="text-red-400">Player ${p.playerNo}:</span><br>UID: ${p.uid}<br>Name: ${p.name}</div>`;
+      });
+      document.getElementById('playerDetails').innerHTML = html || '<p class="text-red-400">No player data received</p>';
+      document.getElementById('paymentPopup').classList.remove('hidden');
+    }
+
+    function hidePaymentPopup() {
+      document.body.classList.remove('no-scroll');
+      document.getElementById('paymentPopup').classList.add('hidden');
+    }
+
+    function copyUPI(upi) {
+      navigator.clipboard.writeText(upi);
+      alert("✅ UPI ID Copied: " + upi);
+    }
+
+    function submitTransaction() {
+      const txnId = document.getElementById('txnId').value.trim();
+      const telegram = document.getElementById('telegram').value.trim().replace('@','');
+
+      if (!txnId) return alert("Please enter Transaction ID / UTR Number");
+      if (!telegram) return alert("Please enter your Telegram Username");
+
+      let confirmMsg = `CONFIRM PAYMENT?\n\nFormat: ${config.name}\nTotal: ₹${totalAmount}\nPrize Pool: ₹${config.prizePool}\nTxn ID: ${txnId}\nTelegram: @${telegram}\n\n`;
+      playerData.forEach(p => confirmMsg += `Player ${p.playerNo}: ${p.name} (${p.uid})\n`);
+
+      if (!confirm(confirmMsg)) return;
+
+      let message = `🔥 NEW BR PAYMENT + REGISTRATION 🔥\n\n`;
+      message += `Format: ${config.name}\n`;
+      message += `Total Paid: ₹${totalAmount}\n`;
+      message += `Prize Pool: ₹${config.prizePool}\n`;
+      message += `Transaction ID: ${txnId}\n`;
+      message += `Telegram: @${telegram}\n\nPlayers:\n`;
+      playerData.forEach(p => message += `Player ${p.playerNo}: ${p.name} (${p.uid})\n\n`);
+      message += `Time: ${new Date().toLocaleString('en-IN')}`;
+
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: message })
+      })
+      .then(() => {
+        hidePaymentPopup();
+        document.getElementById('successPopup').classList.remove('hidden');
+      })
+      .catch(() => alert("Bot error! Please send screenshot manually."));
+    }
+
+    function hideSuccessPopup() {
+      document.getElementById('successPopup').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
