@@ -72,21 +72,73 @@
     </div>
 
     <!-- Pricing -->
-    <div class="grid md:grid-cols-3 gap-8">
-      <div class="price-card bg-zinc-950 border border-cyan-400 rounded-3xl p-8 text-center">
-        <h3 class="text-2xl font-bold text-cyan-300">TILL NEXT UPDATE</h3>
-        <p class="text-5xl font-black text-white my-6">₹450</p>
-        <button onclick="buyNow('BGMI HIGH FPS CONFIG', 'Till Next Update', '450')" 
-                class="w-full py-5 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl font-bold text-xl">BUY NOW</button>
-      </div>
-    </div>
+<div class="grid md:grid-cols-3 gap-8">
 
-    <div class="text-center mt-12">
-      <button onclick="window.location.href='tools.html'" 
-              class="text-gray-400 hover:text-white text-lg">← Back to All Tools</button>
-    </div>
+  <!-- PUBLIC -->
+  <div class="price-card bg-zinc-950 border border-cyan-400 rounded-3xl p-8 text-center">
+    
+    <h3 class="text-2xl font-bold text-cyan-300">
+      PUBLIC BYPASS
+    </h3>
+
+    <p class="text-5xl font-black text-white my-6">
+      ₹450
+    </p>
+
+    <button onclick="buyNow('BGMI HIGH FPS CONFIG', 'Public Bypass', '450')" 
+      class="w-full py-5 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl font-bold text-xl">
+
+      BUY NOW
+
+    </button>
+
   </div>
 
+  <!-- PRIVATE -->
+  <div class="price-card bg-zinc-950 border border-purple-400 rounded-3xl p-8 text-center">
+    
+    <h3 class="text-2xl font-bold text-purple-300">
+      PRIVATE BYPASS
+    </h3>
+
+    <p class="text-5xl font-black text-white my-6">
+      ₹1350
+    </p>
+
+    <button onclick="buyNow('BGMI HIGH FPS CONFIG', 'Private Bypass', '1350')" 
+      class="w-full py-5 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl font-bold text-xl">
+
+      BUY NOW
+
+    </button>
+
+  </div>
+
+  <!-- PERSONAL -->
+  <div class="price-card bg-zinc-950 border border-emerald-400 rounded-3xl p-8 text-center scale-110 shadow-2xl">
+
+    <div class="bg-purple-600 text-white text-sm font-bold px-6 py-1 rounded-full inline-block mb-4">
+      RECOMMENDED
+    </div>
+
+    <h3 class="text-2xl font-bold text-emerald-300">
+      PERSONAL BYPASS
+    </h3>
+
+    <p class="text-5xl font-black text-white my-6">
+      ₹4050
+    </p>
+
+    <button onclick="buyNow('BGMI HIGH FPS CONFIG', 'Personal Bypass', '4050')" 
+      class="w-full py-5 bg-gradient-to-r from-emerald-500 to-cyan-600 rounded-2xl font-bold text-xl">
+
+      BUY NOW
+
+    </button>
+
+  </div>
+
+</div>
   <!-- Purchase Notification Script (Bot pe message jayega) -->
   <script>
     function buyNow(service, plan, amount) {
