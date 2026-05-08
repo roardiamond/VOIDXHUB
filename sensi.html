@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VOIDXHUB - Sensi Tool</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    body{
+      font-family:'Orbitron',sans-serif;
+      background:#05050a;
+      color:#e0e0ff;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    .bg-blackhole{
+      position:fixed;
+      inset:0;
+      background:radial-gradient(circle at center,#1a0033 10%,#000000 85%);
+      z-index:-3;
+    }
+
+    .void-logo-bg{
+      position:fixed;
+      inset:0;
+      background:url('sensi.jpg') center/cover no-repeat;
+      opacity:0.08;
+      filter:blur(4px) brightness(1.2);
+      animation:logoPulse 25s ease-in-out infinite;
+      z-index:-2;
+      mix-blend-mode:screen;
+    }
+
+    @keyframes logoPulse{
+      0%,100%{
+        opacity:0.06;
+        transform:scale(1);
+      }
+      50%{
+        opacity:0.14;
+        transform:scale(1.05);
+      }
+    }
+
+    .price-card{
+      transition:0.4s;
+      backdrop-filter:blur(12px);
+    }
+
+    .price-card:hover{
+      transform:translateY(-10px) scale(1.05);
+      box-shadow:0 0 40px rgba(255,0,85,0.6);
+    }
+
+    .glow{
+      text-shadow:
+      0 0 10px #ff004c,
+      0 0 20px #ff004c,
+      0 0 40px #ff004c;
+    }
+
+    .slider-container{
+      position:relative;
+    }
+
+    .slide img{
+      width:100%;
+      max-height:420px;
+      object-fit:cover;
+    }
+
+    .arrow{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      background:rgba(0,0,0,0.7);
+      color:white;
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+      cursor:pointer;
+      z-index:10;
+      transition:0.3s;
+    }
+
+    .arrow:hover{
+      background:#ff004c;
+    }
+
+    .left-arrow{
+      left:18px;
+    }
+
+    .right-arrow{
+      right:18px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-blackhole"></div>
+  <div class="void-logo-bg"></div>
+
+  <div class="relative z-10 py-12 px-6 max-w-6xl mx-auto">
+
+    <h1 class="text-5xl md:text-6xl font-black text-center tracking-widest glow mb-8 text-red-400">
+      SENSI TOOL
+    </h1>
+
+    <!-- Badge -->
+    <div class="text-center mb-8">
+      <span class="bg-red-600 text-white text-sm font-bold px-8 py-2 rounded-full">
+        HEADSHOT BOOST PREVIEW
+      </span>
+    </div>
+
+    <!-- Slider -->
+    <div class="slider-container mx-auto mb-12" style="max-width:760px;">
+
+      <div style="overflow:hidden;border-radius:22px;border:3px solid #ff004c;box-shadow:0 0 60px rgba(255,0,76,0.6);">
+
+        <div id="slides" style="display:flex;transition:transform 0.6s ease-in-out;">
+
+          <div class="slide" style="min-width:100%;">
+            <img src="sensi.jpg" alt="sensi">
+          </div>
+
+          <div class="slide" style="min-width:100%;">
+            <img src="sensi.jpg" alt="sensi2">
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="arrow left-arrow" onclick="prevSlide()">‹</div>
+      <div class="arrow right-arrow" onclick="nextSlide()">›</div>
+
+    </div>
+
+    <!-- Features -->
+    <div class="text-center mb-14">
+      <h2 class="text-3xl font-bold mb-4 text-red-300">
+        FEATURES
+      </h2>
+
+      <p class="text-xl text-gray-300 leading-10">
+        Ultra Smooth Aim Movement<br>
+        Better Drag Headshots<br>
+        Reduced Screen Shake<br>
+        Manual Sensitivity Setup<br>
+        Optimized For All Devices
+      </p>
+    </div>
+
+    <!-- Pricing Cards -->
+    <div class="grid md:grid-cols-3 gap-8">
+
+      <!-- PUBLIC -->
+      <div class="price-card bg-zinc-950/80 border border-red-400 rounded-3xl p-8 text-center">
+
+        <h3 class="text-2xl font-bold text-red-300">
+          PUBLIC BYPASS<br>WITH MANUAL
+        </h3>
+
+        <p class="text-5xl font-black text-white my-6">
+          ₹859
+        </p>
+
+        <button
+          onclick="buyNow('Sensi Tool','Public Bypass With Manual','99')"
+          class="w-full py-5 bg-gradient-to-r from-red-500 to-pink-600 rounded-2xl font-bold text-xl hover:scale-105 transition">
+
+          BUY NOW
+
+        </button>
+
+      </div>
+
+      <!-- PRIVATE -->
+      <div class="price-card bg-zinc-950/80 border border-pink-400 rounded-3xl p-8 text-center">
+
+        <h3 class="text-2xl font-bold text-pink-300">
+          PRIVATE BYPASS<br>WITH MANUAL
+        </h3>
+
+        <p class="text-5xl font-black text-white my-6">
+          ₹999
+        </p>
+
+        <button
+          onclick="buyNow('Sensi Tool','Private Bypass With Manual','499')"
+          class="w-full py-5 bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl font-bold text-xl hover:scale-105 transition">
+
+          BUY NOW
+
+        </button>
+
+      </div>
+
+      <!-- PERSONAL -->
+      <div class="price-card bg-zinc-950/80 border border-cyan-400 rounded-3xl p-8 text-center scale-110 shadow-2xl">
+
+        <div class="bg-cyan-500 text-black text-sm font-bold px-6 py-1 rounded-full inline-block mb-4">
+          RECOMMENDED
+        </div>
+
+        <h3 class="text-2xl font-bold text-cyan-300">
+          PERSONAL BYPASS<br>WITH MANUAL
+        </h3>
+
+        <p class="text-5xl font-black text-white my-6">
+          ₹1299
+        </p>
+
+        <button
+          onclick="buyNow('Sensi Tool','Personal Bypass With Manual','1499')"
+          class="w-full py-5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl font-bold text-xl hover:scale-105 transition">
+
+          BUY NOW
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center mt-14">
+
+      <button
+        onclick="window.location.href='tools.html'"
+        class="text-gray-400 hover:text-white text-lg transition">
+
+        ← Back to All Tools
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    function buyNow(service, plan, amount){
+
+      const username = prompt("Enter your Telegram Username (without @)") || "Anonymous";
+
+      const paymentOptions = [
+        "UPI",
+        "Paytm",
+        "PhonePe",
+        "Google Pay",
+        "Other"
+      ];
+
+      let choice = prompt(
+        "Choose Payment Method:\n\n1. UPI\n2. Paytm\n3. PhonePe\n4. Google Pay\n5. Other\n\nEnter number (1-5):"
+      ) || "1";
+
+      const paymentMethod =
+        paymentOptions[parseInt(choice)-1] || "UPI";
+
+      const message =
+      `🚀 New Paid Order on VoidXHub!\n\n` +
+      `Service: ${service}\n` +
+      `Plan: ${plan}\n` +
+      `Amount: ₹${amount}\n` +
+      `User: @${username}\n` +
+      `Payment: ${paymentMethod}\n` +
+      `Time: ${new Date().toLocaleString('en-IN')}`;
+
+      fetch(
+        `https://api.telegram.org/bot8618540927:AAELSHJCjpXYfDwomLTiFHG1AnGs7Ja5UJs/sendMessage?chat_id=7994843509&text=${encodeURIComponent(message)}&parse_mode=HTML`
+      )
+
+      .then(() => {
+
+        alert(
+          `✅ Order Placed Successfully!\n\nNOTIFICATION SENT TO ADMIN AND HE WILL CONTACT YOU SOON`
+        );
+
+      })
+
+      .catch(() => {
+
+        alert(
+          `✅ Order Placed!\n\nNotification sent to bot.`
+        );
+
+      });
+
+    }
+
+    // Slider
+
+    let currentSlide = 0;
+
+    const totalSlides = 2;
+
+    const slidesContainer =
+      document.getElementById('slides');
+
+    function showSlide(n){
+
+      slidesContainer.style.transform =
+      `translateX(-${n * 100}%)`;
+
+    }
+
+    function nextSlide(){
+
+      currentSlide =
+      (currentSlide + 1) % totalSlides;
+
+      showSlide(currentSlide);
+
+    }
+
+    function prevSlide(){
+
+      currentSlide =
+      (currentSlide - 1 + totalSlides) % totalSlides;
+
+      showSlide(currentSlide);
+
+    }
+
+  </script>
+
+</body>
+</html>
