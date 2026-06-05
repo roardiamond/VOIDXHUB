@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - VOIDXHUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: #05050a;
+            color: #e0e0ff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(transparent 50%, rgba(0, 255, 255, 0.03) 50%);
+            background-size: 100% 8px;
+            animation: scan 14s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(400%); }
+        }
+
+        .register-container {
+            background: #0a0a15;
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.3), inset 0 0 20px rgba(0, 255, 255, 0.05);
+            width: 100%;
+            max-width: 500px;
+            padding: 50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .register-header h1 {
+            color: #00ffff;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px #00ffff, 0 0 40px rgba(0, 255, 255, 0.5);
+            letter-spacing: 3px;
+            font-weight: 900;
+        }
+
+        .register-header p {
+            color: #ff00ff;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #00ffff;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(0, 255, 255, 0.05);
+            color: #e0e0ff;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s;
+        }
+
+        input::placeholder {
+            color: rgba(0, 255, 255, 0.4);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4), 0 0 40px rgba(255, 0, 255, 0.2);
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            height: 6px;
+            background: rgba(0, 255, 255, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .strength-meter {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00);
+            transition: width 0.3s, background-color 0.3s;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .strength-text {
+            font-size: 11px;
+            margin-top: 6px;
+            color: #ff00ff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            color: #000;
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Orbitron', sans-serif;
+            box-shadow: 0 0 20px #00ffff;
+        }
+
+        .register-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px #00ffff, 0 0 60px #ff00ff;
+            border-color: #ff00ff;
+        }
+
+        .register-btn:active {
+            transform: scale(0.98);
+        }
+
+        .register-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .message {
+            padding: 14px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            border: 2px solid;
+            letter-spacing: 1px;
+        }
+
+        .error {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff4444;
+            border-color: #ff4444;
+        }
+
+        .success {
+            background: rgba(0, 255, 100, 0.1);
+            color: #00ff64;
+            border-color: #00ff64;
+        }
+
+        .terms {
+            font-size: 11px;
+            color: #999;
+            margin-top: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .terms a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .login-link p {
+            color: #999;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .login-link a {
+            color: #00ffff;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .login-link a:hover {
+            text-shadow: 0 0 15px #00ffff;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #00ffff;
+            font-size: 14px;
+        }
+
+        .spinner {
+            border: 3px solid rgba(0, 255, 255, 0.2);
+            border-top: 3px solid #00ffff;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+            box-shadow: 0 0 20px #00ffff;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <h1>Create Account</h1>
+            <p>Join VOIDXHUB today</p>
+        </div>
+
+        <div id="messageBox"></div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Choose a username" minlength="3">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="your@email.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Min 8 characters" minlength="8">
+                <div class="password-strength">
+                    <div class="strength-meter" id="strengthMeter"></div>
+                </div>
+                <div class="strength-text" id="strengthText">Password strength: weak</div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Creating account...</p>
+            </div>
+
+            <button type="submit" class="register-btn" id="submitBtn">Create Account</button>
+
+            <div class="terms">
+                By registering, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </div>
+        </form>
+
+        <div class="login-link">
+            <p>Already have an account? <a href="login.html">Login here</a></p>
+        </div>
+    </div>
+
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        const messageBox = document.getElementById('messageBox');
+        const loading = document.getElementById('loading');
+        const submitBtn = document.getElementById('submitBtn');
+        const passwordField = document.getElementById('password');
+        const strengthMeter = document.getElementById('strengthMeter');
+        const strengthText = document.getElementById('strengthText');
+
+        // Password strength checker
+        passwordField.addEventListener('input', (e) => {
+            const password = e.target.value;
+            const strength = checkPasswordStrength(password);
+
+            const strengths = {
+                0: { width: '0%', color: '#ddd', text: 'weak' },
+                1: { width: '33%', color: '#ff6b6b', text: 'weak' },
+                2: { width: '66%', color: '#ffd93d', text: 'medium' },
+                3: { width: '100%', color: '#6bcf7f', text: 'strong' }
+            };
+
+            strengthMeter.style.width = strengths[strength].width;
+            strengthMeter.style.backgroundColor = strengths[strength].color;
+            strengthText.textContent = `Password strength: ${strengths[strength].text}`;
+        });
+
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validation
+            if (!username || !email || !password || !confirmPassword) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+
+            if (username.length < 3) {
+                showMessage('Username must be at least 3 characters', 'error');
+                return;
+            }
+
+            if (password.length < 8) {
+                showMessage('Password must be at least 8 characters', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showMessage('Passwords do not match', 'error');
+                return;
+            }
+
+            loading.style.display = 'block';
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('backend/auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'register',
+                        username: username,
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showMessage('Account created successfully! Redirecting to login...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                } else {
+                    showMessage(data.message || 'Registration failed', 'error');
+                    loading.style.display = 'none';
+                    submitBtn.disabled = false;
+                }
+            } catch (error) {
+                showMessage('An error occurred. Please try again.', 'error');
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        });
+
+        function showMessage(message, type) {
+            messageBox.innerHTML = `<div class="message ${type}">${message}</div>`;
+            messageBox.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+            return Math.min(Math.floor(strength / 2), 3);
+        }
+    </script>
+</body>
+</html>

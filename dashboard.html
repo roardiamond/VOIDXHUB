@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - VOIDXHUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: #05050a;
+            color: #e0e0ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(transparent 50%, rgba(0, 255, 255, 0.03) 50%);
+            background-size: 100% 8px;
+            animation: scan 14s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(400%); }
+        }
+
+        .navbar {
+            background: #0a0a15;
+            padding: 20px 30px;
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.2), inset 0 0 20px rgba(0, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #00ffff;
+            position: relative;
+            z-index: 10;
+        }
+
+        .navbar h2 {
+            color: #00ffff;
+            font-size: 26px;
+            text-shadow: 0 0 20px #00ffff;
+            letter-spacing: 3px;
+            font-weight: 900;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: 900;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        .user-info p {
+            margin: 0;
+        }
+
+        .user-info p:first-child {
+            color: #00ffff;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .user-info p:last-child {
+            color: #ff00ff;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #ff0000, #ff4444);
+            color: white;
+            border: 2px solid #ff0000;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 12px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+        }
+
+        .logout-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+            border-color: #ff6666;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-section {
+            background: #0a0a15;
+            padding: 35px;
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .welcome-section h1 {
+            color: #00ffff;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-shadow: 0 0 20px #00ffff;
+            letter-spacing: 2px;
+            font-weight: 900;
+        }
+
+        .welcome-section p {
+            color: #ff00ff;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: #0a0a15;
+            padding: 30px;
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: #ff00ff;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.3), 0 0 30px rgba(255, 0, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .stat-label {
+            color: #ff00ff;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .profile-section {
+            background: #0a0a15;
+            padding: 35px;
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+        }
+
+        .profile-section h2 {
+            color: #00ffff;
+            margin-bottom: 25px;
+            font-size: 22px;
+            text-shadow: 0 0 20px #00ffff;
+            letter-spacing: 2px;
+            font-weight: 900;
+        }
+
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .profile-item:last-child {
+            border-bottom: none;
+        }
+
+        .profile-label {
+            color: #00ffff;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .profile-value {
+            color: #ff00ff;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .edit-btn {
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            color: #000;
+            border: 2px solid #00ffff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .edit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5), 0 0 15px rgba(255, 0, 255, 0.3);
+            border-color: #ff00ff;
+        }
+
+        .message {
+            padding: 16px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            border: 2px solid;
+            letter-spacing: 1px;
+        }
+
+        .error {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff4444;
+            border-color: #ff4444;
+        }
+
+        .success {
+            background: rgba(0, 255, 100, 0.1);
+            color: #00ff64;
+            border-color: #00ff64;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #00ffff;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 255, 255, 0.2);
+            border-top: 4px solid #00ffff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 30px #00ffff;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h2>VOIDXHUB</h2>
+        <div class="navbar-right">
+            <div class="user-info">
+                <div class="user-avatar" id="avatar">U</div>
+                <div>
+                    <p style="margin: 0; color: #333; font-weight: 600;" id="username">User</p>
+                    <p style="margin: 0; color: #999; font-size: 12px;" id="email">email@example.com</p>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="messageBox"></div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading dashboard...</p>
+        </div>
+
+        <div id="dashboardContent" style="display: none;">
+            <div class="welcome-section">
+                <h1>Welcome back, <span id="welcomeName">User</span>!</h1>
+                <p>You're successfully logged in to VOIDXHUB. Manage your account below.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">1</div>
+                    <div class="stat-label">Active Sessions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="joinDate">Today</div>
+                    <div class="stat-label">Member Since</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">Active</div>
+                    <div class="stat-label">Account Status</div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h2>Profile Information</h2>
+                <div class="profile-item">
+                    <span class="profile-label">Username</span>
+                    <span class="profile-value" id="profileUsername">-</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Email</span>
+                    <span class="profile-value" id="profileEmail">-</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Member Since</span>
+                    <span class="profile-value" id="profileJoinDate">-</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Account Status</span>
+                    <span class="profile-value" style="color: #3c3;">Active</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        async function checkAuth() {
+            try {
+                const response = await fetch('backend/auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'check_auth'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.authenticated) {
+                    displayDashboard(data.user);
+                } else {
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Auth check error:', error);
+                window.location.href = 'login.html';
+            }
+        }
+
+        function displayDashboard(user) {
+            const loading = document.getElementById('loading');
+            const dashboardContent = document.getElementById('dashboardContent');
+
+            // Set user info
+            document.getElementById('username').textContent = user.username;
+            document.getElementById('email').textContent = user.email;
+            document.getElementById('welcomeName').textContent = user.username;
+            document.getElementById('profileUsername').textContent = user.username;
+            document.getElementById('profileEmail').textContent = user.email;
+            document.getElementById('profileJoinDate').textContent = formatDate(user.created_at);
+            document.getElementById('joinDate').textContent = formatDate(user.created_at);
+            
+            // Set avatar
+            const firstLetter = user.username.charAt(0).toUpperCase();
+            document.getElementById('avatar').textContent = firstLetter;
+
+            loading.style.display = 'none';
+            dashboardContent.style.display = 'block';
+        }
+
+        function formatDate(dateString) {
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            } catch {
+                return dateString;
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                fetch('backend/auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'logout'
+                    })
+                }).then(() => {
+                    window.location.href = 'login.html';
+                });
+            }
+        }
+
+        // Initialize dashboard
+        checkAuth();
+    </script>
+</body>
+</html>

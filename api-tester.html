@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Tester - VOIDXHUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', monospace;
+            background: #05050a;
+            color: #e0e0ff;
+            padding: 20px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(transparent 50%, rgba(0, 255, 255, 0.03) 50%);
+            background-size: 100% 8px;
+            animation: scan 14s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(400%); }
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #00ffff;
+            margin-bottom: 20px;
+            font-size: 28px;
+            text-shadow: 0 0 30px #00ffff, 0 0 60px rgba(0, 255, 255, 0.3);
+            letter-spacing: 3px;
+            font-weight: 900;
+        }
+
+        .section {
+            background: #0a0a15;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #00ffff;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+        }
+
+        .section h2 {
+            color: #00ffff;
+            margin-bottom: 18px;
+            font-size: 18px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            text-shadow: 0 0 15px #00ffff;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            background: rgba(0, 255, 255, 0.05);
+            color: #e0e0ff;
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(0, 255, 255, 0.3);
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), 0 0 20px rgba(255, 0, 255, 0.1);
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            color: #000;
+            padding: 11px 22px;
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: all 0.3s;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px #00ffff, 0 0 20px #ff00ff;
+            border-color: #ff00ff;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button.clear {
+            background: linear-gradient(135deg, #ff4444, #ff0000);
+            border-color: #ff4444;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+        }
+
+        button.clear:hover {
+            box-shadow: 0 0 30px #ff4444;
+            border-color: #ff0000;
+        }
+
+        .response {
+            background: #0a0a15;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 5px;
+            border: 1px solid #00ffff;
+            max-height: 300px;
+            overflow-y: auto;
+            color: #00ff64;
+            font-size: 11px;
+        }
+
+        .response pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .error {
+            color: #ff4444;
+            border-color: #ff4444;
+        }
+
+        .success {
+            color: #00ff64;
+        }
+
+        .info {
+            background: rgba(0, 255, 255, 0.05);
+            padding: 18px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border-left: 4px solid #00ffff;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .info strong {
+            color: #00ffff;
+        }
+
+        textarea {
+            min-height: 100px;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 VOIDXHUB Login System - API Tester</h1>
+
+        <div class="info">
+            <strong>Info:</strong> Use this tool to test the authentication API endpoints.
+            Open your browser's Console (F12) to see detailed request/response information.
+        </div>
+
+        <!-- Registration -->
+        <div class="section">
+            <h2>📝 Register New User</h2>
+            <input type="text" id="regUsername" placeholder="Username (min 3 chars)">
+            <input type="email" id="regEmail" placeholder="Email">
+            <input type="password" id="regPassword" placeholder="Password (min 8 chars)">
+            <button onclick="testRegister()">Register</button>
+            <button class="clear" onclick="clearResponse('regResponse')">Clear</button>
+            <div id="regResponse" class="response" style="display:none;"></div>
+        </div>
+
+        <!-- Login -->
+        <div class="section">
+            <h2>🔐 Login User</h2>
+            <input type="email" id="loginEmail" placeholder="Email">
+            <input type="password" id="loginPassword" placeholder="Password">
+            <button onclick="testLogin()">Login</button>
+            <button class="clear" onclick="clearResponse('loginResponse')">Clear</button>
+            <div id="loginResponse" class="response" style="display:none;"></div>
+        </div>
+
+        <!-- Check Auth -->
+        <div class="section">
+            <h2>✅ Check Authentication</h2>
+            <p style="margin-bottom: 10px; color: #999;">Check if current session is authenticated</p>
+            <button onclick="testCheckAuth()">Check Auth</button>
+            <button class="clear" onclick="clearResponse('authResponse')">Clear</button>
+            <div id="authResponse" class="response" style="display:none;"></div>
+        </div>
+
+        <!-- Logout -->
+        <div class="section">
+            <h2>🚪 Logout</h2>
+            <p style="margin-bottom: 10px; color: #999;">Destroy current session</p>
+            <button onclick="testLogout()">Logout</button>
+            <button class="clear" onclick="clearResponse('logoutResponse')">Clear</button>
+            <div id="logoutResponse" class="response" style="display:none;"></div>
+        </div>
+
+        <!-- Raw Request -->
+        <div class="section">
+            <h2>📤 Raw API Request</h2>
+            <textarea id="rawRequest" placeholder="Enter JSON request body..." rows="6">
+{
+  "action": "login",
+  "email": "test@example.com",
+  "password": "TestPass123"
+}
+            </textarea>
+            <button onclick="testRawRequest()">Send Request</button>
+            <button class="clear" onclick="clearResponse('rawResponse')">Clear</button>
+            <div id="rawResponse" class="response" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = './backend/auth.php';
+
+        function displayResponse(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = `response ${isError ? 'error' : 'success'}`;
+            element.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        function clearResponse(elementId) {
+            document.getElementById(elementId).style.display = 'none';
+        }
+
+        async function testRegister() {
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            if (!username || !email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'register',
+                        username: username,
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+                console.log('Register Response:', data);
+                displayResponse('regResponse', data, !data.success);
+            } catch (error) {
+                console.error('Register Error:', error);
+                displayResponse('regResponse', { error: error.message }, true);
+            }
+        }
+
+        async function testLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'login',
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+                console.log('Login Response:', data);
+                displayResponse('loginResponse', data, !data.success);
+            } catch (error) {
+                console.error('Login Error:', error);
+                displayResponse('loginResponse', { error: error.message }, true);
+            }
+        }
+
+        async function testCheckAuth() {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'check_auth' })
+                });
+
+                const data = await response.json();
+                console.log('Check Auth Response:', data);
+                displayResponse('authResponse', data, !data.authenticated);
+            } catch (error) {
+                console.error('Check Auth Error:', error);
+                displayResponse('authResponse', { error: error.message }, true);
+            }
+        }
+
+        async function testLogout() {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'logout' })
+                });
+
+                const data = await response.json();
+                console.log('Logout Response:', data);
+                displayResponse('logoutResponse', data, !data.success);
+            } catch (error) {
+                console.error('Logout Error:', error);
+                displayResponse('logoutResponse', { error: error.message }, true);
+            }
+        }
+
+        async function testRawRequest() {
+            const requestBody = document.getElementById('rawRequest').value;
+
+            try {
+                const data = JSON.parse(requestBody);
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const responseData = await response.json();
+                console.log('Raw Request Response:', responseData);
+                displayResponse('rawResponse', responseData);
+            } catch (error) {
+                console.error('Raw Request Error:', error);
+                displayResponse('rawResponse', { error: error.message }, true);
+            }
+        }
+
+        console.log('API Tester loaded. Testing against:', API_URL);
+    </script>
+</body>
+</html>
