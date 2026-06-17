@@ -1,5 +1,5 @@
 <?php
-$admin_pass = "9873987036yash";
+$admin_pass = "7011496531yash";
 
 if (!isset($_GET['pass']) || $_GET['pass'] !== $admin_pass) {
     die("<h1 style='color:red;text-align:center;margin-top:100px'>❌ Wrong Password! Access Denied.</h1>");
