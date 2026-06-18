@@ -112,7 +112,6 @@
       }
 
       if (confirm(`Confirm Registration for CS 1V1?\n\nUID: ${uid}\nIn-Game Name: ${ingame}\n\nAmount: ₹30\n\nAfter payment you will be redirected to UPI payment page.`)) {
-        // Bot ko message bhejne ke liye format + details pass kar rahe hain
         window.location.href = `entryfee.html?format=1v1&uid=${encodeURIComponent(uid)}&name=${encodeURIComponent(ingame)}`;
       }
     }
