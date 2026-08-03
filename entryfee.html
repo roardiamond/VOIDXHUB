@@ -124,11 +124,7 @@
     const BOT_TOKEN = "8647618078:AAHBAKL0K5jxef6TIP8jti1wrPA2cdutNN8";
     const CHAT_ID = "7994843509";
 
-    const upiList = [
-      { name: "Paytm", id: "770386021@axl", qr: "paytm.jpeg" },
-      { name: "PhonePe", id: "7703860211@pthdfc", qr: "phonepe.jpeg" },
-      { name: "Google Pay", id: "dv5124950@okaxis", qr: "gpay.jpeg" }
-    ];
+    const upiList = [];
 
     const urlParams = new URLSearchParams(window.location.search);
     const format = (urlParams.get('format') || "1v1").toLowerCase();
@@ -158,17 +154,7 @@
       document.body.classList.add('no-scroll');
 
       const container = document.getElementById('upiOptions');
-      container.innerHTML = '';
-      upiList.forEach(upi => {
-        const div = document.createElement('div');
-        div.className = "text-center qr-container";
-        div.innerHTML = `
-          <img src="${upi.qr}" alt="${upi.name}">
-          <p class="text-xl font-bold mt-4 mb-1">${upi.name}</p>
-          <p onclick="copyUPI('${upi.id}')" class="text-green-400 text-lg font-mono break-all cursor-pointer hover:text-green-300">${upi.id}</p>
-        `;
-        container.appendChild(div);
-      });
+      container.innerHTML = '<p class="text-center text-red-400 text-lg">Payment methods currently unavailable. Contact admin.</p>';
 
       let html = '';
       playerData.forEach(p => {
