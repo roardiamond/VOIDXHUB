@@ -129,7 +129,6 @@
     document.getElementById('formatTitle').textContent = config.name + " ENTRY";
     document.getElementById('payAmount').textContent = `₹${totalAmount}`;
 
-    // Smart Prize Pool Display
     const detailsHTML = `
       <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Entry Fee (Per Player)</span><span class="text-green-400 font-black">₹${config.entry}</span></div>
       <div class="flex justify-between bg-zinc-900 p-5 rounded-2xl"><span>Players</span><span class="text-green-400 font-black">${playerCount}</span></div>
@@ -139,7 +138,6 @@
     `;
     document.getElementById('details').innerHTML = detailsHTML;
 
-    // Rest same functions
     function showPaymentPopup() {
       document.body.classList.add('no-scroll');
       const container = document.getElementById('upiOptions');
@@ -163,7 +161,7 @@
       alert("✅ UPI ID Copied: " + upi);
     }
 
-    function submitTransaction() {
+    async function submitTransaction() {
       const txnId = document.getElementById('txnId').value.trim();
       const telegram = document.getElementById('telegram').value.trim().replace('@','');
 
@@ -175,6 +173,26 @@
 
       if (!confirm(confirmMsg)) return;
 
+      // 1. Save to Database
+      try {
+        await fetch('backend/payment.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'submit',
+            format: config.name,
+            total_amount: totalAmount,
+            prize_pool: config.prizePool,
+            txn_id: txnId,
+            telegram: telegram,
+            players: playerData
+          })
+        });
+      } catch (e) {
+        console.log('DB save failed', e);
+      }
+
+      // 2. Send to Telegram
       let message = `🔥 NEW BR PAYMENT + REGISTRATION 🔥\n\n`;
       message += `Format: ${config.name}\n`;
       message += `Total Paid: ₹${totalAmount}\n`;
@@ -193,7 +211,10 @@
         hidePaymentPopup();
         document.getElementById('successPopup').classList.remove('hidden');
       })
-      .catch(() => alert("Bot error! Please send screenshot manually."));
+      .catch(() => {
+        hidePaymentPopup();
+        document.getElementById('successPopup').classList.remove('hidden');
+      });
     }
 
     function hideSuccessPopup() {
