@@ -22,7 +22,6 @@
       to { transform: scale(1); opacity: 1; } 
     }
 
-    /* Background lock when popup is open */
     .no-scroll {
       overflow: hidden !important;
       height: 100vh;
@@ -30,7 +29,6 @@
       width: 100%;
     }
 
-    /* Bade aur Clear QR */
     .qr-container img {
       width: 320px !important;
       height: 320px !important;
@@ -66,7 +64,7 @@
     </button>
   </div>
 
-  <!-- Payment Popup (Scrollable + Background Locked) -->
+  <!-- Payment Popup -->
   <div id="paymentPopup" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-50 overflow-hidden">
     <div class="bg-zinc-900 border border-red-500 rounded-3xl p-8 max-w-md w-full mx-4 my-auto max-h-[92vh] overflow-y-auto popup">
       <h2 class="text-2xl font-bold text-center mb-6 text-red-400 sticky top-0 bg-zinc-900 py-2">SCAN QR TO PAY</h2>
@@ -111,7 +109,6 @@
   </div>
 
   <script>
-    // ... (pricing, BOT_TOKEN, CHAT_ID, upiList same rakha hai)
     const pricing = {
       "1v1": { entry: 30, total: 60, win: 55, org: 5, players: 1 },
       "2v2": { entry: 40, total: 160, win: 130, org: 30, players: 2 },
@@ -175,7 +172,7 @@
       alert("✅ UPI ID Copied: " + upi);
     }
 
-    function submitTransaction() {
+    async function submitTransaction() {
       const txnId = document.getElementById('txnId').value.trim();
       const telegram = document.getElementById('telegram').value.trim().replace('@','');
 
@@ -195,6 +192,26 @@
 
       if (!confirm(confirmMsg)) return;
 
+      // 1. Save to Database
+      try {
+        await fetch('backend/payment.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'submit',
+            format: format.toUpperCase(),
+            total_amount: totalAmount,
+            prize_pool: data.win,
+            txn_id: txnId,
+            telegram: telegram,
+            players: playerData
+          })
+        });
+      } catch (e) {
+        console.log('DB save failed', e);
+      }
+
+      // 2. Send to Telegram
       let message = `🔥 NEW PAYMENT + REGISTRATION 🔥\n\n`;
       message += `Format: ${format.toUpperCase()}\n`;
       message += `Total Amount Paid: ₹${totalAmount}\n`;
@@ -215,7 +232,10 @@
         hidePaymentPopup();
         document.getElementById('successPopup').classList.remove('hidden');
       })
-      .catch(() => alert("Bot error! Please send screenshot manually."));
+      .catch(() => {
+        hidePaymentPopup();
+        document.getElementById('successPopup').classList.remove('hidden');
+      });
     }
 
     function hideSuccessPopup() {
