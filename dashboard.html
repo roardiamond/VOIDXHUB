@@ -1,449 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - VOIDXHUB</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Orbitron', sans-serif;
-            background: #05050a;
-            color: #e0e0ff;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(transparent 50%, rgba(0, 255, 255, 0.03) 50%);
-            background-size: 100% 8px;
-            animation: scan 14s linear infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        @keyframes scan {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(400%); }
-        }
-
-        .navbar {
-            background: #0a0a15;
-            padding: 20px 30px;
-            box-shadow: 0 0 40px rgba(0, 255, 255, 0.2), inset 0 0 20px rgba(0, 255, 255, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #00ffff;
-            position: relative;
-            z-index: 10;
-        }
-
-        .navbar h2 {
-            color: #00ffff;
-            font-size: 26px;
-            text-shadow: 0 0 20px #00ffff;
-            letter-spacing: 3px;
-            font-weight: 900;
-        }
-
-        .navbar-right {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #00ffff, #ff00ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #000;
-            font-weight: 900;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-        }
-
-        .user-info p {
-            margin: 0;
-        }
-
-        .user-info p:first-child {
-            color: #00ffff;
-            font-weight: 700;
-            font-size: 14px;
-            letter-spacing: 1px;
-        }
-
-        .user-info p:last-child {
-            color: #ff00ff;
-            font-size: 11px;
-            letter-spacing: 0.5px;
-        }
-
-        .logout-btn {
-            background: linear-gradient(135deg, #ff0000, #ff4444);
-            color: white;
-            border: 2px solid #ff0000;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-size: 12px;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
-        }
-
-        .logout-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
-            border-color: #ff6666;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .welcome-section {
-            background: #0a0a15;
-            padding: 35px;
-            border: 2px solid #00ffff;
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
-            margin-bottom: 40px;
-        }
-
-        .welcome-section h1 {
-            color: #00ffff;
-            margin-bottom: 10px;
-            font-size: 28px;
-            text-shadow: 0 0 20px #00ffff;
-            letter-spacing: 2px;
-            font-weight: 900;
-        }
-
-        .welcome-section p {
-            color: #ff00ff;
-            font-size: 14px;
-            letter-spacing: 1px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: #0a0a15;
-            padding: 30px;
-            border: 2px solid #00ffff;
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .stat-card:hover {
-            border-color: #ff00ff;
-            box-shadow: 0 0 50px rgba(0, 255, 255, 0.3), 0 0 30px rgba(255, 0, 255, 0.2);
-            transform: translateY(-5px);
-        }
-
-        .stat-value {
-            font-size: 36px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #00ffff, #ff00ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 12px;
-            text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-        }
-
-        .stat-label {
-            color: #ff00ff;
-            font-size: 13px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .profile-section {
-            background: #0a0a15;
-            padding: 35px;
-            border: 2px solid #00ffff;
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
-        }
-
-        .profile-section h2 {
-            color: #00ffff;
-            margin-bottom: 25px;
-            font-size: 22px;
-            text-shadow: 0 0 20px #00ffff;
-            letter-spacing: 2px;
-            font-weight: 900;
-        }
-
-        .profile-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 0;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-        }
-
-        .profile-item:last-child {
-            border-bottom: none;
-        }
-
-        .profile-label {
-            color: #00ffff;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .profile-value {
-            color: #ff00ff;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-        }
-
-        .edit-btn {
-            background: linear-gradient(135deg, #00ffff, #ff00ff);
-            color: #000;
-            border: 2px solid #00ffff;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 11px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-        }
-
-        .edit-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5), 0 0 15px rgba(255, 0, 255, 0.3);
-            border-color: #ff00ff;
-        }
-
-        .message {
-            padding: 16px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            font-size: 13px;
-            border: 2px solid;
-            letter-spacing: 1px;
-        }
-
-        .error {
-            background: rgba(255, 0, 0, 0.1);
-            color: #ff4444;
-            border-color: #ff4444;
-        }
-
-        .success {
-            background: rgba(0, 255, 100, 0.1);
-            color: #00ff64;
-            border-color: #00ff64;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #00ffff;
-        }
-
-        .spinner {
-            border: 4px solid rgba(0, 255, 255, 0.2);
-            border-top: 4px solid #00ffff;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-            box-shadow: 0 0 30px #00ffff;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - VOIDXHUB</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; }
+    .card { background: #0a0a15; border: 1px solid rgba(0,255,255,0.2); }
+    .glow { box-shadow: 0 0 30px rgba(0,255,255,0.15); }
+  </style>
 </head>
-<body>
-    <div class="navbar">
-        <h2>VOIDXHUB</h2>
-        <div class="navbar-right">
-            <div class="user-info">
-                <div class="user-avatar" id="avatar">U</div>
-                <div>
-                    <p style="margin: 0; color: #333; font-weight: 600;" id="username">User</p>
-                    <p style="margin: 0; color: #999; font-size: 12px;" id="email">email@example.com</p>
-                </div>
-            </div>
-            <button class="logout-btn" onclick="logout()">Logout</button>
+<body class="min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-zinc-950 border-b border-cyan-500/30 px-6 py-4 flex justify-between items-center sticky top-0 z-40">
+    <a href="index.html" class="text-2xl font-black text-cyan-400 tracking-wider">VOIDXHUB</a>
+    <div class="flex gap-4 items-center">
+      <a href="tools.html" class="text-sm text-gray-400 hover:text-cyan-400">Tools</a>
+      <a href="scrims.html" class="text-sm text-gray-400 hover:text-cyan-400">Scrims</a>
+      <div class="flex items-center gap-3 ml-4">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-400 to-pink-500 flex items-center justify-center text-black font-black text-sm" id="avatar">U</div>
+        <div class="hidden sm:block">
+          <p class="text-sm font-bold text-cyan-300" id="navUsername">User</p>
+          <p class="text-xs text-pink-400" id="navEmail">email</p>
         </div>
+        <button onclick="logout()" class="ml-2 px-4 py-2 bg-red-600/20 border border-red-500 rounded-lg text-xs hover:bg-red-600/40 transition">LOGOUT</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-5xl mx-auto p-6">
+    <div id="loading" class="text-center py-20">
+      <div class="inline-block w-12 h-12 border-4 border-cyan-500/30 border-t-cyan-400 rounded-full animate-spin"></div>
+      <p class="mt-4 text-cyan-400">Loading...</p>
     </div>
 
-    <div class="container">
-        <div id="messageBox"></div>
+    <div id="dashboardContent" class="hidden">
+      <!-- Welcome -->
+      <div class="card rounded-2xl p-8 mb-8 glow">
+        <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-500">
+          Welcome, <span id="welcomeName">User</span>!
+        </h1>
+        <p class="text-gray-400 mt-2 text-sm tracking-wide">Manage your VOIDXHUB account</p>
+      </div>
 
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Loading dashboard...</p>
+      <!-- Stats -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div class="card rounded-2xl p-6 text-center glow">
+          <p class="text-3xl font-black text-cyan-400" id="statStatus">Active</p>
+          <p class="text-xs text-gray-400 mt-2 tracking-wider">ACCOUNT STATUS</p>
         </div>
-
-        <div id="dashboardContent" style="display: none;">
-            <div class="welcome-section">
-                <h1>Welcome back, <span id="welcomeName">User</span>!</h1>
-                <p>You're successfully logged in to VOIDXHUB. Manage your account below.</p>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value">1</div>
-                    <div class="stat-label">Active Sessions</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="joinDate">Today</div>
-                    <div class="stat-label">Member Since</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">Active</div>
-                    <div class="stat-label">Account Status</div>
-                </div>
-            </div>
-
-            <div class="profile-section">
-                <h2>Profile Information</h2>
-                <div class="profile-item">
-                    <span class="profile-label">Username</span>
-                    <span class="profile-value" id="profileUsername">-</span>
-                </div>
-                <div class="profile-item">
-                    <span class="profile-label">Email</span>
-                    <span class="profile-value" id="profileEmail">-</span>
-                </div>
-                <div class="profile-item">
-                    <span class="profile-label">Member Since</span>
-                    <span class="profile-value" id="profileJoinDate">-</span>
-                </div>
-                <div class="profile-item">
-                    <span class="profile-label">Account Status</span>
-                    <span class="profile-value" style="color: #3c3;">Active</span>
-                </div>
-            </div>
+        <div class="card rounded-2xl p-6 text-center glow">
+          <p class="text-3xl font-black text-pink-400" id="statJoin">-</p>
+          <p class="text-xs text-gray-400 mt-2 tracking-wider">MEMBER SINCE</p>
         </div>
+        <div class="card rounded-2xl p-6 text-center glow">
+          <p class="text-3xl font-black text-green-400">1</p>
+          <p class="text-xs text-gray-400 mt-2 tracking-wider">ACTIVE SESSION</p>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+        <a href="tools.html" class="card rounded-2xl p-6 hover:border-cyan-400 transition group">
+          <h3 class="text-lg font-bold text-cyan-300 group-hover:text-cyan-200">🛠 Tools</h3>
+          <p class="text-sm text-gray-400 mt-1">Browse premium tools & configs</p>
+        </a>
+        <a href="scrims.html" class="card rounded-2xl p-6 hover:border-pink-400 transition group">
+          <h3 class="text-lg font-bold text-pink-300 group-hover:text-pink-200">🎮 Scrims</h3>
+          <p class="text-sm text-gray-400 mt-1">Join paid & free scrims</p>
+        </a>
+      </div>
+
+      <!-- Profile -->
+      <div class="card rounded-2xl p-8 glow">
+        <h2 class="text-xl font-black text-cyan-400 mb-6 tracking-wider">PROFILE</h2>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center py-3 border-b border-zinc-800">
+            <span class="text-sm text-gray-400 tracking-wider">USERNAME</span>
+            <span class="font-bold text-cyan-300" id="profileUsername">-</span>
+          </div>
+          <div class="flex justify-between items-center py-3 border-b border-zinc-800">
+            <span class="text-sm text-gray-400 tracking-wider">EMAIL</span>
+            <span class="font-bold text-pink-300" id="profileEmail">-</span>
+          </div>
+          <div class="flex justify-between items-center py-3 border-b border-zinc-800">
+            <span class="text-sm text-gray-400 tracking-wider">MEMBER SINCE</span>
+            <span class="font-bold text-green-300" id="profileJoin">-</span>
+          </div>
+          <div class="flex justify-between items-center py-3">
+            <span class="text-sm text-gray-400 tracking-wider">STATUS</span>
+            <span class="font-bold text-green-400">ACTIVE</span>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        // Check if user is logged in
-        async function checkAuth() {
-            try {
-                const response = await fetch('backend/auth.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        action: 'check_auth'
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.authenticated) {
-                    displayDashboard(data.user);
-                } else {
-                    window.location.href = 'login.html';
-                }
-            } catch (error) {
-                console.error('Auth check error:', error);
-                window.location.href = 'login.html';
-            }
+  <script>
+    async function checkAuth() {
+      try {
+        const res = await fetch('backend/auth.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'check_auth' })
+        });
+        const data = await res.json();
+        if (data.authenticated) {
+          showDashboard(data.user);
+        } else {
+          window.location.href = 'login.html';
         }
+      } catch (e) {
+        window.location.href = 'login.html';
+      }
+    }
 
-        function displayDashboard(user) {
-            const loading = document.getElementById('loading');
-            const dashboardContent = document.getElementById('dashboardContent');
+    function showDashboard(user) {
+      document.getElementById('loading').classList.add('hidden');
+      document.getElementById('dashboardContent').classList.remove('hidden');
 
-            // Set user info
-            document.getElementById('username').textContent = user.username;
-            document.getElementById('email').textContent = user.email;
-            document.getElementById('welcomeName').textContent = user.username;
-            document.getElementById('profileUsername').textContent = user.username;
-            document.getElementById('profileEmail').textContent = user.email;
-            document.getElementById('profileJoinDate').textContent = formatDate(user.created_at);
-            document.getElementById('joinDate').textContent = formatDate(user.created_at);
-            
-            // Set avatar
-            const firstLetter = user.username.charAt(0).toUpperCase();
-            document.getElementById('avatar').textContent = firstLetter;
+      document.getElementById('navUsername').textContent = user.username;
+      document.getElementById('navEmail').textContent = user.email;
+      document.getElementById('welcomeName').textContent = user.username;
+      document.getElementById('profileUsername').textContent = user.username;
+      document.getElementById('profileEmail').textContent = user.email;
+      document.getElementById('profileJoin').textContent = formatDate(user.created_at);
+      document.getElementById('statJoin').textContent = formatDate(user.created_at);
+      document.getElementById('avatar').textContent = user.username.charAt(0).toUpperCase();
+    }
 
-            loading.style.display = 'none';
-            dashboardContent.style.display = 'block';
-        }
+    function formatDate(str) {
+      try {
+        return new Date(str).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
+      } catch { return str; }
+    }
 
-        function formatDate(dateString) {
-            try {
-                const date = new Date(dateString);
-                return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-            } catch {
-                return dateString;
-            }
-        }
+    function logout() {
+      if (!confirm('Logout?')) return;
+      fetch('backend/auth.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'logout' })
+      }).then(() => window.location.href = 'login.html');
+    }
 
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                fetch('backend/auth.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        action: 'logout'
-                    })
-                }).then(() => {
-                    window.location.href = 'login.html';
-                });
-            }
-        }
-
-        // Initialize dashboard
-        checkAuth();
-    </script>
+    checkAuth();
+  </script>
 </body>
 </html>
