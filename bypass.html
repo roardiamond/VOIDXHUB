@@ -40,6 +40,11 @@
       display: inline-block;
       background: rgba(0,0,0,0.7);
       box-shadow: 0 0 25px rgba(103, 232, 249, 0.5);
+      transition: all 0.4s ease;
+    }
+    .title-box:hover {
+      box-shadow: 0 0 40px rgba(103, 232, 249, 0.8);
+      transform: scale(1.03);
     }
     table {
       width: 100%;
@@ -62,8 +67,13 @@
       letter-spacing: 1px;
       font-size: 13px;
     }
-    tr:hover td {
-      background: rgba(103, 232, 249, 0.08);
+    tr {
+      transition: all 0.35s ease;
+    }
+    tr:hover {
+      background: rgba(103, 232, 249, 0.12);
+      transform: scale(1.01);
+      box-shadow: 0 0 20px rgba(103, 232, 249, 0.25);
     }
     .brand-img {
       width: 70px;
@@ -71,15 +81,26 @@
       object-fit: contain;
       margin: 0 auto;
       display: block;
+      transition: all 0.4s ease;
+    }
+    tr:hover .brand-img {
+      transform: scale(1.15);
+      filter: drop-shadow(0 0 8px rgba(103, 232, 249, 0.6));
     }
     .link-btn {
       display: inline-block;
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 10px;
+      font-weight: 700;
       font-size: 13px;
-      transition: all 0.3s;
+      transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
       text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .link-btn:hover {
+      transform: translateY(-3px) scale(1.08);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
     .public-btn {
       background: rgba(34, 197, 94, 0.2);
@@ -89,6 +110,7 @@
     .public-btn:hover {
       background: #4ade80;
       color: #000;
+      box-shadow: 0 0 18px rgba(74, 222, 128, 0.6);
     }
     .private-btn {
       background: rgba(239, 68, 68, 0.2);
@@ -98,6 +120,7 @@
     .private-btn:hover {
       background: #f87171;
       color: #000;
+      box-shadow: 0 0 18px rgba(248, 113, 113, 0.6);
     }
     .personal-btn {
       background: rgba(168, 85, 247, 0.2);
@@ -107,14 +130,15 @@
     .personal-btn:hover {
       background: #c084fc;
       color: #000;
+      box-shadow: 0 0 18px rgba(192, 132, 252, 0.6);
     }
     .back-btn {
       background: linear-gradient(to right, #06b6d4, #9333ea);
-      transition: all 0.3s;
+      transition: all 0.4s ease;
     }
     .back-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(103, 232, 249, 0.6);
+      transform: scale(1.07);
+      box-shadow: 0 0 30px rgba(103, 232, 249, 0.7);
     }
   </style>
 </head>
@@ -155,9 +179,9 @@
               <td><img src="samsung.jpg" class="brand-img" alt="Samsung"></td>
               <td>S24 Ultra, A55, A54, M35, M34, F55, etc.</td>
               <td class="text-green-400 font-bold">Yes</td>
-              <td><a href="wait.html" class="link-btn public-btn">Public</a></td>
-              <td><a href="wait.html" class="link-btn private-btn">Private</a></td>
-              <td><a href="wait.html" class="link-btn personal-btn">Personal</a></td>
+              <td><a href="payment.html?type=public&brand=samsung&price=600" class="link-btn public-btn">Public ₹600</a></td>
+              <td><a href="payment.html?type=private&brand=samsung&price=1000" class="link-btn private-btn">Private ₹1000</a></td>
+              <td><a href="payment.html?type=personal&brand=samsung&price=1400" class="link-btn personal-btn">Personal ₹1400</a></td>
             </tr>
 
             <!-- MOTOROLA -->
@@ -165,9 +189,9 @@
               <td><img src="motorola.jpg" class="brand-img" alt="Motorola"></td>
               <td>Edge 50, G85, G84, G64, G54, etc.</td>
               <td class="text-green-400 font-bold">Yes</td>
-              <td><a href="wait.html" class="link-btn public-btn">Public</a></td>
-              <td><a href="wait.html" class="link-btn private-btn">Private</a></td>
-              <td><a href="wait.html" class="link-btn personal-btn">Personal</a></td>
+              <td><a href="payment.html?type=public&brand=motorola&price=600" class="link-btn public-btn">Public ₹600</a></td>
+              <td><a href="payment.html?type=private&brand=motorola&price=1000" class="link-btn private-btn">Private ₹1000</a></td>
+              <td><a href="payment.html?type=personal&brand=motorola&price=1400" class="link-btn personal-btn">Personal ₹1400</a></td>
             </tr>
 
             <!-- IPHONE -->
@@ -175,9 +199,9 @@
               <td><img src="iphone.jpg" class="brand-img" alt="iPhone"></td>
               <td>15 Pro, 15, 14 Pro, 14, 13 series, etc.</td>
               <td class="text-green-400 font-bold">Yes</td>
-              <td><a href="wait.html" class="link-btn public-btn">Public</a></td>
-              <td><a href="wait.html" class="link-btn private-btn">Private</a></td>
-              <td><a href="wait.html" class="link-btn personal-btn">Personal</a></td>
+              <td><a href="payment.html?type=public&brand=iphone&price=600" class="link-btn public-btn">Public ₹600</a></td>
+              <td><a href="payment.html?type=private&brand=iphone&price=1000" class="link-btn private-btn">Private ₹1000</a></td>
+              <td><a href="payment.html?type=personal&brand=iphone&price=1400" class="link-btn personal-btn">Personal ₹1400</a></td>
             </tr>
 
             <!-- REDMI -->
@@ -185,9 +209,9 @@
               <td><img src="redmi.jpg" class="brand-img" alt="Redmi"></td>
               <td>Note 13 Pro, Note 13, Note 12, 13C, 12C, etc.</td>
               <td class="text-green-400 font-bold">Yes</td>
-              <td><a href="wait.html" class="link-btn public-btn">Public</a></td>
-              <td><a href="wait.html" class="link-btn private-btn">Private</a></td>
-              <td><a href="wait.html" class="link-btn personal-btn">Personal</a></td>
+              <td><a href="payment.html?type=public&brand=redmi&price=600" class="link-btn public-btn">Public ₹600</a></td>
+              <td><a href="payment.html?type=private&brand=redmi&price=1000" class="link-btn private-btn">Private ₹1000</a></td>
+              <td><a href="payment.html?type=personal&brand=redmi&price=1400" class="link-btn personal-btn">Personal ₹1400</a></td>
             </tr>
 
             <!-- REALME -->
@@ -195,9 +219,9 @@
               <td><img src="realme.png" class="brand-img" alt="Realme"></td>
               <td>GT 6, Narzo 70, C67, C55, C53, etc.</td>
               <td class="text-green-400 font-bold">Yes</td>
-              <td><a href="wait.html" class="link-btn public-btn">Public</a></td>
-              <td><a href="wait.html" class="link-btn private-btn">Private</a></td>
-              <td><a href="wait.html" class="link-btn personal-btn">Personal</a></td>
+              <td><a href="payment.html?type=public&brand=realme&price=600" class="link-btn public-btn">Public ₹600</a></td>
+              <td><a href="payment.html?type=private&brand=realme&price=1000" class="link-btn private-btn">Private ₹1000</a></td>
+              <td><a href="payment.html?type=personal&brand=realme&price=1400" class="link-btn personal-btn">Personal ₹1400</a></td>
             </tr>
 
             <!-- VIVO -->
@@ -205,9 +229,9 @@
               <td><img src="vivo.png" class="brand-img" alt="Vivo"></td>
               <td>V30, V29, Y200, Y100, Y28, etc.</td>
               <td class="text-green-400 font-bold">Yes</td>
-              <td><a href="wait.html" class="link-btn public-btn">Public</a></td>
-              <td><a href="wait.html" class="link-btn private-btn">Private</a></td>
-              <td><a href="wait.html" class="link-btn personal-btn">Personal</a></td>
+              <td><a href="payment.html?type=public&brand=vivo&price=600" class="link-btn public-btn">Public ₹600</a></td>
+              <td><a href="payment.html?type=private&brand=vivo&price=1000" class="link-btn private-btn">Private ₹1000</a></td>
+              <td><a href="payment.html?type=personal&brand=vivo&price=1400" class="link-btn personal-btn">Personal ₹1400</a></td>
             </tr>
 
             <!-- OPPO -->
@@ -215,9 +239,9 @@
               <td><img src="oppo.png" class="brand-img" alt="Oppo"></td>
               <td>Reno 12, Reno 11, A78, A59, A38, etc.</td>
               <td class="text-green-400 font-bold">Yes</td>
-              <td><a href="wait.html" class="link-btn public-btn">Public</a></td>
-              <td><a href="wait.html" class="link-btn private-btn">Private</a></td>
-              <td><a href="wait.html" class="link-btn personal-btn">Personal</a></td>
+              <td><a href="payment.html?type=public&brand=oppo&price=600" class="link-btn public-btn">Public ₹600</a></td>
+              <td><a href="payment.html?type=private&brand=oppo&price=1000" class="link-btn private-btn">Private ₹1000</a></td>
+              <td><a href="payment.html?type=personal&brand=oppo&price=1400" class="link-btn personal-btn">Personal ₹1400</a></td>
             </tr>
 
             <!-- ONEPLUS -->
@@ -225,9 +249,9 @@
               <td><img src="oneplus.png" class="brand-img" alt="OnePlus"></td>
               <td>12, 12R, Nord 4, Nord CE 4, etc.</td>
               <td class="text-green-400 font-bold">Yes</td>
-              <td><a href="wait.html" class="link-btn public-btn">Public</a></td>
-              <td><a href="wait.html" class="link-btn private-btn">Private</a></td>
-              <td><a href="wait.html" class="link-btn personal-btn">Personal</a></td>
+              <td><a href="payment.html?type=public&brand=oneplus&price=600" class="link-btn public-btn">Public ₹600</a></td>
+              <td><a href="payment.html?type=private&brand=oneplus&price=1000" class="link-btn private-btn">Private ₹1000</a></td>
+              <td><a href="payment.html?type=personal&brand=oneplus&price=1400" class="link-btn personal-btn">Personal ₹1400</a></td>
             </tr>
 
             <!-- POCO -->
@@ -235,9 +259,9 @@
               <td><img src="poco.png" class="brand-img" alt="Poco"></td>
               <td>X6 Pro, F6, M6 Pro, C65, etc.</td>
               <td class="text-green-400 font-bold">Yes</td>
-              <td><a href="wait.html" class="link-btn public-btn">Public</a></td>
-              <td><a href="wait.html" class="link-btn private-btn">Private</a></td>
-              <td><a href="wait.html" class="link-btn personal-btn">Personal</a></td>
+              <td><a href="payment.html?type=public&brand=poco&price=600" class="link-btn public-btn">Public ₹600</a></td>
+              <td><a href="payment.html?type=private&brand=poco&price=1000" class="link-btn private-btn">Private ₹1000</a></td>
+              <td><a href="payment.html?type=personal&brand=poco&price=1400" class="link-btn personal-btn">Personal ₹1400</a></td>
             </tr>
 
             <!-- INFINIX -->
@@ -245,9 +269,9 @@
               <td><img src="infinix.jpg" class="brand-img" alt="Infinix"></td>
               <td>Note 40, Zero 40, Hot 40, Smart 8, etc.</td>
               <td class="text-green-400 font-bold">Yes</td>
-              <td><a href="wait.html" class="link-btn public-btn">Public</a></td>
-              <td><a href="wait.html" class="link-btn private-btn">Private</a></td>
-              <td><a href="wait.html" class="link-btn personal-btn">Personal</a></td>
+              <td><a href="payment.html?type=public&brand=infinix&price=600" class="link-btn public-btn">Public ₹600</a></td>
+              <td><a href="payment.html?type=private&brand=infinix&price=1000" class="link-btn private-btn">Private ₹1000</a></td>
+              <td><a href="payment.html?type=personal&brand=infinix&price=1400" class="link-btn personal-btn">Personal ₹1400</a></td>
             </tr>
 
             <!-- TECHNO -->
@@ -255,9 +279,9 @@
               <td><img src="techno.png" class="brand-img" alt="Techno"></td>
               <td>Camon 30, Spark 20, Pova 6, Pova 5, etc.</td>
               <td class="text-green-400 font-bold">Yes</td>
-              <td><a href="wait.html" class="link-btn public-btn">Public</a></td>
-              <td><a href="wait.html" class="link-btn private-btn">Private</a></td>
-              <td><a href="wait.html" class="link-btn personal-btn">Personal</a></td>
+              <td><a href="payment.html?type=public&brand=techno&price=600" class="link-btn public-btn">Public ₹600</a></td>
+              <td><a href="payment.html?type=private&brand=techno&price=1000" class="link-btn private-btn">Private ₹1000</a></td>
+              <td><a href="payment.html?type=personal&brand=techno&price=1400" class="link-btn personal-btn">Personal ₹1400</a></td>
             </tr>
 
             <!-- IQOO -->
@@ -265,9 +289,9 @@
               <td><img src="iqoo.jpg" class="brand-img" alt="iQOO"></td>
               <td>Neo 9, Z9, Neo 7, etc.</td>
               <td class="text-green-400 font-bold">Yes</td>
-              <td><a href="wait.html" class="link-btn public-btn">Public</a></td>
-              <td><a href="wait.html" class="link-btn private-btn">Private</a></td>
-              <td><a href="wait.html" class="link-btn personal-btn">Personal</a></td>
+              <td><a href="payment.html?type=public&brand=iqoo&price=600" class="link-btn public-btn">Public ₹600</a></td>
+              <td><a href="payment.html?type=private&brand=iqoo&price=1000" class="link-btn private-btn">Private ₹1000</a></td>
+              <td><a href="payment.html?type=personal&brand=iqoo&price=1400" class="link-btn personal-btn">Personal ₹1400</a></td>
             </tr>
 
             <!-- NOTHING -->
@@ -275,9 +299,9 @@
               <td><img src="nothing.jpg" class="brand-img" alt="Nothing"></td>
               <td>Phone (2a), Phone (2), etc.</td>
               <td class="text-green-400 font-bold">Yes</td>
-              <td><a href="wait.html" class="link-btn public-btn">Public</a></td>
-              <td><a href="wait.html" class="link-btn private-btn">Private</a></td>
-              <td><a href="wait.html" class="link-btn personal-btn">Personal</a></td>
+              <td><a href="payment.html?type=public&brand=nothing&price=600" class="link-btn public-btn">Public ₹600</a></td>
+              <td><a href="payment.html?type=private&brand=nothing&price=1000" class="link-btn private-btn">Private ₹1000</a></td>
+              <td><a href="payment.html?type=personal&brand=nothing&price=1400" class="link-btn personal-btn">Personal ₹1400</a></td>
             </tr>
 
           </tbody>
@@ -298,7 +322,7 @@
   <!-- Help Button -->
   <div class="fixed bottom-6 right-6 z-50">
     <button onclick="window.open('https://t.me/Voidxhubsupport_bot', '_blank')"
-            class="flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-pink-600 hover:to-purple-600 text-white font-bold px-8 py-4 rounded-2xl shadow-2xl border border-white/30">
+            class="flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-pink-600 hover:to-purple-600 text-white font-bold px-8 py-4 rounded-2xl shadow-2xl border border-white/30 transition-all hover:scale-105">
       <span>💬 Need Help?</span>
       <span class="text-lg">→</span>
     </button>
