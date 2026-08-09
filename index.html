@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VOIDXHUB</title>
+  <title>VOIDXHUB - Premium Tools Hub</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Orbitron', sans-serif;
       background: #05050a;
@@ -14,129 +15,325 @@
       overflow-x: hidden;
     }
 
+    /* Animated Background */
     .hero {
       min-height: 100vh;
-      background: linear-gradient(rgba(5, 5, 10, 0.75), rgba(5, 5, 10, 0.85)),
-                  url('sQz8x (1).jpg') center/cover no-repeat fixed;
+      background: radial-gradient(ellipse at top, #1a0033 0%, #05050a 60%);
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
+      overflow: hidden;
     }
 
+    .bg-logo {
+      position: absolute;
+      inset: 0;
+      background: url('sQz8x (1).jpg') center/cover no-repeat;
+      opacity: 0.12;
+      filter: blur(2px) brightness(1.2);
+      animation: logoFloat 20s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    @keyframes logoFloat {
+      0%, 100% { transform: scale(1) translateY(0); opacity: 0.1; }
+      50% { transform: scale(1.08) translateY(-15px); opacity: 0.16; }
+    }
+
+    /* Particles */
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #67e8f9;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: floatUp linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 0.7; }
+      90% { opacity: 0.4; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    /* Scanline */
     .scanline {
       position: absolute;
       inset: 0;
-      background: linear-gradient(transparent 50%, rgba(0, 255, 255, 0.06) 50%);
-      background-size: 100% 8px;
-      animation: scan 14s linear infinite;
+      background: linear-gradient(transparent 50%, rgba(0, 255, 255, 0.04) 50%);
+      background-size: 100% 6px;
+      animation: scan 12s linear infinite;
       pointer-events: none;
-      opacity: 0.7;
+      z-index: 2;
     }
 
     @keyframes scan {
       0% { transform: translateY(-100%); }
-      100% { transform: translateY(400%); }
+      100% { transform: translateY(100%); }
     }
 
+    /* Glitch Title */
     .glitch {
-      animation: glitch 2.5s infinite alternate;
-      text-shadow: 0 0 20px #00ffff, 0 0 40px #ff00ff;
+      position: relative;
+      text-shadow: 0 0 20px #00ffff, 0 0 40px #ff00ff, 0 0 60px #00ffff;
+      animation: glitch 3s infinite;
     }
 
     @keyframes glitch {
-      0%,100% { transform: translate(0); }
-      20% { transform: translate(-5px,5px); }
-      40% { transform: translate(5px,-5px); }
-      60% { transform: translate(-3px,3px); }
+      0%, 90%, 100% { transform: translate(0); }
+      92% { transform: translate(-4px, 2px); }
+      94% { transform: translate(4px, -2px); }
+      96% { transform: translate(-2px, -2px); }
+      98% { transform: translate(2px, 2px); }
     }
 
+    /* Neon Button */
     .neon-btn {
-      transition: all 0.4s ease;
-      box-shadow: 0 0 25px #00ffff;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
     }
+    .neon-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+    .neon-btn:hover::before { left: 100%; }
     .neon-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 50px #ff00ff, 0 0 80px #00ffff;
+      transform: scale(1.08) translateY(-4px);
+      box-shadow: 0 0 40px rgba(255, 0, 255, 0.6), 0 0 80px rgba(0, 255, 255, 0.4);
+    }
+
+    /* Floating Cards */
+    .feature-card {
+      background: rgba(17, 17, 30, 0.7);
+      border: 1px solid rgba(103, 232, 249, 0.25);
+      backdrop-filter: blur(12px);
+      transition: all 0.4s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-10px);
+      border-color: #67e8f9;
+      box-shadow: 0 15px 40px rgba(103, 232, 249, 0.25);
+    }
+
+    /* Stats */
+    .stat-number {
+      background: linear-gradient(to right, #67e8f9, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Fade In Animation */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.9s ease forwards;
+    }
+    .fade-in-delay-1 { animation-delay: 0.2s; }
+    .fade-in-delay-2 { animation-delay: 0.4s; }
+    .fade-in-delay-3 { animation-delay: 0.6s; }
+    .fade-in-delay-4 { animation-delay: 0.8s; }
+
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Pulse Ring */
+    .pulse-ring {
+      position: absolute;
+      width: 300px; height: 300px;
+      border: 2px solid rgba(103, 232, 249, 0.15);
+      border-radius: 50%;
+      animation: pulseRing 4s ease-out infinite;
+      z-index: 0;
+    }
+    @keyframes pulseRing {
+      0% { transform: scale(0.8); opacity: 0.6; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+
+    /* TG Popup */
+    .popup-enter {
+      animation: popupIn 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    @keyframes popupIn {
+      from { opacity: 0; transform: scale(0.85) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
     }
   </style>
 </head>
 <body>
 
-  <!-- Hero Section with VoidXHub Logo Background -->
+  <!-- Hero Section -->
   <div class="hero">
+    <div class="bg-logo"></div>
     <div class="scanline"></div>
 
+    <!-- Floating Particles -->
+    <div id="particles"></div>
+
+    <!-- Pulse Rings -->
+    <div class="pulse-ring" style="top: 20%; left: 10%;"></div>
+    <div class="pulse-ring" style="bottom: 15%; right: 12%; animation-delay: 2s;"></div>
+
     <!-- Top Right Join TG Button -->
-    <div class="absolute top-6 right-6 z-50">
+    <div class="absolute top-6 right-6 z-50 fade-in">
       <button onclick="showTGPopup()" 
-              class="neon-btn flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-purple-600 hover:to-cyan-500 text-white font-bold px-8 py-4 rounded-2xl shadow-2xl border border-white/30 transition-all">
-        <span class="text-2xl">🚀</span>
-        <span>JOIN TELEGRAM</span>
+              class="neon-btn flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold px-6 py-3 md:px-8 md:py-4 rounded-2xl border border-white/20">
+        <span class="text-xl">🚀</span>
+        <span class="hidden sm:inline">JOIN TELEGRAM</span>
       </button>
     </div>
 
-    <div class="relative z-10 max-w-4xl px-6 py-20">
-      <h1 class="text-7xl md:text-8xl font-black tracking-[6px] glitch mb-6">
-        VOID<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">X</span>HUB
-      </h1>
-      <p class="text-3xl md:text-4xl text-cyan-300 mb-6 tracking-widest">UNDETECTABLE • POWERFUL • PREMIUM</p>
+    <!-- Main Content -->
+    <div class="relative z-10 max-w-5xl px-6 py-16">
       
-      <div class="mt-8 text-2xl text-gray-300 leading-relaxed">
-        Welcome to VoidXHub<br>
-        The underground hub for high-success automation tools.
+      <!-- Badge -->
+      <div class="fade-in mb-6">
+        <span class="inline-block px-5 py-2 rounded-full text-sm font-bold tracking-wider bg-cyan-500/10 border border-cyan-400/40 text-cyan-300">
+          ⚡ PREMIUM TOOLS HUB 2026
+        </span>
       </div>
 
-      <div class="mt-16">
+      <!-- Title -->
+      <h1 class="text-6xl sm:text-7xl md:text-8xl font-black tracking-[4px] md:tracking-[8px] glitch mb-4 fade-in fade-in-delay-1">
+        VOID<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">X</span>HUB
+      </h1>
+
+      <!-- Tagline -->
+      <p class="text-xl sm:text-2xl md:text-3xl text-cyan-300 mb-4 tracking-widest fade-in fade-in-delay-2">
+        UNDETECTABLE • POWERFUL • PREMIUM
+      </p>
+
+      <!-- Description -->
+      <p class="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed fade-in fade-in-delay-3">
+        Welcome to the underground hub for high-success automation tools.<br class="hidden sm:block">
+        Built for winners. Designed for the elite.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="mt-12 flex flex-col sm:flex-row gap-5 justify-center items-center fade-in fade-in-delay-4">
         <button onclick="window.location.href='tools.html'"
-                class="neon-btn px-12 py-6 text-xl font-bold border-2 border-cyan-400 bg-transparent rounded-2xl hover:bg-cyan-400 hover:text-black">
-          BROWSE TOOLS
+                class="neon-btn px-10 py-5 text-lg font-bold border-2 border-cyan-400 bg-transparent rounded-2xl hover:bg-cyan-400 hover:text-black w-full sm:w-auto">
+          🔥 BROWSE TOOLS
+        </button>
+        <button onclick="showTGPopup()"
+                class="neon-btn px-10 py-5 text-lg font-bold border-2 border-purple-500 bg-transparent rounded-2xl hover:bg-purple-500 hover:text-white w-full sm:w-auto">
+          💬 JOIN COMMUNITY
         </button>
       </div>
 
-      <div class="mt-24 text-sm opacity-60">Built By YASHXCHI • VoidXHub 2026</div>
+      <!-- Stats Row -->
+      <div class="mt-20 grid grid-cols-3 gap-4 max-w-lg mx-auto fade-in fade-in-delay-4">
+        <div class="text-center">
+          <div class="text-2xl sm:text-3xl font-black stat-number">50+</div>
+          <div class="text-xs text-gray-500 mt-1 tracking-wider">TOOLS</div>
+        </div>
+        <div class="text-center border-x border-white/10">
+          <div class="text-2xl sm:text-3xl font-black stat-number">10K+</div>
+          <div class="text-xs text-gray-500 mt-1 tracking-wider">USERS</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl sm:text-3xl font-black stat-number">99%</div>
+          <div class="text-xs text-gray-500 mt-1 tracking-wider">SUCCESS</div>
+        </div>
+      </div>
+
+      <!-- Feature Cards -->
+      <div class="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-3xl mx-auto fade-in fade-in-delay-4">
+        <div class="feature-card rounded-2xl p-5">
+          <div class="text-3xl mb-3">🛡️</div>
+          <h3 class="font-bold text-cyan-300 mb-1">Undetectable</h3>
+          <p class="text-xs text-gray-400">Safe & clean configs</p>
+        </div>
+        <div class="feature-card rounded-2xl p-5">
+          <div class="text-3xl mb-3">⚡</div>
+          <h3 class="font-bold text-purple-300 mb-1">Lightning Fast</h3>
+          <p class="text-xs text-gray-400">Instant delivery</p>
+        </div>
+        <div class="feature-card rounded-2xl p-5">
+          <div class="text-3xl mb-3">🎯</div>
+          <h3 class="font-bold text-pink-300 mb-1">High Success</h3>
+          <p class="text-xs text-gray-400">Proven results</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="mt-16 text-sm text-gray-600 tracking-wider fade-in fade-in-delay-4">
+        Built by YASHXCHI • VoidXHub 2026
+      </div>
     </div>
   </div>
 
   <!-- Telegram Popup -->
-  <div id="tgPopup" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center z-[100]">
-    <div class="bg-zinc-900 border-2 border-purple-500 rounded-3xl p-10 max-w-md w-full mx-4 text-center popup">
-      <div class="text-6xl mb-6">🚀</div>
-      <h2 class="text-3xl font-black text-purple-400 mb-6">JOIN VOIDXHUB COMMUNITY</h2>
+  <div id="tgPopup" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-[100] px-4">
+    <div class="bg-zinc-900/95 border-2 border-purple-500/60 rounded-3xl p-8 max-w-md w-full text-center popup-enter shadow-2xl shadow-purple-500/20">
+      <div class="text-5xl mb-5">🚀</div>
+      <h2 class="text-2xl font-black text-purple-400 mb-2">JOIN VOIDXHUB</h2>
+      <p class="text-gray-400 text-sm mb-7">Connect with the community</p>
       
-      <div class="space-y-4">
+      <div class="space-y-3">
         <a href="https://t.me/voidxhubscrims" target="_blank" 
-           class="block w-full py-5 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold text-xl rounded-2xl hover:scale-105 transition-all">
+           class="block w-full py-4 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold rounded-2xl hover:scale-105 transition-all">
           📢 SCRIMS GROUP
         </a>
-        
         <a href="https://t.me/voidxhub" target="_blank" 
-           class="block w-full py-5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-xl rounded-2xl hover:scale-105 transition-all">
+           class="block w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-2xl hover:scale-105 transition-all">
           📣 OFFICIAL CHANNEL
         </a>
-        
         <a href="https://t.me/Voidxhubsupport_bot" target="_blank" 
-           class="block w-full py-5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-xl rounded-2xl hover:scale-105 transition-all">
+           class="block w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold rounded-2xl hover:scale-105 transition-all">
           💬 SUPPORT BOT
         </a>
       </div>
 
       <button onclick="closeTGPopup()" 
-              class="mt-8 text-gray-400 hover:text-white text-lg">Close</button>
+              class="mt-7 text-gray-500 hover:text-white text-sm transition">✕ Close</button>
     </div>
   </div>
 
   <script>
+    // Create floating particles
+    function createParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 25; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (8 + Math.random() * 12) + 's';
+        p.style.animationDelay = Math.random() * 10 + 's';
+        p.style.width = p.style.height = (2 + Math.random() * 3) + 'px';
+        container.appendChild(p);
+      }
+    }
+    createParticles();
+
     function showTGPopup() {
-      document.getElementById('tgPopup').classList.remove('hidden');
-      document.getElementById('tgPopup').classList.add('flex');
+      const popup = document.getElementById('tgPopup');
+      popup.classList.remove('hidden');
+      popup.classList.add('flex');
     }
 
     function closeTGPopup() {
-      document.getElementById('tgPopup').classList.add('hidden');
-      document.getElementById('tgPopup').classList.remove('flex');
+      const popup = document.getElementById('tgPopup');
+      popup.classList.add('hidden');
+      popup.classList.remove('flex');
     }
+
+    // Close popup on outside click
+    document.getElementById('tgPopup').addEventListener('click', function(e) {
+      if (e.target === this) closeTGPopup();
+    });
   </script>
 </body>
 </html>
