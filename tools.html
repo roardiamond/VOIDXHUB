@@ -277,7 +277,7 @@
       const text = `💡 NEW SUGGESTION on VoidXHub!\n\nFrom: ${name}\nMessage: ${msg}\nTime: ${new Date().toLocaleString('en-IN')}`;
       fetch(`https://api.telegram.org/bot8618540927:AAELSHJCjpXYfDwomLTiFHG1AnGs7Ja5UJs/sendMessage?chat_id=7994843509&text=${encodeURIComponent(text)}`)
         .then(() => {
-          status.textContent = '✅ Sent! Admin ko mil gaya';
+          status.textContent = 'Thanks For The Suggestion';
           status.className = 'text-center text-sm text-emerald-400';
           status.classList.remove('hidden');
           document.getElementById('suggestName').value = '';
