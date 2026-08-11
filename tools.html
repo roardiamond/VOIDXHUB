@@ -42,23 +42,18 @@
       transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
       position: relative;
       cursor: pointer;
-      min-height: 280px;
     }
     .game-card:hover {
       transform: translateY(-12px) scale(1.02);
       border-color: #67e8f9;
       box-shadow: 0 25px 60px rgba(103, 232, 249, 0.3), 0 0 50px rgba(103, 232, 249, 0.15);
     }
-    .game-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(103,232,249,0.1), transparent 50%);
-      opacity: 0;
-      transition: opacity 0.4s;
-      pointer-events: none;
+    .game-card:hover img {
+      transform: scale(1.08);
     }
-    .game-card:hover::after { opacity: 1; }
+    .game-card img {
+      transition: transform 0.6s ease;
+    }
     .fade-up {
       opacity: 0;
       transform: translateY(25px);
@@ -90,7 +85,7 @@
         <div class="w-28 h-1 bg-gradient-to-r from-cyan-400 to-purple-500 mx-auto mt-5 rounded-full"></div>
       </div>
 
-      <!-- Big Scrims Card (kept) -->
+      <!-- Big Scrims Card -->
       <div class="game-card mb-14 fade-up" style="animation-delay:0.1s" onclick="window.location.href='scrims.html'">
         <div class="relative">
           <img src="paid-scrims-thumbnail.jpg" class="w-full h-[280px] md:h-[360px] object-cover" alt="Paid Scrims">
@@ -119,23 +114,22 @@
         <div class="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-500 mx-auto mt-4 rounded-full"></div>
       </div>
 
-      <!-- Horizontal Game Cards (Tournament Style) -->
+      <!-- Horizontal Game Cards with Images -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
 
         <!-- Free Fire & Free Fire Max -->
         <div class="game-card fade-up" style="animation-delay:0.2s" onclick="window.location.href='ff.html'">
-          <div class="relative h-full min-h-[280px] flex flex-col">
-            <div class="absolute inset-0 bg-gradient-to-br from-orange-900/80 via-red-950/90 to-black"></div>
-            <div class="relative z-10 flex flex-col justify-between h-full p-6 md:p-8">
-              <div>
-                <div class="inline-flex items-center gap-2 bg-orange-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
-                  🔥 HOT
-                </div>
-                <h3 class="text-2xl md:text-3xl font-black text-orange-300 tracking-wider mb-2">FREE FIRE</h3>
-                <p class="text-lg text-orange-200/80 font-bold">& FREE FIRE MAX</p>
-                <p class="text-sm text-gray-300 mt-3">Hologram • Configs • Push • Locations</p>
+          <div class="relative h-[300px] md:h-[320px]">
+            <img src="ff.jpg" class="w-full h-full object-cover" alt="Free Fire">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+            <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-7">
+              <div class="inline-flex items-center gap-2 bg-orange-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 w-fit">
+                🔥 HOT
               </div>
-              <button class="mt-6 w-full py-3 bg-gradient-to-r from-orange-500 to-pink-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
+              <h3 class="text-2xl md:text-3xl font-black text-orange-300 tracking-wider mb-1">FREE FIRE</h3>
+              <p class="text-base text-orange-200/90 font-bold mb-1">& FREE FIRE MAX</p>
+              <p class="text-sm text-gray-300 mb-4">Hologram • Configs • Push • Locations</p>
+              <button class="w-full py-3 bg-gradient-to-r from-orange-500 to-pink-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
                 OPEN TOOLS →
               </button>
             </div>
@@ -144,18 +138,17 @@
 
         <!-- BGMI -->
         <div class="game-card fade-up" style="animation-delay:0.25s" onclick="window.location.href='bgmi.html'">
-          <div class="relative h-full min-h-[280px] flex flex-col">
-            <div class="absolute inset-0 bg-gradient-to-br from-cyan-900/80 via-teal-950/90 to-black"></div>
-            <div class="relative z-10 flex flex-col justify-between h-full p-6 md:p-8">
-              <div>
-                <div class="inline-flex items-center gap-2 bg-cyan-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
-                  💀 LIVE
-                </div>
-                <h3 class="text-2xl md:text-3xl font-black text-cyan-300 tracking-wider mb-2">BGMI</h3>
-                <p class="text-lg text-cyan-200/80 font-bold">BATTLEGROUNDS MOBILE INDIA</p>
-                <p class="text-sm text-gray-300 mt-3">High FPS • OBB • Configs</p>
+          <div class="relative h-[300px] md:h-[320px]">
+            <img src="bgmi.jpg" class="w-full h-full object-cover" alt="BGMI">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+            <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-7">
+              <div class="inline-flex items-center gap-2 bg-cyan-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 w-fit">
+                💀 LIVE
               </div>
-              <button class="mt-6 w-full py-3 bg-gradient-to-r from-cyan-500 to-teal-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
+              <h3 class="text-2xl md:text-3xl font-black text-cyan-300 tracking-wider mb-1">BGMI</h3>
+              <p class="text-base text-cyan-200/90 font-bold mb-1">BATTLEGROUNDS MOBILE INDIA</p>
+              <p class="text-sm text-gray-300 mb-4">High FPS • OBB • Configs</p>
+              <button class="w-full py-3 bg-gradient-to-r from-cyan-500 to-teal-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
                 OPEN TOOLS →
               </button>
             </div>
@@ -164,18 +157,17 @@
 
         <!-- Call of Duty -->
         <div class="game-card fade-up" style="animation-delay:0.3s" onclick="window.location.href='cod.html'">
-          <div class="relative h-full min-h-[280px] flex flex-col">
-            <div class="absolute inset-0 bg-gradient-to-br from-yellow-900/70 via-amber-950/90 to-black"></div>
-            <div class="relative z-10 flex flex-col justify-between h-full p-6 md:p-8">
-              <div>
-                <div class="inline-flex items-center gap-2 bg-yellow-600/90 text-black text-xs font-bold px-3 py-1 rounded-full mb-4">
-                  🎯 COD
-                </div>
-                <h3 class="text-2xl md:text-3xl font-black text-yellow-300 tracking-wider mb-2">CALL OF DUTY</h3>
-                <p class="text-lg text-yellow-200/80 font-bold">MOBILE</p>
-                <p class="text-sm text-gray-300 mt-3">Tools & Configs</p>
+          <div class="relative h-[300px] md:h-[320px]">
+            <img src="cod.jpg" class="w-full h-full object-cover" alt="Call of Duty">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+            <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-7">
+              <div class="inline-flex items-center gap-2 bg-yellow-600/90 text-black text-xs font-bold px-3 py-1 rounded-full mb-3 w-fit">
+                🎯 COD
               </div>
-              <button class="mt-6 w-full py-3 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
+              <h3 class="text-2xl md:text-3xl font-black text-yellow-300 tracking-wider mb-1">CALL OF DUTY</h3>
+              <p class="text-base text-yellow-200/90 font-bold mb-1">MOBILE</p>
+              <p class="text-sm text-gray-300 mb-4">Tools & Configs</p>
+              <button class="w-full py-3 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
                 OPEN TOOLS →
               </button>
             </div>
@@ -184,18 +176,17 @@
 
         <!-- Apex Legends -->
         <div class="game-card fade-up" style="animation-delay:0.35s" onclick="window.location.href='apex.html'">
-          <div class="relative h-full min-h-[280px] flex flex-col">
-            <div class="absolute inset-0 bg-gradient-to-br from-red-900/80 via-rose-950/90 to-black"></div>
-            <div class="relative z-10 flex flex-col justify-between h-full p-6 md:p-8">
-              <div>
-                <div class="inline-flex items-center gap-2 bg-red-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
-                  ⚡ APEX
-                </div>
-                <h3 class="text-2xl md:text-3xl font-black text-red-300 tracking-wider mb-2">APEX LEGENDS</h3>
-                <p class="text-lg text-red-200/80 font-bold">MOBILE</p>
-                <p class="text-sm text-gray-300 mt-3">Coming Tools</p>
+          <div class="relative h-[300px] md:h-[320px]">
+            <img src="apex.jpg" class="w-full h-full object-cover" alt="Apex Legends">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+            <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-7">
+              <div class="inline-flex items-center gap-2 bg-red-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 w-fit">
+                ⚡ APEX
               </div>
-              <button class="mt-6 w-full py-3 bg-gradient-to-r from-red-500 to-rose-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
+              <h3 class="text-2xl md:text-3xl font-black text-red-300 tracking-wider mb-1">APEX LEGENDS</h3>
+              <p class="text-base text-red-200/90 font-bold mb-1">MOBILE</p>
+              <p class="text-sm text-gray-300 mb-4">Coming Tools</p>
+              <button class="w-full py-3 bg-gradient-to-r from-red-500 to-rose-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
                 OPEN TOOLS →
               </button>
             </div>
@@ -204,18 +195,17 @@
 
         <!-- Valorant -->
         <div class="game-card fade-up" style="animation-delay:0.4s" onclick="window.location.href='valorant.html'">
-          <div class="relative h-full min-h-[280px] flex flex-col">
-            <div class="absolute inset-0 bg-gradient-to-br from-pink-900/80 via-fuchsia-950/90 to-black"></div>
-            <div class="relative z-10 flex flex-col justify-between h-full p-6 md:p-8">
-              <div>
-                <div class="inline-flex items-center gap-2 bg-pink-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
-                  💜 VAL
-                </div>
-                <h3 class="text-2xl md:text-3xl font-black text-pink-300 tracking-wider mb-2">VALORANT</h3>
-                <p class="text-lg text-pink-200/80 font-bold">MOBILE</p>
-                <p class="text-sm text-gray-300 mt-3">Tools & Configs</p>
+          <div class="relative h-[300px] md:h-[320px]">
+            <img src="valorant.jpg" class="w-full h-full object-cover" alt="Valorant">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+            <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-7">
+              <div class="inline-flex items-center gap-2 bg-pink-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 w-fit">
+                💜 VAL
               </div>
-              <button class="mt-6 w-full py-3 bg-gradient-to-r from-pink-500 to-fuchsia-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
+              <h3 class="text-2xl md:text-3xl font-black text-pink-300 tracking-wider mb-1">VALORANT</h3>
+              <p class="text-base text-pink-200/90 font-bold mb-1">MOBILE</p>
+              <p class="text-sm text-gray-300 mb-4">Tools & Configs</p>
+              <button class="w-full py-3 bg-gradient-to-r from-pink-500 to-fuchsia-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
                 OPEN TOOLS →
               </button>
             </div>
@@ -224,13 +214,10 @@
 
         <!-- Empty Card -->
         <div class="game-card fade-up" style="animation-delay:0.45s">
-          <div class="relative h-full min-h-[280px] flex flex-col">
-            <div class="absolute inset-0 bg-gradient-to-br from-gray-800/80 via-zinc-950/90 to-black"></div>
-            <div class="relative z-10 flex flex-col items-center justify-center h-full p-6 md:p-8 text-center">
-              <div class="text-5xl mb-4 opacity-40">+</div>
-              <h3 class="text-xl font-black text-gray-400 tracking-wider mb-2">EMPTY SLOT</h3>
-              <p class="text-sm text-gray-500">Coming Soon</p>
-            </div>
+          <div class="relative h-[300px] md:h-[320px] bg-gradient-to-br from-gray-800 via-zinc-900 to-black flex flex-col items-center justify-center p-6 text-center">
+            <div class="text-5xl mb-4 opacity-40">+</div>
+            <h3 class="text-xl font-black text-gray-400 tracking-wider mb-2">EMPTY SLOT</h3>
+            <p class="text-sm text-gray-500">Coming Soon</p>
           </div>
         </div>
 
