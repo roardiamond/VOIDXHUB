@@ -9,8 +9,8 @@
   <style>
     body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; min-height: 100vh; }
     .card { background: rgba(17,17,28,0.95); border: 1px solid rgba(103,232,249,0.3); border-radius: 16px; }
-    input, select { background: rgba(0,255,255,0.05); border: 1.5px solid #00ffff; color: #e0e0ff; font-family: 'Orbitron', sans-serif; }
-    input:focus, select:focus { outline: none; border-color: #ff00ff; box-shadow: 0 0 15px rgba(0,255,255,0.3); }
+    input, select, textarea { background: rgba(0,255,255,0.05); border: 1.5px solid #00ffff; color: #e0e0ff; font-family: 'Orbitron', sans-serif; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #ff00ff; box-shadow: 0 0 15px rgba(0,255,255,0.3); }
   </style>
 </head>
 <body class="p-4 md:p-8">
@@ -18,7 +18,7 @@
   <div id="loginScreen" class="max-w-md mx-auto mt-20">
     <div class="card p-8">
       <h1 class="text-2xl font-black text-cyan-400 text-center tracking-widest mb-2">ADMIN PANEL</h1>
-      <p class="text-center text-gray-400 text-sm mb-6">VOIDXHUB • VxH Cr System</p>
+      <p class="text-center text-gray-400 text-sm mb-6">VOIDXHUB • VxH Cr + Orders</p>
       <div id="loginMsg" class="hidden mb-4 p-3 rounded-lg text-sm text-center"></div>
       <form id="adminLoginForm" class="space-y-4">
         <div>
@@ -38,14 +38,43 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
       <div>
         <h1 class="text-3xl font-black text-cyan-400 tracking-widest">ADMIN PANEL</h1>
-        <p class="text-gray-400 text-sm mt-1">Rate: 1 ₹ = 2 VxH Cr</p>
+        <p class="text-gray-400 text-sm mt-1">1 ₹ = 2 VxH Cr</p>
       </div>
-      <div class="flex gap-3">
-        <button onclick="loadUsers()" class="px-4 py-2 border border-cyan-400 rounded-xl text-cyan-300 text-sm font-bold hover:bg-cyan-400 hover:text-black transition">Refresh</button>
+      <div class="flex gap-3 flex-wrap">
+        <button onclick="loadOrders();loadUsers()" class="px-4 py-2 border border-cyan-400 rounded-xl text-cyan-300 text-sm font-bold hover:bg-cyan-400 hover:text-black transition">Refresh</button>
         <button onclick="logoutAdmin()" class="px-4 py-2 border border-red-500 rounded-xl text-red-400 text-sm font-bold hover:bg-red-500 hover:text-white transition">Logout</button>
       </div>
     </div>
 
+    <!-- Fulfill Order -->
+    <div class="card p-6 mb-8">
+      <h2 class="text-lg font-bold text-cyan-300 mb-4 tracking-wider">FULFILL ORDER (Send Download Link)</h2>
+      <div id="fulfillMsg" class="hidden mb-4 p-3 rounded-lg text-sm text-center"></div>
+      <div class="grid sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-xs text-gray-400 mb-2">Order Code</label>
+          <input type="text" id="fulfillCode" placeholder="VxH-XXXXXXXX" class="w-full px-4 py-3 rounded-lg">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-2">Download Link</label>
+          <input type="url" id="fulfillLink" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-lg">
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="block text-xs text-gray-400 mb-2">Note (optional)</label>
+        <input type="text" id="fulfillNote" placeholder="Password / instructions" class="w-full px-4 py-3 rounded-lg">
+      </div>
+      <button onclick="fulfillOrder()" class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-bold rounded-lg hover:scale-105 transition">SEND LINK TO USER</button>
+    </div>
+
+    <!-- Orders List -->
+    <div class="card p-6 mb-8">
+      <h2 class="text-lg font-bold text-cyan-300 mb-4 tracking-wider">RECENT ORDERS</h2>
+      <div id="ordersList" class="space-y-3 max-h-96 overflow-y-auto"></div>
+      <p id="noOrders" class="text-gray-500 text-center py-6 hidden">No orders yet</p>
+    </div>
+
+    <!-- Credits -->
     <div class="card p-6 mb-8">
       <h2 class="text-lg font-bold text-cyan-300 mb-4 tracking-wider">ADD / REMOVE VxH Cr</h2>
       <div id="addMsg" class="hidden mb-4 p-3 rounded-lg text-sm text-center"></div>
@@ -55,35 +84,14 @@
           <input type="text" id="targetUser" placeholder="username" class="w-full px-4 py-3 rounded-lg">
         </div>
         <div>
-          <label class="block text-xs text-gray-400 mb-2">VxH Cr (+ add / - remove)</label>
+          <label class="block text-xs text-gray-400 mb-2">VxH Cr (+ / -)</label>
           <input type="number" id="creditAmount" placeholder="500" class="w-full px-4 py-3 rounded-lg">
         </div>
         <button onclick="addCredits()" class="py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-bold rounded-lg hover:scale-105 transition">UPDATE</button>
       </div>
     </div>
 
-    <div class="card p-6 mb-8">
-      <h2 class="text-lg font-bold text-cyan-300 mb-4 tracking-wider">SET FEATURE COST (VxH Cr)</h2>
-      <div id="costMsg" class="hidden mb-4 p-3 rounded-lg text-sm text-center"></div>
-      <div class="grid sm:grid-cols-3 gap-4 items-end">
-        <div>
-          <label class="block text-xs text-gray-400 mb-2">Feature</label>
-          <select id="featureKey" class="w-full px-4 py-3 rounded-lg">
-            <option value="esp">ESP</option>
-            <option value="headshot_boost">Headshot Boost</option>
-            <option value="aimbot">Aimbot</option>
-            <option value="vxh_panel">VxH Panel</option>
-            <option value="sensitivity_boost">Sensitivity Boost</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs text-gray-400 mb-2">Cost (VxH Cr)</label>
-          <input type="number" id="featureCost" placeholder="50" class="w-full px-4 py-3 rounded-lg">
-        </div>
-        <button onclick="setFeatureCost()" class="py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-lg hover:scale-105 transition">UPDATE COST</button>
-      </div>
-    </div>
-
+    <!-- Users -->
     <div class="card p-6">
       <h2 class="text-lg font-bold text-cyan-300 mb-4 tracking-wider">ALL USERS</h2>
       <div class="overflow-x-auto">
@@ -94,14 +102,12 @@
               <th class="pb-3 pr-4">Username</th>
               <th class="pb-3 pr-4">VxH Cr</th>
               <th class="pb-3 pr-4">Admin</th>
-              <th class="pb-3 pr-4">Created</th>
-              <th class="pb-3">Last Login</th>
+              <th class="pb-3">Created</th>
             </tr>
           </thead>
           <tbody id="usersTable"></tbody>
         </table>
       </div>
-      <p id="noUsers" class="text-gray-500 text-center py-8 hidden">No users found</p>
     </div>
   </div>
 
@@ -134,7 +140,7 @@
         }
       } catch (err) {
         msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
-        msg.textContent = "Server error. Wait 30s if cold start.";
+        msg.textContent = "Server error / cold start. Wait 30s.";
         msg.classList.remove("hidden");
       }
     });
@@ -142,6 +148,7 @@
     function showDash() {
       document.getElementById("loginScreen").classList.add("hidden");
       document.getElementById("adminDash").classList.remove("hidden");
+      loadOrders();
       loadUsers();
     }
 
@@ -150,6 +157,87 @@
       localStorage.removeItem("vxh_user");
       fetch(API + "/api/logout", { method: "POST", credentials: "include" }).catch(()=>{});
       location.reload();
+    }
+
+    async function loadOrders() {
+      try {
+        const res = await fetch(API + "/api/admin/orders", { credentials: "include" });
+        const data = await res.json();
+        const box = document.getElementById("ordersList");
+        box.innerHTML = "";
+        if (!data.success || !data.orders || !data.orders.length) {
+          document.getElementById("noOrders").classList.remove("hidden");
+          return;
+        }
+        document.getElementById("noOrders").classList.add("hidden");
+        data.orders.forEach(o => {
+          const statusColor = o.status === 'delivered' ? 'text-green-400' : 'text-yellow-400';
+          const div = document.createElement("div");
+          div.className = "p-4 border border-gray-700 rounded-xl hover:border-cyan-500/50 cursor-pointer";
+          div.onclick = () => {
+            document.getElementById("fulfillCode").value = o.order_code;
+            if (o.download_link) document.getElementById("fulfillLink").value = o.download_link;
+          };
+          div.innerHTML = `
+            <div class="flex justify-between gap-2">
+              <div>
+                <span class="text-cyan-300 font-bold text-sm">${o.order_code}</span>
+                <span class="${statusColor} text-xs ml-2 uppercase">${o.status}</span>
+                <p class="text-xs text-gray-400 mt-1">@${(o.telegram||'').lstrip ? o.telegram : o.telegram} • ${(o.tool||'').toUpperCase()} • ${(o.plan_type||'').toUpperCase()} • ${(o.brand||'').toUpperCase()}</p>
+                <p class="text-xs text-gray-500">${o.credits||0} VxH Cr • ₹${o.price_inr||0} • ${o.created_at||''}</p>
+              </div>
+            </div>
+          `;
+          // fix telegram display without lstrip
+          div.innerHTML = `
+            <div class="flex justify-between gap-2">
+              <div>
+                <span class="text-cyan-300 font-bold text-sm">${o.order_code}</span>
+                <span class="${statusColor} text-xs ml-2 uppercase">${o.status}</span>
+                <p class="text-xs text-gray-400 mt-1">@${String(o.telegram||'').replace(/^@/,'')} • ${String(o.tool||'').toUpperCase()} • ${String(o.plan_type||'').toUpperCase()} • ${String(o.brand||'').toUpperCase()}</p>
+                <p class="text-xs text-gray-500">${o.credits||0} VxH Cr • ₹${o.price_inr||0} • ${o.created_at||''}</p>
+              </div>
+            </div>
+          `;
+          box.appendChild(div);
+        });
+      } catch (e) {}
+    }
+
+    async function fulfillOrder() {
+      const order_code = document.getElementById("fulfillCode").value.trim();
+      const download_link = document.getElementById("fulfillLink").value.trim();
+      const admin_note = document.getElementById("fulfillNote").value.trim();
+      const msg = document.getElementById("fulfillMsg");
+      if (!order_code || !download_link) {
+        msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
+        msg.textContent = "Order code + download link required";
+        msg.classList.remove("hidden");
+        return;
+      }
+      try {
+        const res = await fetch(API + "/api/admin/orders/fulfill", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ order_code, download_link, admin_note })
+        });
+        const data = await res.json();
+        msg.className = data.success
+          ? "mb-4 p-3 rounded-lg text-sm text-center bg-green-900/40 text-green-400 border border-green-500"
+          : "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
+        msg.textContent = data.message || (data.success ? "Done" : "Failed");
+        msg.classList.remove("hidden");
+        if (data.success) {
+          document.getElementById("fulfillLink").value = "";
+          document.getElementById("fulfillNote").value = "";
+          loadOrders();
+        }
+      } catch (e) {
+        msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
+        msg.textContent = "Error";
+        msg.classList.remove("hidden");
+      }
     }
 
     async function addCredits() {
@@ -178,36 +266,6 @@
         if (data.success) { document.getElementById("creditAmount").value = ""; loadUsers(); }
       } catch (err) {
         msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
-        msg.textContent = "Error. Login as admin again.";
-        msg.classList.remove("hidden");
-      }
-    }
-
-    async function setFeatureCost() {
-      const feature = document.getElementById("featureKey").value;
-      const credits = parseInt(document.getElementById("featureCost").value);
-      const msg = document.getElementById("costMsg");
-      if (isNaN(credits) || credits < 0) {
-        msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
-        msg.textContent = "Enter valid cost";
-        msg.classList.remove("hidden");
-        return;
-      }
-      try {
-        const res = await fetch(API + "/api/admin/set-feature-cost", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ feature, credits })
-        });
-        const data = await res.json();
-        msg.className = data.success
-          ? "mb-4 p-3 rounded-lg text-sm text-center bg-green-900/40 text-green-400 border border-green-500"
-          : "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
-        msg.textContent = data.success ? "Cost updated: " + feature + " = " + credits + " VxH Cr" : (data.message || "Failed");
-        msg.classList.remove("hidden");
-      } catch (err) {
-        msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
         msg.textContent = "Error";
         msg.classList.remove("hidden");
       }
@@ -219,21 +277,15 @@
         const data = await res.json();
         const tbody = document.getElementById("usersTable");
         tbody.innerHTML = "";
-        if (!data.success || !data.users || !data.users.length) {
-          document.getElementById("noUsers").classList.remove("hidden");
-          return;
-        }
-        document.getElementById("noUsers").classList.add("hidden");
-        data.users.forEach(u => {
+        (data.users || []).forEach(u => {
           const tr = document.createElement("tr");
-          tr.className = "border-b border-gray-800 hover:bg-white/5";
+          tr.className = "border-b border-gray-800";
           tr.innerHTML = `
             <td class="py-3 pr-4 text-gray-400">${u.id}</td>
             <td class="py-3 pr-4 font-bold text-cyan-300">${u.username}</td>
             <td class="py-3 pr-4 text-pink-400 font-bold">${u.credits} VxH Cr</td>
             <td class="py-3 pr-4">${u.is_admin ? "✅" : "-"}</td>
-            <td class="py-3 pr-4 text-gray-500 text-xs">${u.created_at || "-"}</td>
-            <td class="py-3 text-gray-500 text-xs">${u.last_login || "-"}</td>
+            <td class="py-3 text-gray-500 text-xs">${u.created_at || "-"}</td>
           `;
           tbody.appendChild(tr);
         });
