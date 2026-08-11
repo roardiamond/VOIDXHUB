@@ -1,30 +1,16 @@
-// VOIDXHUB Auth Helper
 const VXH_API = "https://voidxhub-backend.onrender.com";
 
 function getUser() {
-  try {
-    return JSON.parse(localStorage.getItem("vxh_user") || "null");
-  } catch {
-    return null;
-  }
+  try { return JSON.parse(localStorage.getItem("vxh_user") || "null"); } catch { return null; }
 }
-
-function setUser(user) {
-  localStorage.setItem("vxh_user", JSON.stringify(user));
-}
-
-function clearUser() {
-  localStorage.removeItem("vxh_user");
-}
+function setUser(user) { localStorage.setItem("vxh_user", JSON.stringify(user)); }
+function clearUser() { localStorage.removeItem("vxh_user"); }
 
 async function refreshUser() {
   try {
     const res = await fetch(VXH_API + "/api/me", { credentials: "include" });
     const data = await res.json();
-    if (data.success) {
-      setUser(data.user);
-      return data.user;
-    }
+    if (data.success) { setUser(data.user); return data.user; }
   } catch (e) {}
   return getUser();
 }
@@ -39,7 +25,7 @@ function injectNav() {
   if (user) {
     rightHtml = `
       <a href="dashboard.html" style="color:#67e8f9;text-decoration:none;font-size:13px;font-weight:700;margin-right:16px;">
-        💎 ${user.credits} Credits
+        💎 ${user.credits} VxH Cr
       </a>
       <a href="dashboard.html" style="color:#e0e0ff;text-decoration:none;font-size:13px;margin-right:12px;">@${user.username}</a>
       <button onclick="vxhLogout()" style="background:transparent;border:1px solid #ef4444;color:#f87171;padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer;font-family:Orbitron,sans-serif;">Logout</button>
@@ -55,7 +41,6 @@ function injectNav() {
     <a href="index.html" style="color:#67e8f9;text-decoration:none;font-weight:900;font-size:16px;letter-spacing:2px;">VOID<span style="color:#c084fc;">X</span>HUB</a>
     <div style="display:flex;align-items:center;">${rightHtml}</div>
   `;
-
   document.body.prepend(nav);
   document.body.style.paddingTop = "52px";
 }
@@ -66,7 +51,6 @@ function vxhLogout() {
   window.location.href = "login.html";
 }
 
-// Auto inject on load
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", injectNav);
 } else {
