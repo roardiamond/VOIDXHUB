@@ -5,149 +5,134 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - VOIDXHUB</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; }
-    .card { background: #0a0a15; border: 1px solid rgba(0,255,255,0.2); }
-    .glow { box-shadow: 0 0 30px rgba(0,255,255,0.15); }
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: #05050a;
+      color: #e0e0ff;
+      min-height: 100vh;
+    }
   </style>
 </head>
-<body class="min-h-screen">
-
-  <!-- Navbar -->
-  <nav class="bg-zinc-950 border-b border-cyan-500/30 px-6 py-4 flex justify-between items-center sticky top-0 z-40">
-    <a href="index.html" class="text-2xl font-black text-cyan-400 tracking-wider">VOIDXHUB</a>
-    <div class="flex gap-4 items-center">
-      <a href="tools.html" class="text-sm text-gray-400 hover:text-cyan-400">Tools</a>
-      <a href="scrims.html" class="text-sm text-gray-400 hover:text-cyan-400">Scrims</a>
-      <div class="flex items-center gap-3 ml-4">
-        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-400 to-pink-500 flex items-center justify-center text-black font-black text-sm" id="avatar">U</div>
-        <div class="hidden sm:block">
-          <p class="text-sm font-bold text-cyan-300" id="navUsername">User</p>
-          <p class="text-xs text-pink-400" id="navEmail">email</p>
-        </div>
-        <button onclick="logout()" class="ml-2 px-4 py-2 bg-red-600/20 border border-red-500 rounded-lg text-xs hover:bg-red-600/40 transition">LOGOUT</button>
+<body class="p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+      <div>
+        <h1 class="text-3xl font-black text-cyan-400 tracking-widest">DASHBOARD</h1>
+        <p class="text-gray-400 text-sm mt-1">Welcome back, <span id="username" class="text-pink-400"></span></p>
+      </div>
+      <div class="flex gap-3">
+        <a href="tools.html" class="px-5 py-2 border border-cyan-400 rounded-xl text-cyan-300 hover:bg-cyan-400 hover:text-black transition text-sm font-bold">TOOLS</a>
+        <button onclick="logout()" class="px-5 py-2 border border-red-500 rounded-xl text-red-400 hover:bg-red-500 hover:text-white transition text-sm font-bold">LOGOUT</button>
       </div>
     </div>
-  </nav>
 
-  <div class="max-w-5xl mx-auto p-6">
-    <div id="loading" class="text-center py-20">
-      <div class="inline-block w-12 h-12 border-4 border-cyan-500/30 border-t-cyan-400 rounded-full animate-spin"></div>
-      <p class="mt-4 text-cyan-400">Loading...</p>
+    <!-- Credits Card -->
+    <div class="bg-zinc-950 border border-cyan-500/40 rounded-2xl p-8 mb-8 text-center">
+      <p class="text-gray-400 text-sm tracking-wider mb-2">YOUR CREDITS</p>
+      <div id="credits" class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">--</div>
+      <button onclick="document.getElementById('buySection').classList.toggle('hidden')"
+              class="mt-6 px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-black font-bold rounded-xl hover:scale-105 transition">
+        + BUY CREDITS
+      </button>
     </div>
 
-    <div id="dashboardContent" class="hidden">
-      <!-- Welcome -->
-      <div class="card rounded-2xl p-8 mb-8 glow">
-        <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-500">
-          Welcome, <span id="welcomeName">User</span>!
-        </h1>
-        <p class="text-gray-400 mt-2 text-sm tracking-wide">Manage your VOIDXHUB account</p>
-      </div>
+    <!-- Buy Credits Section -->
+    <div id="buySection" class="hidden mb-10">
+      <h2 class="text-xl font-bold text-cyan-300 mb-4 tracking-wider">CREDIT PACKAGES</h2>
+      <div class="grid sm:grid-cols-2 gap-4" id="packages"></div>
+      <p class="text-center text-gray-500 text-xs mt-4">Razorpay Test Mode active</p>
+    </div>
 
-      <!-- Stats -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <div class="card rounded-2xl p-6 text-center glow">
-          <p class="text-3xl font-black text-cyan-400" id="statStatus">Active</p>
-          <p class="text-xs text-gray-400 mt-2 tracking-wider">ACCOUNT STATUS</p>
-        </div>
-        <div class="card rounded-2xl p-6 text-center glow">
-          <p class="text-3xl font-black text-pink-400" id="statJoin">-</p>
-          <p class="text-xs text-gray-400 mt-2 tracking-wider">MEMBER SINCE</p>
-        </div>
-        <div class="card rounded-2xl p-6 text-center glow">
-          <p class="text-3xl font-black text-green-400">1</p>
-          <p class="text-xs text-gray-400 mt-2 tracking-wider">ACTIVE SESSION</p>
-        </div>
-      </div>
-
-      <!-- Quick Links -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-        <a href="tools.html" class="card rounded-2xl p-6 hover:border-cyan-400 transition group">
-          <h3 class="text-lg font-bold text-cyan-300 group-hover:text-cyan-200">🛠 Tools</h3>
-          <p class="text-sm text-gray-400 mt-1">Browse premium tools & configs</p>
-        </a>
-        <a href="scrims.html" class="card rounded-2xl p-6 hover:border-pink-400 transition group">
-          <h3 class="text-lg font-bold text-pink-300 group-hover:text-pink-200">🎮 Scrims</h3>
-          <p class="text-sm text-gray-400 mt-1">Join paid & free scrims</p>
-        </a>
-      </div>
-
-      <!-- Profile -->
-      <div class="card rounded-2xl p-8 glow">
-        <h2 class="text-xl font-black text-cyan-400 mb-6 tracking-wider">PROFILE</h2>
-        <div class="space-y-4">
-          <div class="flex justify-between items-center py-3 border-b border-zinc-800">
-            <span class="text-sm text-gray-400 tracking-wider">USERNAME</span>
-            <span class="font-bold text-cyan-300" id="profileUsername">-</span>
-          </div>
-          <div class="flex justify-between items-center py-3 border-b border-zinc-800">
-            <span class="text-sm text-gray-400 tracking-wider">EMAIL</span>
-            <span class="font-bold text-pink-300" id="profileEmail">-</span>
-          </div>
-          <div class="flex justify-between items-center py-3 border-b border-zinc-800">
-            <span class="text-sm text-gray-400 tracking-wider">MEMBER SINCE</span>
-            <span class="font-bold text-green-300" id="profileJoin">-</span>
-          </div>
-          <div class="flex justify-between items-center py-3">
-            <span class="text-sm text-gray-400 tracking-wider">STATUS</span>
-            <span class="font-bold text-green-400">ACTIVE</span>
-          </div>
-        </div>
-      </div>
+    <!-- Features -->
+    <div>
+      <h2 class="text-xl font-bold text-cyan-300 mb-4 tracking-wider">FEATURES (Credits Cost)</h2>
+      <div id="features" class="grid sm:grid-cols-2 gap-4"></div>
     </div>
   </div>
 
   <script>
-    async function checkAuth() {
+    const API = "https://voidxhub-backend.onrender.com";
+    let user = JSON.parse(localStorage.getItem("vxh_user") || "null");
+
+    if (!user) {
+      window.location.href = "login.html";
+    }
+
+    document.getElementById("username").textContent = user.username;
+    document.getElementById("credits").textContent = user.credits;
+
+    // Refresh user data
+    async function refreshUser() {
       try {
-        const res = await fetch('backend/auth.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'check_auth' })
-        });
+        const res = await fetch(API + "/api/me", { credentials: "include" });
         const data = await res.json();
-        if (data.authenticated) {
-          showDashboard(data.user);
+        if (data.success) {
+          user = data.user;
+          localStorage.setItem("vxh_user", JSON.stringify(user));
+          document.getElementById("credits").textContent = user.credits;
         } else {
-          window.location.href = 'login.html';
+          localStorage.removeItem("vxh_user");
+          window.location.href = "login.html";
         }
-      } catch (e) {
-        window.location.href = 'login.html';
+      } catch (e) {}
+    }
+    refreshUser();
+
+    // Load packages
+    async function loadPackages() {
+      const res = await fetch(API + "/api/packages");
+      const data = await res.json();
+      const container = document.getElementById("packages");
+      container.innerHTML = "";
+
+      for (const [id, pack] of Object.entries(data.packages)) {
+        const div = document.createElement("div");
+        div.className = "bg-zinc-900 border border-purple-500/40 rounded-xl p-5 text-center";
+        div.innerHTML = `
+          <div class="text-2xl font-black text-white">${pack.credits} Credits</div>
+          <div class="text-cyan-400 text-lg mt-1">₹${pack.amount / 100}</div>
+          <button onclick="buyPackage('${id}')" class="mt-4 w-full py-2 bg-purple-600 hover:bg-purple-500 rounded-lg font-bold text-sm">BUY</button>
+        `;
+        container.appendChild(div);
       }
     }
+    loadPackages();
 
-    function showDashboard(user) {
-      document.getElementById('loading').classList.add('hidden');
-      document.getElementById('dashboardContent').classList.remove('hidden');
+    // Load features
+    async function loadFeatures() {
+      const res = await fetch(API + "/api/features");
+      const data = await res.json();
+      const container = document.getElementById("features");
+      container.innerHTML = "";
 
-      document.getElementById('navUsername').textContent = user.username;
-      document.getElementById('navEmail').textContent = user.email;
-      document.getElementById('welcomeName').textContent = user.username;
-      document.getElementById('profileUsername').textContent = user.username;
-      document.getElementById('profileEmail').textContent = user.email;
-      document.getElementById('profileJoin').textContent = formatDate(user.created_at);
-      document.getElementById('statJoin').textContent = formatDate(user.created_at);
-      document.getElementById('avatar').textContent = user.username.charAt(0).toUpperCase();
+      for (const [key, f] of Object.entries(data.features)) {
+        const div = document.createElement("div");
+        div.className = "bg-zinc-900 border border-cyan-500/30 rounded-xl p-4 flex justify-between items-center";
+        div.innerHTML = `
+          <div>
+            <div class="font-bold text-cyan-300">${f.name}</div>
+            <div class="text-xs text-gray-500">${key}</div>
+          </div>
+          <div class="text-pink-400 font-bold">${f.credits} Cr</div>
+        `;
+        container.appendChild(div);
+      }
     }
+    loadFeatures();
 
-    function formatDate(str) {
-      try {
-        return new Date(str).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
-      } catch { return str; }
+    async function buyPackage(packId) {
+      alert("Razorpay Test Mode.\n\nPayment integration ready.\nJab live keys aayenge tab fully kaam karega.\n\nAbhi test ke liye admin se credits add karwa sakte ho.");
+      // Full Razorpay checkout can be added later when keys are live
     }
 
     function logout() {
-      if (!confirm('Logout?')) return;
-      fetch('backend/auth.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'logout' })
-      }).then(() => window.location.href = 'login.html');
+      localStorage.removeItem("vxh_user");
+      fetch(API + "/api/logout", { method: "POST", credentials: "include" });
+      window.location.href = "login.html";
     }
-
-    checkAuth();
   </script>
 </body>
 </html>
