@@ -34,78 +34,31 @@
       0%, 100% { opacity: 0.06; transform: scale(1); }
       50% { opacity: 0.12; transform: scale(1.05); }
     }
-
-    /* Smooth Card */
-    .tool-card {
+    .game-card {
       background: rgba(17, 17, 28, 0.92);
-      border: 1.5px solid rgba(103, 232, 249, 0.28);
-      border-radius: 22px;
+      border: 2px solid rgba(103, 232, 249, 0.3);
+      border-radius: 24px;
       overflow: hidden;
-      transition: all 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
       position: relative;
+      cursor: pointer;
+      min-height: 280px;
     }
-    .tool-card:hover {
-      transform: translateY(-14px) scale(1.03);
+    .game-card:hover {
+      transform: translateY(-12px) scale(1.02);
       border-color: #67e8f9;
-      box-shadow: 0 20px 50px rgba(103, 232, 249, 0.25), 0 0 40px rgba(103, 232, 249, 0.15);
+      box-shadow: 0 25px 60px rgba(103, 232, 249, 0.3), 0 0 50px rgba(103, 232, 249, 0.15);
     }
-    .tool-card::after {
+    .game-card::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(103,232,249,0.08), transparent 50%);
+      background: linear-gradient(135deg, rgba(103,232,249,0.1), transparent 50%);
       opacity: 0;
       transition: opacity 0.4s;
       pointer-events: none;
     }
-    .tool-card:hover::after { opacity: 1; }
-
-    .preview-img {
-      width: 100%;
-      height: 190px;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-    .tool-card:hover .preview-img {
-      transform: scale(1.08);
-    }
-
-    .push-slider {
-      position: relative;
-      overflow: hidden;
-      height: 190px;
-    }
-    .push-slides {
-      display: flex;
-      height: 100%;
-      transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-    .push-slide { min-width: 100%; height: 100%; }
-    .push-slide img { width: 100%; height: 100%; object-fit: cover; }
-
-    .slider-dots {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 7px;
-      z-index: 10;
-    }
-    .dot {
-      width: 8px; height: 8px;
-      background: rgba(255,255,255,0.45);
-      border-radius: 50%;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .dot.active {
-      background: #67e8f9;
-      transform: scale(1.35);
-      box-shadow: 0 0 8px #67e8f9;
-    }
-
-    /* Fade In */
+    .game-card:hover::after { opacity: 1; }
     .fade-up {
       opacity: 0;
       transform: translateY(25px);
@@ -114,17 +67,6 @@
     @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
     }
-
-    .explore-btn {
-      transition: all 0.35s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .explore-btn:hover {
-      transform: scale(1.04);
-      box-shadow: 0 0 25px rgba(103, 232, 249, 0.4);
-    }
-
     .section-title {
       background: linear-gradient(to right, #67e8f9, #c084fc, #f472b6);
       -webkit-background-clip: text;
@@ -144,30 +86,25 @@
         <h1 class="text-5xl md:text-7xl font-black tracking-[3px] md:tracking-[5px] mb-3">
           VOID<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">X</span>HUB
         </h1>
-        <p class="text-xl md:text-2xl text-cyan-300 tracking-widest">CHOOSE YOUR WEAPON</p>
+        <p class="text-xl md:text-2xl text-cyan-300 tracking-widest">CHOOSE YOUR GAME</p>
         <div class="w-28 h-1 bg-gradient-to-r from-cyan-400 to-purple-500 mx-auto mt-5 rounded-full"></div>
       </div>
 
-      <!-- Big Scrims Card -->
-      <div class="tool-card cursor-pointer mb-14 fade-up" style="animation-delay:0.1s" onclick="window.location.href='scrims.html'">
+      <!-- Big Scrims Card (kept) -->
+      <div class="game-card mb-14 fade-up" style="animation-delay:0.1s" onclick="window.location.href='scrims.html'">
         <div class="relative">
-          <img src="paid-scrims-thumbnail.jpg" class="w-full h-[320px] md:h-[400px] object-cover" alt="Paid Scrims">
+          <img src="paid-scrims-thumbnail.jpg" class="w-full h-[280px] md:h-[360px] object-cover" alt="Paid Scrims">
           <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black/90"></div>
-          <div class="absolute inset-0 flex flex-col justify-end p-8 md:p-14 text-white">
+          <div class="absolute inset-0 flex flex-col justify-end p-8 md:p-12 text-white">
             <div class="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4 w-fit">
               🔥 TOURNAMENT HUB
             </div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-wider leading-none mb-3">
-              PAID SCRIMS<br>& TOURNAMENTS
+            <h2 class="text-3xl md:text-5xl font-black tracking-wider leading-none mb-3">
+              PAID SCRIMS & TOURNAMENTS
             </h2>
-            <div class="flex flex-wrap gap-x-6 gap-y-1 text-base md:text-lg mb-5">
-              <p class="text-orange-300">✅ REAL CASH PRIZES</p>
-              <p class="text-orange-300">✅ DAILY SCRIMS</p>
-              <p class="text-orange-300">✅ WEEKLY TOURNAMENTS</p>
-            </div>
-            <p class="text-emerald-400 text-lg font-bold mb-6">FREE FIRE + BGMI BOTH SUPPORTED</p>
+            <p class="text-emerald-400 text-lg font-bold mb-4">FREE FIRE + BGMI BOTH SUPPORTED</p>
             <button onclick="event.stopImmediatePropagation(); window.location.href='scrims.html'"
-                    class="w-fit bg-gradient-to-r from-orange-500 to-pink-600 px-10 py-4 rounded-2xl text-lg font-bold shadow-xl hover:scale-105 transition-all">
+                    class="w-fit bg-gradient-to-r from-orange-500 to-pink-600 px-8 py-3 rounded-2xl text-base font-bold shadow-xl hover:scale-105 transition-all">
               JOIN NOW - WIN CASH 💰
             </button>
           </div>
@@ -175,179 +112,132 @@
       </div>
 
       <!-- Section Title -->
-      <div class="text-center mb-12 fade-up" style="animation-delay:0.15s">
+      <div class="text-center mb-10 fade-up" style="animation-delay:0.15s">
         <h2 class="text-3xl md:text-4xl font-black tracking-[2px] section-title">
-          CONFIG FILES FOR BGMI & FREE FIRE
+          SELECT YOUR GAME
         </h2>
         <div class="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-500 mx-auto mt-4 rounded-full"></div>
       </div>
 
-      <!-- Tools Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+      <!-- Horizontal Game Cards (Tournament Style) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
 
-        <!-- Hologram -->
-        <div class="tool-card cursor-pointer relative fade-up" style="animation-delay:0.2s" onclick="window.location.href='redirect.html?tool=holo'">
-          <div class="absolute top-3 right-3 z-10 bg-black/80 text-green-400 text-xs font-bold px-3 py-1 rounded-full border border-green-400/60">Recommended</div>
-          <img src="holo.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-orange-300 mb-2">FREE FIRE HOLOGRAM</h3>
-            <p class="text-sm text-gray-400 mb-4">Full Body Hologram + 80% Drag HS</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
-          </div>
-        </div>
-
-        <!-- BGMI FPS -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.25s" onclick="window.location.href='redirect.html?tool=bgmifps'">
-          <img src="bgmifps.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-violet-300 mb-2">BGMI HIGH FPS</h3>
-            <p class="text-sm text-gray-400 mb-4">Unlocks Highest FPS on Low End</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
-          </div>
-        </div>
-
-        <!-- Paid Push -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.3s" onclick="window.location.href='redirect.html?tool=paidpush'">
-          <div class="push-slider">
-            <div class="push-slides" id="pushSlides">
-              <div class="push-slide"><img src="brpush.jpg" alt="BR Push"></div>
-              <div class="push-slide"><img src="cspush.jpg" alt="CS Push"></div>
+        <!-- Free Fire & Free Fire Max -->
+        <div class="game-card fade-up" style="animation-delay:0.2s" onclick="window.location.href='ff.html'">
+          <div class="relative h-full min-h-[280px] flex flex-col">
+            <div class="absolute inset-0 bg-gradient-to-br from-orange-900/80 via-red-950/90 to-black"></div>
+            <div class="relative z-10 flex flex-col justify-between h-full p-6 md:p-8">
+              <div>
+                <div class="inline-flex items-center gap-2 bg-orange-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
+                  🔥 HOT
+                </div>
+                <h3 class="text-2xl md:text-3xl font-black text-orange-300 tracking-wider mb-2">FREE FIRE</h3>
+                <p class="text-lg text-orange-200/80 font-bold">& FREE FIRE MAX</p>
+                <p class="text-sm text-gray-300 mt-3">Hologram • Configs • Push • Locations</p>
+              </div>
+              <button class="mt-6 w-full py-3 bg-gradient-to-r from-orange-500 to-pink-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
+                OPEN TOOLS →
+              </button>
             </div>
-            <div class="slider-dots" id="pushDots"></div>
-          </div>
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-violet-300 mb-2">FREE FIRE PAID PUSH</h3>
-            <p class="text-sm text-gray-400 mb-4">100% Rank Up • No Ban</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
           </div>
         </div>
 
-        <!-- Arrow -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.35s" onclick="window.location.href='redirect.html?tool=arrow'">
-          <img src="arrow.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-cyan-300 mb-2">ARROW LOCATION</h3>
-            <p class="text-sm text-gray-400 mb-4">+90% Headshot</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
+        <!-- BGMI -->
+        <div class="game-card fade-up" style="animation-delay:0.25s" onclick="window.location.href='bgmi.html'">
+          <div class="relative h-full min-h-[280px] flex flex-col">
+            <div class="absolute inset-0 bg-gradient-to-br from-cyan-900/80 via-teal-950/90 to-black"></div>
+            <div class="relative z-10 flex flex-col justify-between h-full p-6 md:p-8">
+              <div>
+                <div class="inline-flex items-center gap-2 bg-cyan-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
+                  💀 LIVE
+                </div>
+                <h3 class="text-2xl md:text-3xl font-black text-cyan-300 tracking-wider mb-2">BGMI</h3>
+                <p class="text-lg text-cyan-200/80 font-bold">BATTLEGROUNDS MOBILE INDIA</p>
+                <p class="text-sm text-gray-300 mt-3">High FPS • OBB • Configs</p>
+              </div>
+              <button class="mt-6 w-full py-3 bg-gradient-to-r from-cyan-500 to-teal-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
+                OPEN TOOLS →
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- Card -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.4s" onclick="window.location.href='redirect.html?tool=card'">
-          <img src="card.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-purple-300 mb-2">CARD LOCATION</h3>
-            <p class="text-sm text-gray-400 mb-4">+90% Headshot</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
+        <!-- Call of Duty -->
+        <div class="game-card fade-up" style="animation-delay:0.3s" onclick="window.location.href='cod.html'">
+          <div class="relative h-full min-h-[280px] flex flex-col">
+            <div class="absolute inset-0 bg-gradient-to-br from-yellow-900/70 via-amber-950/90 to-black"></div>
+            <div class="relative z-10 flex flex-col justify-between h-full p-6 md:p-8">
+              <div>
+                <div class="inline-flex items-center gap-2 bg-yellow-600/90 text-black text-xs font-bold px-3 py-1 rounded-full mb-4">
+                  🎯 COD
+                </div>
+                <h3 class="text-2xl md:text-3xl font-black text-yellow-300 tracking-wider mb-2">CALL OF DUTY</h3>
+                <p class="text-lg text-yellow-200/80 font-bold">MOBILE</p>
+                <p class="text-sm text-gray-300 mt-3">Tools & Configs</p>
+              </div>
+              <button class="mt-6 w-full py-3 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
+                OPEN TOOLS →
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- Laser -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.45s" onclick="window.location.href='redirect.html?tool=laser'">
-          <img src="laser.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-pink-300 mb-2">LASER LOCATION</h3>
-            <p class="text-sm text-gray-400 mb-4">+90% Headshot</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
+        <!-- Apex Legends -->
+        <div class="game-card fade-up" style="animation-delay:0.35s" onclick="window.location.href='apex.html'">
+          <div class="relative h-full min-h-[280px] flex flex-col">
+            <div class="absolute inset-0 bg-gradient-to-br from-red-900/80 via-rose-950/90 to-black"></div>
+            <div class="relative z-10 flex flex-col justify-between h-full p-6 md:p-8">
+              <div>
+                <div class="inline-flex items-center gap-2 bg-red-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
+                  ⚡ APEX
+                </div>
+                <h3 class="text-2xl md:text-3xl font-black text-red-300 tracking-wider mb-2">APEX LEGENDS</h3>
+                <p class="text-lg text-red-200/80 font-bold">MOBILE</p>
+                <p class="text-sm text-gray-300 mt-3">Coming Tools</p>
+              </div>
+              <button class="mt-6 w-full py-3 bg-gradient-to-r from-red-500 to-rose-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
+                OPEN TOOLS →
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- Laser 2 -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.5s" onclick="window.location.href='redirect.html?tool=laser2'">
-          <img src="laser2.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-yellow-300 mb-2">LASER LOCATION 2</h3>
-            <p class="text-sm text-gray-400 mb-4">+90% Headshot</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
+        <!-- Valorant -->
+        <div class="game-card fade-up" style="animation-delay:0.4s" onclick="window.location.href='valorant.html'">
+          <div class="relative h-full min-h-[280px] flex flex-col">
+            <div class="absolute inset-0 bg-gradient-to-br from-pink-900/80 via-fuchsia-950/90 to-black"></div>
+            <div class="relative z-10 flex flex-col justify-between h-full p-6 md:p-8">
+              <div>
+                <div class="inline-flex items-center gap-2 bg-pink-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
+                  💜 VAL
+                </div>
+                <h3 class="text-2xl md:text-3xl font-black text-pink-300 tracking-wider mb-2">VALORANT</h3>
+                <p class="text-lg text-pink-200/80 font-bold">MOBILE</p>
+                <p class="text-sm text-gray-300 mt-3">Tools & Configs</p>
+              </div>
+              <button class="mt-6 w-full py-3 bg-gradient-to-r from-pink-500 to-fuchsia-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
+                OPEN TOOLS →
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- Laser 3 -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.55s" onclick="window.location.href='redirect.html?tool=laser3'">
-          <img src="laser3.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-emerald-300 mb-2">LASER LOCATION 3</h3>
-            <p class="text-sm text-gray-400 mb-4">+90% Headshot</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
-          </div>
-        </div>
-
-        <!-- Magic 600 -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.6s" onclick="window.location.href='redirect.html?tool=magic600'">
-          <img src="magic600.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-red-300 mb-2">MAGIC BULLET 600%</h3>
-            <p class="text-sm text-gray-400 mb-1">+600% Power</p>
-            <p class="text-red-400 text-xs font-bold mb-3">⚠️ SECOND ACCOUNT ONLY</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
-          </div>
-        </div>
-
-        <!-- Shop -->
-        <div class="tool-card cursor-pointer relative fade-up" style="animation-delay:0.65s" onclick="window.location.href='redirect.html?tool=shop'">
-          <div class="absolute top-3 right-3 z-10 bg-black/80 text-green-400 text-xs font-bold px-3 py-1 rounded-full border border-green-400/60">Recommended</div>
-          <img src="shop.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-orange-300 mb-2">SHOP LOCATION</h3>
-            <p class="text-sm text-gray-400 mb-4">ESP +90% Headshot</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
-          </div>
-        </div>
-
-        <!-- Gloo -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.7s" onclick="window.location.href='redirect.html?tool=gloo'">
-          <img src="gloo.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-pink-300 mb-2">INVISIBLE GLOOWALL</h3>
-            <p class="text-sm text-gray-400 mb-4">Unlock All Rare Skins</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
-          </div>
-        </div>
-
-        <!-- Sensi -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.75s" onclick="window.location.href='redirect.html?tool=sensi'">
-          <img src="sensi.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-emerald-400 mb-2">SENSITIVITY CONFIG</h3>
-            <p class="text-sm text-gray-400 mb-4">Best Custom Sensitivity</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
-          </div>
-        </div>
-
-        <!-- Youtuber OBB -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.8s" onclick="window.location.href='redirect.html?tool=yobb'">
-          <img src="yobb.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-yellow-300 mb-2">BGMI YOUTUBER OBB</h3>
-            <p class="text-sm text-gray-400 mb-4">Original Youtuber OBB + Media</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
-          </div>
-        </div>
-
-        <!-- Brutal OBB -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.85s" onclick="window.location.href='redirect.html?tool=bobb'">
-          <img src="bobb.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-red-400 mb-2">BGMI BRUTAL OBB</h3>
-            <p class="text-sm text-gray-400 mb-4">Brutal Graphics + High Damage</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
-          </div>
-        </div>
-
-        <!-- carding -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.9s" onclick="window.location.href='wait.html'">
-          <img src="cc.jpg" class="preview-img">
-          <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-cyan-300 mb-2">CARDING 🎭</h3>
-            <p class="text-sm text-gray-400 mb-4">Fresh Working Cards With High Balance</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
+        <!-- Empty Card -->
+        <div class="game-card fade-up" style="animation-delay:0.45s">
+          <div class="relative h-full min-h-[280px] flex flex-col">
+            <div class="absolute inset-0 bg-gradient-to-br from-gray-800/80 via-zinc-950/90 to-black"></div>
+            <div class="relative z-10 flex flex-col items-center justify-center h-full p-6 md:p-8 text-center">
+              <div class="text-5xl mb-4 opacity-40">+</div>
+              <h3 class="text-xl font-black text-gray-400 tracking-wider mb-2">EMPTY SLOT</h3>
+              <p class="text-sm text-gray-500">Coming Soon</p>
+            </div>
           </div>
         </div>
 
       </div>
 
-      <!-- Back / Help -->
-      <div class="text-center mt-16 fade-up" style="animation-delay:1s">
+      <!-- Back -->
+      <div class="text-center mt-16 fade-up" style="animation-delay:0.5s">
         <button onclick="window.location.href='index.html'" 
                 class="text-gray-400 hover:text-cyan-300 transition text-sm tracking-wider">
           ← BACK TO HOME
@@ -363,55 +253,5 @@
       <span>💬 Help</span>
     </button>
   </div>
-
-  <script>
-    // Push Slider
-    let currentPushSlide = 0;
-    const pushSlidesContainer = document.getElementById('pushSlides');
-    const pushDotsContainer = document.getElementById('pushDots');
-    const totalPushSlides = 2;
-
-    function createPushDots() {
-      if (!pushDotsContainer) return;
-      pushDotsContainer.innerHTML = '';
-      for (let i = 0; i < totalPushSlides; i++) {
-        const dot = document.createElement('div');
-        dot.classList.add('dot');
-        if (i === 0) dot.classList.add('active');
-        dot.onclick = (e) => { e.stopPropagation(); goToPushSlide(i); };
-        pushDotsContainer.appendChild(dot);
-      }
-    }
-
-    function showPushSlide(n) {
-      if (!pushSlidesContainer) return;
-      pushSlidesContainer.style.transform = `translateX(-${n * 100}%)`;
-      document.querySelectorAll('#pushDots .dot').forEach((dot, index) => {
-        dot.classList.toggle('active', index === n);
-      });
-    }
-
-    function nextPushSlide() {
-      currentPushSlide = (currentPushSlide + 1) % totalPushSlides;
-      showPushSlide(currentPushSlide);
-    }
-
-    function goToPushSlide(n) {
-      currentPushSlide = n;
-      showPushSlide(currentPushSlide);
-    }
-
-    createPushDots();
-    let pushInterval = setInterval(nextPushSlide, 2500);
-
-    // Pause on hover
-    const pushCard = document.querySelector('.tool-card:nth-child(3)');
-    if (pushCard) {
-      pushCard.addEventListener('mouseenter', () => clearInterval(pushInterval));
-      pushCard.addEventListener('mouseleave', () => {
-        pushInterval = setInterval(nextPushSlide, 2500);
-      });
-    }
-  </script>
 </body>
 </html>
