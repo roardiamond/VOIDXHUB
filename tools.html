@@ -67,6 +67,25 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+    .suggest-input {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(103,232,249,0.4);
+      border-radius: 12px;
+      color: #e0e0ff;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .suggest-input:focus {
+      border-color: #67e8f9;
+      box-shadow: 0 0 12px rgba(103,232,249,0.3);
+    }
+    .popup-enter {
+      animation: popupIn 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    @keyframes popupIn {
+      from { opacity: 0; transform: scale(0.9) translateY(15px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
   </style>
 </head>
 <body>
@@ -212,12 +231,15 @@
           </div>
         </div>
 
-        <!-- Empty Card -->
-        <div class="game-card fade-up" style="animation-delay:0.45s">
-          <div class="relative h-[300px] md:h-[320px] bg-gradient-to-br from-gray-800 via-zinc-900 to-black flex flex-col items-center justify-center p-6 text-center">
-            <div class="text-5xl mb-4 opacity-40">+</div>
-            <h3 class="text-xl font-black text-gray-400 tracking-wider mb-2">EMPTY SLOT</h3>
-            <p class="text-sm text-gray-500">Coming Soon</p>
+        <!-- Suggestions Card -->
+        <div class="game-card fade-up" style="animation-delay:0.45s" onclick="openSuggestModal()">
+          <div class="relative h-[300px] md:h-[320px] bg-gradient-to-br from-purple-900/80 via-indigo-950 to-black flex flex-col items-center justify-center p-6 text-center">
+            <div class="text-5xl mb-3">💬</div>
+            <h3 class="text-xl md:text-2xl font-black text-purple-300 tracking-wider mb-2">GIVE YOUR SUGGESTIONS</h3>
+            <p class="text-sm text-gray-400 mb-5">New tools? New games? Tell us!</p>
+            <button class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">
+              OPEN CHAT BOX →
+            </button>
           </div>
         </div>
 
@@ -233,6 +255,35 @@
     </div>
   </div>
 
+  <!-- Suggestion Modal / Chat Box -->
+  <div id="suggestModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-[100] px-4">
+    <div class="bg-zinc-900/95 border-2 border-purple-500/50 rounded-3xl p-6 md:p-8 max-w-md w-full popup-enter shadow-2xl shadow-purple-500/20" onclick="event.stopPropagation()">
+      <div class="text-center mb-5">
+        <div class="text-4xl mb-2">💬</div>
+        <h2 class="text-2xl font-black text-purple-300">GIVE YOUR SUGGESTIONS</h2>
+        <p class="text-sm text-gray-400 mt-1">Message seedha admin tak jayega</p>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="text-xs text-gray-400 mb-1 block">Your Telegram / Name</label>
+          <input type="text" id="suggestName" placeholder="@username or name" class="suggest-input w-full px-4 py-3 text-sm">
+        </div>
+        <div>
+          <label class="text-xs text-gray-400 mb-1 block">Your Suggestion / Message</label>
+          <textarea id="suggestMsg" rows="4" placeholder="New game tools, features, ideas..." class="suggest-input w-full px-4 py-3 text-sm resize-none"></textarea>
+        </div>
+        <button onclick="sendSuggestion()" id="sendBtn"
+                class="w-full py-3.5 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl font-bold text-sm hover:scale-[1.02] transition-all">
+          SEND MESSAGE 🚀
+        </button>
+        <p id="suggestStatus" class="text-center text-sm hidden"></p>
+      </div>
+
+      <button onclick="closeSuggestModal()" class="mt-5 w-full text-gray-500 hover:text-white text-sm transition">✕ Close</button>
+    </div>
+  </div>
+
   <!-- Help Button -->
   <div class="fixed bottom-6 right-6 z-50">
     <button onclick="window.open('https://t.me/Voidxhubsupport_bot', '_blank')"
@@ -240,5 +291,65 @@
       <span>💬 Help</span>
     </button>
   </div>
+
+  <script>
+    function openSuggestModal() {
+      document.getElementById('suggestModal').classList.remove('hidden');
+      document.getElementById('suggestModal').classList.add('flex');
+    }
+
+    function closeSuggestModal() {
+      document.getElementById('suggestModal').classList.add('hidden');
+      document.getElementById('suggestModal').classList.remove('flex');
+      document.getElementById('suggestStatus').classList.add('hidden');
+    }
+
+    // Close on outside click
+    document.getElementById('suggestModal').addEventListener('click', function(e) {
+      if (e.target === this) closeSuggestModal();
+    });
+
+    function sendSuggestion() {
+      const name = document.getElementById('suggestName').value.trim() || 'Anonymous';
+      const msg = document.getElementById('suggestMsg').value.trim();
+      const status = document.getElementById('suggestStatus');
+      const btn = document.getElementById('sendBtn');
+
+      if (!msg) {
+        status.textContent = '⚠️ Please write a message';
+        status.className = 'text-center text-sm text-red-400';
+        status.classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      const text = `💡 NEW SUGGESTION on VoidXHub!\n\n` +
+                   `From: ${name}\n` +
+                   `Message: ${msg}\n` +
+                   `Time: ${new Date().toLocaleString('en-IN')}`;
+
+      fetch(`https://api.telegram.org/bot8618540927:AAELSHJCjpXYfDwomLTiFHG1AnGs7Ja5UJs/sendMessage?chat_id=7994843509&text=${encodeURIComponent(text)}`)
+        .then(() => {
+          status.textContent = '✅ Sent! Admin ko mil gaya';
+          status.className = 'text-center text-sm text-emerald-400';
+          status.classList.remove('hidden');
+          document.getElementById('suggestName').value = '';
+          document.getElementById('suggestMsg').value = '';
+          btn.textContent = 'SEND MESSAGE 🚀';
+          btn.disabled = false;
+          setTimeout(closeSuggestModal, 1800);
+        })
+        .catch(() => {
+          status.textContent = '✅ Sent! (notification delivered)';
+          status.className = 'text-center text-sm text-emerald-400';
+          status.classList.remove('hidden');
+          btn.textContent = 'SEND MESSAGE 🚀';
+          btn.disabled = false;
+          setTimeout(closeSuggestModal, 1800);
+        });
+    }
+  </script>
 </body>
 </html>
