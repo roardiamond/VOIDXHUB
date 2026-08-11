@@ -7,108 +7,25 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Orbitron', sans-serif;
-      background: #05050a;
-      color: #e0e0ff;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
-    .bg-blackhole {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at top, #1a0033 0%, #05050a 70%);
-      z-index: -3;
-    }
-    .void-logo-bg {
-      position: fixed;
-      inset: 0;
-      background: url('sQz8x (1).jpg') center/cover no-repeat;
-      opacity: 0.08;
-      filter: blur(3px) brightness(1.2);
-      animation: logoPulse 25s ease-in-out infinite;
-      z-index: -2;
-      mix-blend-mode: screen;
-    }
-    @keyframes logoPulse {
-      0%, 100% { opacity: 0.06; transform: scale(1); }
-      50% { opacity: 0.12; transform: scale(1.05); }
-    }
-    .tool-card {
-      background: rgba(17, 17, 28, 0.92);
-      border: 1.5px solid rgba(103, 232, 249, 0.28);
-      border-radius: 22px;
-      overflow: hidden;
-      transition: all 0.55s cubic-bezier(0.23, 1, 0.32, 1);
-      position: relative;
-    }
-    .tool-card:hover {
-      transform: translateY(-14px) scale(1.03);
-      border-color: #67e8f9;
-      box-shadow: 0 20px 50px rgba(103, 232, 249, 0.25), 0 0 40px rgba(103, 232, 249, 0.15);
-    }
-    .preview-img {
-      width: 100%;
-      height: 190px;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-    .tool-card:hover .preview-img {
-      transform: scale(1.08);
-    }
-    .push-slider {
-      position: relative;
-      overflow: hidden;
-      height: 190px;
-    }
-    .push-slides {
-      display: flex;
-      height: 100%;
-      transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-    }
+    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; overflow-x: hidden; min-height: 100vh; }
+    .bg-blackhole { position: fixed; inset: 0; background: radial-gradient(ellipse at top, #1a0033 0%, #05050a 70%); z-index: -3; }
+    .void-logo-bg { position: fixed; inset: 0; background: url('sQz8x (1).jpg') center/cover no-repeat; opacity: 0.08; filter: blur(3px) brightness(1.2); animation: logoPulse 25s ease-in-out infinite; z-index: -2; mix-blend-mode: screen; }
+    @keyframes logoPulse { 0%,100%{opacity:0.06;transform:scale(1)} 50%{opacity:0.12;transform:scale(1.05)} }
+    .tool-card { background: rgba(17,17,28,0.92); border: 1.5px solid rgba(103,232,249,0.28); border-radius: 22px; overflow: hidden; transition: all 0.55s cubic-bezier(0.23,1,0.32,1); position: relative; }
+    .tool-card:hover { transform: translateY(-14px) scale(1.03); border-color: #67e8f9; box-shadow: 0 20px 50px rgba(103,232,249,0.25), 0 0 40px rgba(103,232,249,0.15); }
+    .preview-img { width: 100%; height: 190px; object-fit: cover; transition: transform 0.6s ease; }
+    .tool-card:hover .preview-img { transform: scale(1.08); }
+    .push-slider { position: relative; overflow: hidden; height: 190px; filter: grayscale(100%); opacity: 0.7; }
+    .push-slides { display: flex; height: 100%; transition: transform 0.7s cubic-bezier(0.23,1,0.32,1); }
     .push-slide { min-width: 100%; height: 100%; }
     .push-slide img { width: 100%; height: 100%; object-fit: cover; }
-    .slider-dots {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 7px;
-      z-index: 10;
-    }
-    .dot {
-      width: 8px; height: 8px;
-      background: rgba(255,255,255,0.45);
-      border-radius: 50%;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .dot.active {
-      background: #67e8f9;
-      transform: scale(1.35);
-      box-shadow: 0 0 8px #67e8f9;
-    }
-    .fade-up {
-      opacity: 0;
-      transform: translateY(25px);
-      animation: fadeUp 0.7s ease forwards;
-    }
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .explore-btn {
-      transition: all 0.35s ease;
-    }
-    .explore-btn:hover {
-      transform: scale(1.04);
-      box-shadow: 0 0 25px rgba(103, 232, 249, 0.4);
-    }
-    .section-title {
-      background: linear-gradient(to right, #67e8f9, #c084fc, #f472b6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    .slider-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 7px; z-index: 10; }
+    .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.45); border-radius: 50%; cursor: pointer; transition: all 0.3s; }
+    .dot.active { background: #67e8f9; transform: scale(1.35); box-shadow: 0 0 8px #67e8f9; }
+    .fade-up { opacity: 0; transform: translateY(25px); animation: fadeUp 0.7s ease forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .explore-btn { transition: all 0.35s ease; }
+    .explore-btn:hover { transform: scale(1.04); box-shadow: 0 0 25px rgba(103,232,249,0.4); }
   </style>
 </head>
 <body>
@@ -117,7 +34,6 @@
 
   <div class="relative z-10 py-16 px-4 md:px-6">
     <div class="max-w-7xl mx-auto">
-
       <div class="text-center mb-12 fade-up">
         <h1 class="text-4xl md:text-6xl font-black tracking-wider mb-3 text-orange-300">FREE FIRE & MAX</h1>
         <p class="text-lg text-cyan-300 tracking-widest">ALL TOOLS & CONFIGS</p>
@@ -126,7 +42,6 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
 
-        <!-- Hologram -->
         <div class="tool-card cursor-pointer relative fade-up" style="animation-delay:0.1s" onclick="window.location.href='redirect.html?tool=holo'">
           <div class="absolute top-3 right-3 z-10 bg-black/80 text-green-400 text-xs font-bold px-3 py-1 rounded-full border border-green-400/60">Recommended</div>
           <img src="holo.jpg" class="preview-img">
@@ -137,8 +52,8 @@
           </div>
         </div>
 
-        <!-- Paid Push -->
-        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.15s" onclick="window.location.href='wait.html">
+        <!-- Paid Push - Black & White + wait.html -->
+        <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.15s; filter: grayscale(100%);" onclick="window.location.href='wait.html'">
           <div class="push-slider">
             <div class="push-slides" id="pushSlides">
               <div class="push-slide"><img src="brpush.jpg" alt="BR Push"></div>
@@ -147,13 +62,13 @@
             <div class="slider-dots" id="pushDots"></div>
           </div>
           <div class="p-5 text-center">
-            <h3 class="text-xl font-bold text-violet-300 mb-2">FREE FIRE PAID PUSH</h3>
-            <p class="text-sm text-gray-400 mb-4">100% Rank Up • No Ban</p>
-            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
+            <h3 class="text-xl font-bold text-gray-400 mb-2">FREE FIRE PAID PUSH</h3>
+            <p class="text-sm text-gray-500 mb-2">Temporarily Unavailable</p>
+            <p class="text-xs text-red-400 mb-3">COMING SOON</p>
+            <button class="explore-btn w-full py-3 bg-gray-700 rounded-xl font-bold text-sm text-gray-300">WAIT →</button>
           </div>
         </div>
 
-        <!-- Arrow -->
         <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.2s" onclick="window.location.href='redirect.html?tool=arrow'">
           <img src="arrow.jpg" class="preview-img">
           <div class="p-5 text-center">
@@ -163,7 +78,6 @@
           </div>
         </div>
 
-        <!-- Card -->
         <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.25s" onclick="window.location.href='redirect.html?tool=card'">
           <img src="card.jpg" class="preview-img">
           <div class="p-5 text-center">
@@ -173,7 +87,6 @@
           </div>
         </div>
 
-        <!-- Laser -->
         <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.3s" onclick="window.location.href='redirect.html?tool=laser'">
           <img src="laser.jpg" class="preview-img">
           <div class="p-5 text-center">
@@ -183,7 +96,6 @@
           </div>
         </div>
 
-        <!-- Laser 2 -->
         <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.35s" onclick="window.location.href='redirect.html?tool=laser2'">
           <img src="laser2.jpg" class="preview-img">
           <div class="p-5 text-center">
@@ -193,7 +105,6 @@
           </div>
         </div>
 
-        <!-- Laser 3 -->
         <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.4s" onclick="window.location.href='redirect.html?tool=laser3'">
           <img src="laser3.jpg" class="preview-img">
           <div class="p-5 text-center">
@@ -203,7 +114,6 @@
           </div>
         </div>
 
-        <!-- Magic 600 -->
         <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.45s" onclick="window.location.href='redirect.html?tool=magic600'">
           <img src="magic600.jpg" class="preview-img">
           <div class="p-5 text-center">
@@ -214,7 +124,6 @@
           </div>
         </div>
 
-        <!-- Shop -->
         <div class="tool-card cursor-pointer relative fade-up" style="animation-delay:0.5s" onclick="window.location.href='redirect.html?tool=shop'">
           <div class="absolute top-3 right-3 z-10 bg-black/80 text-green-400 text-xs font-bold px-3 py-1 rounded-full border border-green-400/60">Recommended</div>
           <img src="shop.jpg" class="preview-img">
@@ -225,7 +134,6 @@
           </div>
         </div>
 
-        <!-- Gloo -->
         <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.55s" onclick="window.location.href='redirect.html?tool=gloo'">
           <img src="gloo.jpg" class="preview-img">
           <div class="p-5 text-center">
@@ -235,7 +143,6 @@
           </div>
         </div>
 
-        <!-- Sensi -->
         <div class="tool-card cursor-pointer fade-up" style="animation-delay:0.6s" onclick="window.location.href='redirect.html?tool=sensi'">
           <img src="sensi.jpg" class="preview-img">
           <div class="p-5 text-center">
@@ -248,26 +155,23 @@
       </div>
 
       <div class="text-center mt-16 fade-up">
-        <button onclick="window.location.href='tools.html'" class="text-gray-400 hover:text-cyan-300 transition text-sm tracking-wider">
-          ← BACK TO GAMES
-        </button>
+        <button onclick="window.location.href='tools.html'" class="text-gray-400 hover:text-cyan-300 transition text-sm tracking-wider">← BACK TO GAMES</button>
       </div>
     </div>
   </div>
 
   <div class="fixed bottom-6 right-6 z-50">
-    <button onclick="window.open('https://t.me/Voidxhubsupport_bot', '_blank')"
-            class="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold px-6 py-3.5 rounded-2xl shadow-2xl border border-white/20 hover:scale-105 transition-all">
+    <button onclick="window.open('https://t.me/Voidxhubsupport_bot', '_blank')" class="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold px-6 py-3.5 rounded-2xl shadow-2xl border border-white/20 hover:scale-105 transition-all">
       <span>💬 Help</span>
     </button>
   </div>
 
+  <script src="js/auth.js"></script>
   <script>
     let currentPushSlide = 0;
     const pushSlidesContainer = document.getElementById('pushSlides');
     const pushDotsContainer = document.getElementById('pushDots');
     const totalPushSlides = 2;
-
     function createPushDots() {
       if (!pushDotsContainer) return;
       pushDotsContainer.innerHTML = '';
@@ -279,7 +183,6 @@
         pushDotsContainer.appendChild(dot);
       }
     }
-
     function showPushSlide(n) {
       if (!pushSlidesContainer) return;
       pushSlidesContainer.style.transform = `translateX(-${n * 100}%)`;
@@ -287,17 +190,14 @@
         dot.classList.toggle('active', index === n);
       });
     }
-
     function nextPushSlide() {
       currentPushSlide = (currentPushSlide + 1) % totalPushSlides;
       showPushSlide(currentPushSlide);
     }
-
     function goToPushSlide(n) {
       currentPushSlide = n;
       showPushSlide(currentPushSlide);
     }
-
     createPushDots();
     setInterval(nextPushSlide, 2500);
   </script>

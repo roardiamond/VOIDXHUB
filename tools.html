@@ -7,85 +7,21 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Orbitron', sans-serif;
-      background: #05050a;
-      color: #e0e0ff;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
-    .bg-blackhole {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at top, #1a0033 0%, #05050a 70%);
-      z-index: -3;
-    }
-    .void-logo-bg {
-      position: fixed;
-      inset: 0;
-      background: url('sQz8x (1).jpg') center/cover no-repeat;
-      opacity: 0.08;
-      filter: blur(3px) brightness(1.2);
-      animation: logoPulse 25s ease-in-out infinite;
-      z-index: -2;
-      mix-blend-mode: screen;
-    }
-    @keyframes logoPulse {
-      0%, 100% { opacity: 0.06; transform: scale(1); }
-      50% { opacity: 0.12; transform: scale(1.05); }
-    }
-    .game-card {
-      background: rgba(17, 17, 28, 0.92);
-      border: 2px solid rgba(103, 232, 249, 0.3);
-      border-radius: 24px;
-      overflow: hidden;
-      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-      position: relative;
-      cursor: pointer;
-    }
-    .game-card:hover {
-      transform: translateY(-12px) scale(1.02);
-      border-color: #67e8f9;
-      box-shadow: 0 25px 60px rgba(103, 232, 249, 0.3), 0 0 50px rgba(103, 232, 249, 0.15);
-    }
-    .game-card:hover img {
-      transform: scale(1.08);
-    }
-    .game-card img {
-      transition: transform 0.6s ease;
-    }
-    .fade-up {
-      opacity: 0;
-      transform: translateY(25px);
-      animation: fadeUp 0.7s ease forwards;
-    }
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .section-title {
-      background: linear-gradient(to right, #67e8f9, #c084fc, #f472b6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .suggest-input {
-      background: rgba(0,0,0,0.5);
-      border: 1px solid rgba(103,232,249,0.4);
-      border-radius: 12px;
-      color: #e0e0ff;
-      outline: none;
-      transition: border-color 0.3s;
-    }
-    .suggest-input:focus {
-      border-color: #67e8f9;
-      box-shadow: 0 0 12px rgba(103,232,249,0.3);
-    }
-    .popup-enter {
-      animation: popupIn 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-    @keyframes popupIn {
-      from { opacity: 0; transform: scale(0.9) translateY(15px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
-    }
+    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; overflow-x: hidden; min-height: 100vh; }
+    .bg-blackhole { position: fixed; inset: 0; background: radial-gradient(ellipse at top, #1a0033 0%, #05050a 70%); z-index: -3; }
+    .void-logo-bg { position: fixed; inset: 0; background: url('sQz8x (1).jpg') center/cover no-repeat; opacity: 0.08; filter: blur(3px) brightness(1.2); animation: logoPulse 25s ease-in-out infinite; z-index: -2; mix-blend-mode: screen; }
+    @keyframes logoPulse { 0%,100%{opacity:0.06;transform:scale(1)} 50%{opacity:0.12;transform:scale(1.05)} }
+    .game-card { background: rgba(17,17,28,0.92); border: 2px solid rgba(103,232,249,0.3); border-radius: 24px; overflow: hidden; transition: all 0.5s cubic-bezier(0.23,1,0.32,1); position: relative; cursor: pointer; }
+    .game-card:hover { transform: translateY(-12px) scale(1.02); border-color: #67e8f9; box-shadow: 0 25px 60px rgba(103,232,249,0.3), 0 0 50px rgba(103,232,249,0.15); }
+    .game-card:hover img { transform: scale(1.08); }
+    .game-card img { transition: transform 0.6s ease; }
+    .fade-up { opacity: 0; transform: translateY(25px); animation: fadeUp 0.7s ease forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .section-title { background: linear-gradient(to right, #67e8f9, #c084fc, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .suggest-input { background: rgba(0,0,0,0.5); border: 1px solid rgba(103,232,249,0.4); border-radius: 12px; color: #e0e0ff; outline: none; }
+    .suggest-input:focus { border-color: #67e8f9; box-shadow: 0 0 12px rgba(103,232,249,0.3); }
+    .popup-enter { animation: popupIn 0.3s cubic-bezier(0.23,1,0.32,1); }
+    @keyframes popupIn { from { opacity: 0; transform: scale(0.9) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
   </style>
 </head>
 <body>
@@ -94,11 +30,8 @@
 
   <div class="relative z-10 py-16 px-4 md:px-6">
     <div class="max-w-7xl mx-auto">
-
       <div class="text-center mb-14 fade-up">
-        <h1 class="text-5xl md:text-7xl font-black tracking-[3px] md:tracking-[5px] mb-3">
-          VOID<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">X</span>HUB
-        </h1>
+        <h1 class="text-5xl md:text-7xl font-black tracking-[3px] md:tracking-[5px] mb-3">VOID<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">X</span>HUB</h1>
         <p class="text-xl md:text-2xl text-cyan-300 tracking-widest">CHOOSE YOUR GAME</p>
         <div class="w-28 h-1 bg-gradient-to-r from-cyan-400 to-purple-500 mx-auto mt-5 rounded-full"></div>
       </div>
@@ -108,30 +41,20 @@
           <img src="paid-scrims-thumbnail.jpg" class="w-full h-[280px] md:h-[360px] object-cover" alt="Paid Scrims">
           <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black/90"></div>
           <div class="absolute inset-0 flex flex-col justify-end p-8 md:p-12 text-white">
-            <div class="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4 w-fit">
-              🔥 TOURNAMENT HUB
-            </div>
-            <h2 class="text-3xl md:text-5xl font-black tracking-wider leading-none mb-3">
-              PAID SCRIMS & TOURNAMENTS
-            </h2>
+            <div class="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4 w-fit">🔥 TOURNAMENT HUB</div>
+            <h2 class="text-3xl md:text-5xl font-black tracking-wider leading-none mb-3">PAID SCRIMS & TOURNAMENTS</h2>
             <p class="text-emerald-400 text-lg font-bold mb-4">FREE FIRE + BGMI BOTH SUPPORTED</p>
-            <button onclick="event.stopImmediatePropagation(); window.location.href='scrims.html'"
-                    class="w-fit bg-gradient-to-r from-orange-500 to-pink-600 px-8 py-3 rounded-2xl text-base font-bold shadow-xl hover:scale-105 transition-all">
-              JOIN NOW - WIN CASH 💰
-            </button>
+            <button onclick="event.stopImmediatePropagation(); window.location.href='scrims.html'" class="w-fit bg-gradient-to-r from-orange-500 to-pink-600 px-8 py-3 rounded-2xl text-base font-bold shadow-xl hover:scale-105 transition-all">JOIN NOW - WIN CASH 💰</button>
           </div>
         </div>
       </div>
 
       <div class="text-center mb-10 fade-up" style="animation-delay:0.15s">
-        <h2 class="text-3xl md:text-4xl font-black tracking-[2px] section-title">
-          SELECT YOUR GAME
-        </h2>
+        <h2 class="text-3xl md:text-4xl font-black tracking-[2px] section-title">SELECT YOUR GAME</h2>
         <div class="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-500 mx-auto mt-4 rounded-full"></div>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-
         <div class="game-card fade-up" style="animation-delay:0.2s" onclick="window.location.href='ff.html'">
           <div class="relative h-[300px] md:h-[320px]">
             <img src="ff.jpg" class="w-full h-full object-cover" alt="Free Fire">
@@ -210,7 +133,6 @@
             <button class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">OPEN CHAT BOX →</button>
           </div>
         </div>
-
       </div>
 
       <div class="text-center mt-16 fade-up" style="animation-delay:0.5s">
@@ -248,6 +170,7 @@
     </button>
   </div>
 
+  <script src="js/auth.js"></script>
   <script>
     function openSuggestModal() {
       document.getElementById('suggestModal').classList.remove('hidden');
@@ -287,7 +210,7 @@
           setTimeout(closeSuggestModal, 1800);
         })
         .catch(() => {
-          status.textContent = '✅ Sent! (notification delivered)';
+          status.textContent = '✅ Sent!';
           status.className = 'text-center text-sm text-emerald-400';
           status.classList.remove('hidden');
           btn.textContent = 'SEND MESSAGE 🚀';
