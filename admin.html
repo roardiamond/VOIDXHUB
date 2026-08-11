@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - VOIDXHUB</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; min-height: 100vh; }
+    .card { background: rgba(17,17,28,0.95); border: 1px solid rgba(103,232,249,0.3); border-radius: 16px; }
+    input, select { background: rgba(0,255,255,0.05); border: 1.5px solid #00ffff; color: #e0e0ff; font-family: 'Orbitron', sans-serif; }
+    input:focus, select:focus { outline: none; border-color: #ff00ff; box-shadow: 0 0 15px rgba(0,255,255,0.3); }
+  </style>
+</head>
+<body class="p-4 md:p-8">
+
+  <!-- Login Screen -->
+  <div id="loginScreen" class="max-w-md mx-auto mt-20">
+    <div class="card p-8">
+      <h1 class="text-2xl font-black text-cyan-400 text-center tracking-widest mb-2">ADMIN PANEL</h1>
+      <p class="text-center text-gray-400 text-sm mb-6">VOIDXHUB Backend</p>
+      <div id="loginMsg" class="hidden mb-4 p-3 rounded-lg text-sm text-center"></div>
+      <form id="adminLoginForm" class="space-y-4">
+        <div>
+          <label class="block text-cyan-400 text-xs font-bold mb-2">USERNAME</label>
+          <input type="text" id="adminUser" value="admin" required class="w-full px-4 py-3 rounded-lg">
+        </div>
+        <div>
+          <label class="block text-cyan-400 text-xs font-bold mb-2">PASSWORD</label>
+          <input type="password" id="adminPass" required class="w-full px-4 py-3 rounded-lg" placeholder="Admin password">
+        </div>
+        <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-black font-bold rounded-lg tracking-wider hover:scale-105 transition">LOGIN</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div id="adminDash" class="hidden max-w-5xl mx-auto">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+      <div>
+        <h1 class="text-3xl font-black text-cyan-400 tracking-widest">ADMIN PANEL</h1>
+        <p class="text-gray-400 text-sm mt-1">Manage users & credits</p>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="loadUsers()" class="px-4 py-2 border border-cyan-400 rounded-xl text-cyan-300 text-sm font-bold hover:bg-cyan-400 hover:text-black transition">Refresh</button>
+        <button onclick="logoutAdmin()" class="px-4 py-2 border border-red-500 rounded-xl text-red-400 text-sm font-bold hover:bg-red-500 hover:text-white transition">Logout</button>
+      </div>
+    </div>
+
+    <!-- Add Credits Box -->
+    <div class="card p-6 mb-8">
+      <h2 class="text-lg font-bold text-cyan-300 mb-4 tracking-wider">ADD / REMOVE CREDITS</h2>
+      <div id="addMsg" class="hidden mb-4 p-3 rounded-lg text-sm text-center"></div>
+      <div class="grid sm:grid-cols-3 gap-4 items-end">
+        <div>
+          <label class="block text-xs text-gray-400 mb-2">Username</label>
+          <input type="text" id="targetUser" placeholder="username" class="w-full px-4 py-3 rounded-lg">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-2">Credits (+ add / - remove)</label>
+          <input type="number" id="creditAmount" placeholder="500" class="w-full px-4 py-3 rounded-lg">
+        </div>
+        <button onclick="addCredits()" class="py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-bold rounded-lg hover:scale-105 transition">UPDATE CREDITS</button>
+      </div>
+    </div>
+
+    <!-- Set Feature Cost -->
+    <div class="card p-6 mb-8">
+      <h2 class="text-lg font-bold text-cyan-300 mb-4 tracking-wider">SET FEATURE COST</h2>
+      <div id="costMsg" class="hidden mb-4 p-3 rounded-lg text-sm text-center"></div>
+      <div class="grid sm:grid-cols-3 gap-4 items-end">
+        <div>
+          <label class="block text-xs text-gray-400 mb-2">Feature Key</label>
+          <select id="featureKey" class="w-full px-4 py-3 rounded-lg">
+            <option value="esp">ESP</option>
+            <option value="headshot_boost">Headshot Boost</option>
+            <option value="aimbot">Aimbot</option>
+            <option value="vxh_panel">VxH Panel</option>
+            <option value="sensitivity_boost">Sensitivity Boost</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-2">Credits Cost</label>
+          <input type="number" id="featureCost" placeholder="50" class="w-full px-4 py-3 rounded-lg">
+        </div>
+        <button onclick="setFeatureCost()" class="py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-lg hover:scale-105 transition">UPDATE COST</button>
+      </div>
+    </div>
+
+    <!-- Users List -->
+    <div class="card p-6">
+      <h2 class="text-lg font-bold text-cyan-300 mb-4 tracking-wider">ALL USERS</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left text-gray-400 border-b border-gray-700">
+              <th class="pb-3 pr-4">ID</th>
+              <th class="pb-3 pr-4">Username</th>
+              <th class="pb-3 pr-4">Credits</th>
+              <th class="pb-3 pr-4">Admin</th>
+              <th class="pb-3 pr-4">Created</th>
+              <th class="pb-3">Last Login</th>
+            </tr>
+          </thead>
+          <tbody id="usersTable"></tbody>
+        </table>
+      </div>
+      <p id="noUsers" class="text-gray-500 text-center py-8 hidden">No users found</p>
+    </div>
+  </div>
+
+  <script>
+    const API = "https://voidxhub-backend.onrender.com";
+
+    // Check if already logged in as admin
+    const saved = localStorage.getItem("vxh_admin");
+    if (saved === "1") {
+      showDash();
+    }
+
+    document.getElementById("adminLoginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById("loginMsg");
+      const user = document.getElementById("adminUser").value.trim();
+      const pass = document.getElementById("adminPass").value;
+
+      try {
+        const res = await fetch(API + "/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ username: user, password: pass })
+        });
+        const data = await res.json();
+
+        if (data.success && data.user && data.user.is_admin) {
+          localStorage.setItem("vxh_admin", "1");
+          localStorage.setItem("vxh_user", JSON.stringify(data.user));
+          showDash();
+        } else if (data.success) {
+          msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
+          msg.textContent = "This account is not admin";
+          msg.classList.remove("hidden");
+        } else {
+          msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
+          msg.textContent = data.message || "Login failed";
+          msg.classList.remove("hidden");
+        }
+      } catch (err) {
+        msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
+        msg.textContent = "Server error / cold start. Try again in 30 sec.";
+        msg.classList.remove("hidden");
+      }
+    });
+
+    function showDash() {
+      document.getElementById("loginScreen").classList.add("hidden");
+      document.getElementById("adminDash").classList.remove("hidden");
+      loadUsers();
+    }
+
+    function logoutAdmin() {
+      localStorage.removeItem("vxh_admin");
+      localStorage.removeItem("vxh_user");
+      fetch(API + "/api/logout", { method: "POST", credentials: "include" }).catch(()=>{});
+      location.reload();
+    }
+
+    async function addCredits() {
+      const username = document.getElementById("targetUser").value.trim().toLowerCase();
+      const credits = parseInt(document.getElementById("creditAmount").value);
+      const msg = document.getElementById("addMsg");
+
+      if (!username || isNaN(credits) || credits === 0) {
+        msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
+        msg.textContent = "Enter username and non-zero credits";
+        msg.classList.remove("hidden");
+        return;
+      }
+
+      try {
+        const res = await fetch(API + "/api/admin/add-credits", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ username, credits })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-green-900/40 text-green-400 border border-green-500";
+          msg.textContent = data.message + " | New balance: " + data.new_balance;
+          msg.classList.remove("hidden");
+          document.getElementById("creditAmount").value = "";
+          loadUsers();
+        } else {
+          msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
+          msg.textContent = data.message || "Failed";
+          msg.classList.remove("hidden");
+        }
+      } catch (err) {
+        msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
+        msg.textContent = "Error. Make sure you are logged in as admin.";
+        msg.classList.remove("hidden");
+      }
+    }
+
+    async function setFeatureCost() {
+      const feature = document.getElementById("featureKey").value;
+      const credits = parseInt(document.getElementById("featureCost").value);
+      const msg = document.getElementById("costMsg");
+
+      if (isNaN(credits) || credits < 0) {
+        msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
+        msg.textContent = "Enter valid cost";
+        msg.classList.remove("hidden");
+        return;
+      }
+
+      try {
+        const res = await fetch(API + "/api/admin/set-feature-cost", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ feature, credits })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-green-900/40 text-green-400 border border-green-500";
+          msg.textContent = "Cost updated for " + feature;
+          msg.classList.remove("hidden");
+        } else {
+          msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
+          msg.textContent = data.message || "Failed";
+          msg.classList.remove("hidden");
+        }
+      } catch (err) {
+        msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
+        msg.textContent = "Error";
+        msg.classList.remove("hidden");
+      }
+    }
+
+    async function loadUsers() {
+      try {
+        const res = await fetch(API + "/api/admin/users", { credentials: "include" });
+        const data = await res.json();
+        const tbody = document.getElementById("usersTable");
+        tbody.innerHTML = "";
+
+        if (!data.success || !data.users || data.users.length === 0) {
+          document.getElementById("noUsers").classList.remove("hidden");
+          return;
+        }
+
+        document.getElementById("noUsers").classList.add("hidden");
+
+        data.users.forEach(u => {
+          const tr = document.createElement("tr");
+          tr.className = "border-b border-gray-800 hover:bg-white/5";
+          tr.innerHTML = `
+            <td class="py-3 pr-4 text-gray-400">${u.id}</td>
+            <td class="py-3 pr-4 font-bold text-cyan-300">${u.username}</td>
+            <td class="py-3 pr-4 text-pink-400 font-bold">${u.credits}</td>
+            <td class="py-3 pr-4">${u.is_admin ? "✅" : "-"}</td>
+            <td class="py-3 pr-4 text-gray-500 text-xs">${u.created_at || "-"}</td>
+            <td class="py-3 text-gray-500 text-xs">${u.last_login || "-"}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
