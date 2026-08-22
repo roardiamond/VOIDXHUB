@@ -105,32 +105,41 @@
   .card h2 { font-size: 17px; margin: 0 0 6px; }
   .card p { font-size: 13.5px; color: var(--text-dim); margin: 0 0 22px; line-height: 1.5; }
   .join-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     width: 100%;
-    padding: 15px 20px;
-    font-size: 15.5px;
-    font-weight: 700;
+    padding: 22px 20px;
+    font-size: 19px;
+    font-weight: 800;
     color: #05130f;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
+    background-size: 200% 200%;
     border: none;
-    border-radius: 12px;
+    border-radius: 14px;
     cursor: pointer;
     letter-spacing: 0.01em;
-    box-shadow: 0 8px 26px rgba(110,240,194,0.22);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    text-decoration: none;
+    transition: transform 0.15s ease;
+    animation: pulse-glow 2.2s ease-in-out infinite, gradient-shift 4s ease infinite;
   }
-  .join-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(110,240,194,0.3); }
-  .join-btn:disabled { opacity: 0.6; cursor: default; transform: none; }
-  .status { margin-top: 14px; font-size: 12.5px; color: var(--text-dim); min-height: 16px; }
-  .status.active { color: var(--accent); }
-  .divider {
-    display: flex; align-items: center; gap: 10px;
-    margin: 22px 0 16px; color: var(--text-dim);
-    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  .join-btn:hover { transform: translateY(-3px) scale(1.02); }
+  .join-btn .arrow { display: inline-block; animation: bounce 1.4s ease-in-out infinite; }
+
+  @keyframes pulse-glow {
+    0%   { box-shadow: 0 0 0 0 rgba(110,240,194,0.45), 0 8px 26px rgba(110,240,194,0.22); }
+    50%  { box-shadow: 0 0 0 14px rgba(110,240,194,0), 0 8px 34px rgba(110,240,194,0.35); }
+    100% { box-shadow: 0 0 0 0 rgba(110,240,194,0), 0 8px 26px rgba(110,240,194,0.22); }
   }
-  .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
-  .manual-link { font-size: 13px; color: var(--text-dim); }
-  .manual-link a { color: var(--accent); text-decoration: none; font-weight: 600; }
-  .manual-link a:hover { text-decoration: underline; }
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+  }
 
   .features {
     display: grid;
@@ -194,17 +203,11 @@
   </div>
 
   <div class="card">
-    <h2>Join This Scrim</h2>
-    <p>Opens straight into the lobby if you already have the app. Otherwise we'll get you set up first.</p>
-    <button class="join-btn" id="joinBtn" onclick="joinTournament('SCRIM_ID_HERE')">
-      Join Tournament
-    </button>
-    <div class="status" id="status"></div>
-
-    <div class="divider">or</div>
-    <div class="manual-link">
-      Didn't redirect? <a href="https://www.mediafire.com/file/42fxmmg8kkdmls7/VxHtourney.apk/file" id="manualDownload">Download the app directly</a>
-    </div>
+    <h2>Get the App</h2>
+    <p>Download the app to register your squad and join this scrim.</p>
+    <a class="join-btn" id="downloadBtn" href="https://www.mediafire.com/file/42fxmmg8kkdmls7/VxHtourney.apk/file">
+      <span class="arrow">⬇</span> Download Now
+    </a>
   </div>
 
   <div class="features">
@@ -237,52 +240,6 @@
   </div>
 
   <div class="footer">Scrims Hub 2026</div>
-
-<script>
-  // ====== EDIT THESE THREE VALUES FOR YOUR APP ======
-  const APP_URL_SCHEME   = "myapp";                        // your custom URL scheme, e.g. "myapp" for myapp://
-  const MEDIAFIRE_URL    = "https://www.mediafire.com/file/YOUR_MEDIAFIRE_LINK_HERE";
-  const ANDROID_PACKAGE  = "com.yourcompany.yourapp";       // used for android intent fallback (optional)
-  // ===================================================
-
-  document.getElementById("manualDownload").href = MEDIAFIRE_URL;
-
-  function joinTournament(scrimId) {
-    const btn = document.getElementById("joinBtn");
-    const status = document.getElementById("status");
-
-    btn.disabled = true;
-    btn.textContent = "Opening app…";
-    status.textContent = "Checking if the app is installed";
-    status.classList.add("active");
-
-    const deepLink = `${APP_URL_SCHEME}://scrim/${scrimId}`;
-    const startTime = Date.now();
-
-    window.location = deepLink;
-
-    const fallbackTimer = setTimeout(() => {
-      if (Date.now() - startTime < 3000) {
-        status.textContent = "App not found — starting download…";
-        window.location = MEDIAFIRE_URL;
-        btn.textContent = "Redirecting to download";
-      }
-      btn.disabled = false;
-    }, 1500);
-
-    window.addEventListener("blur", function onBlur() {
-      clearTimeout(fallbackTimer);
-      window.removeEventListener("blur", onBlur);
-    });
-
-    document.addEventListener("visibilitychange", function onVis() {
-      if (document.hidden) {
-        clearTimeout(fallbackTimer);
-        document.removeEventListener("visibilitychange", onVis);
-      }
-    });
-  }
-</script>
 
 </body>
 </html>
