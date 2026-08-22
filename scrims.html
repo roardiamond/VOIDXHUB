@@ -1,145 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VOIDXHUB - TOURNAMENT HUB</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Orbitron', sans-serif;
-      background: #05050a;
-      color: #e0e0ff;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
-    .bg-blackhole {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at center, #1a0033 10%, #000000 85%);
-      z-index: -3;
-    }
-    .section {
-      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-    .section:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 80px rgba(103, 232, 249, 0.6);
-    }
-    .ff-glow {
-      box-shadow: 0 0 60px #ff00ff;
-    }
-    .bgmi-glow {
-      box-shadow: 0 0 60px #00ffcc;
-    }
-    .coming-soon {
-      position: absolute;
-      top: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.9);
-      color: #f87171;
-      font-weight: bold;
-      padding: 10px 28px;
-      border-radius: 9999px;
-      border: 3px solid #f87171;
-      letter-spacing: 3px;
-      z-index: 20;
-      font-size: 15px;
-      box-shadow: 0 0 25px rgba(248, 113, 113, 0.8);
-    }
-    .grayscale {
-      filter: grayscale(100%) brightness(0.75);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCRIMS HUB — Join the Tournament</title>
+<style>
+  :root {
+    --bg: #08090d;
+    --bg-panel: #101219;
+    --line: #21242e;
+    --text: #eef1f6;
+    --text-dim: #8a90a3;
+    --accent: #6ef0c2;
+    --accent2: #7c9bff;
+    --glow: rgba(110,240,194,0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  }
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px 60px;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(110,240,194,0.10), transparent 45%),
+      radial-gradient(circle at 80% 30%, rgba(124,155,255,0.10), transparent 40%);
+  }
+
+  .hero {
+    width: 100%;
+    max-width: 720px;
+    text-align: center;
+    padding: 70px 16px 30px;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    background: rgba(110,240,194,0.08);
+    border: 1px solid rgba(110,240,194,0.25);
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 22px;
+  }
+  h1 {
+    font-size: clamp(34px, 7vw, 56px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+    background: linear-gradient(135deg, #ffffff 30%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 60px var(--glow);
+  }
+  .tagline {
+    font-size: 13.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .tagline span { color: var(--accent2); }
+  p.sub {
+    color: var(--text-dim);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 460px;
+    margin: 0 auto 34px;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat .num { font-size: 28px; font-weight: 800; color: var(--accent); }
+  .stat .label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-top: 2px; }
+
+  .card {
+    width: 100%;
+    max-width: 440px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 28px 26px;
+    margin-top: 40px;
+    text-align: center;
+  }
+  .card h2 { font-size: 17px; margin: 0 0 6px; }
+  .card p { font-size: 13.5px; color: var(--text-dim); margin: 0 0 22px; line-height: 1.5; }
+  .join-btn {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 15.5px;
+    font-weight: 700;
+    color: #05130f;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    box-shadow: 0 8px 26px rgba(110,240,194,0.22);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .join-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(110,240,194,0.3); }
+  .join-btn:disabled { opacity: 0.6; cursor: default; transform: none; }
+  .status { margin-top: 14px; font-size: 12.5px; color: var(--text-dim); min-height: 16px; }
+  .status.active { color: var(--accent); }
+  .divider {
+    display: flex; align-items: center; gap: 10px;
+    margin: 22px 0 16px; color: var(--text-dim);
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .manual-link { font-size: 13px; color: var(--text-dim); }
+  .manual-link a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  .manual-link a:hover { text-decoration: underline; }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 640px;
+    width: 100%;
+    margin-top: 56px;
+  }
+  .feature {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 14px;
+    text-align: center;
+  }
+  .feature .icon { font-size: 22px; margin-bottom: 10px; }
+  .feature h3 { font-size: 13.5px; margin: 0 0 4px; }
+  .feature p { font-size: 11.5px; color: var(--text-dim); margin: 0; line-height: 1.4; }
+
+  .community { margin-top: 60px; text-align: center; max-width: 440px; width: 100%; }
+  .community .icon-badge { font-size: 24px; margin-bottom: 10px; }
+  .community h2 { font-size: 18px; margin: 0 0 4px; }
+  .community p { font-size: 13px; color: var(--text-dim); margin: 0 0 22px; }
+  .links { display: flex; flex-direction: column; gap: 10px; }
+  .links a {
+    display: block;
+    padding: 13px 18px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .links a:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+  .footer { margin-top: 50px; font-size: 11.5px; color: var(--text-dim); letter-spacing: 0.04em; }
+
+  @media (max-width: 480px) {
+    .stats { gap: 24px; }
+    .features { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
-  <div class="bg-blackhole"></div>
-  <div class="relative z-10 py-20 px-6 min-h-screen">
-    <div class="max-w-7xl mx-auto">
-     
-      <!-- Header -->
-      <div class="text-center mb-16">
-        <div class="inline-block bg-gradient-to-r from-red-600 to-orange-600 text-white text-sm font-bold px-8 py-3 rounded-full mb-4">
-          🔥 TOURNAMENT HUB
-        </div>
-        <h1 class="text-6xl md:text-7xl font-black tracking-widest mb-4">
-          PAID SCRIMS &amp; <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-400">TOURNAMENTS</span>
-        </h1>
-        <p class="text-2xl text-orange-300">REAL CASH PRIZES • DAILY & WEEKLY EVENTS</p>
-      </div>
 
-      <!-- Split Cards -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
-        
-        <!-- FREE FIRE SIDE (Normal Colorful) -->
-        <div onclick="window.location.href='ffscrim.html'"
-             class="section ff-glow bg-gradient-to-br from-purple-950 to-black border-2 border-pink-500 rounded-3xl overflow-hidden cursor-pointer relative">
-          <div class="relative h-[520px]">
-            <img src="ff-tournament.jpg" class="w-full h-full object-cover" alt="Free Fire Scrims">
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
-           
-            <div class="absolute bottom-0 left-0 right-0 p-10">
-              <div class="flex items-center gap-4 mb-6">
-                <div class="text-6xl">🔥</div>
-                <h2 class="text-5xl font-black text-pink-400 tracking-wider">FREE FIRE</h2>
-              </div>
-              <p class="text-3xl font-bold text-white mb-2">PAID SCRIMS &amp; TOURNAMENTS</p>
-              <p class="text-emerald-400 text-xl mb-8">₹500 - ₹5000+ PRIZES • DAILY 4 SLOTS</p>
-             
-              <button class="w-full py-6 bg-gradient-to-r from-pink-600 to-purple-600 text-white text-2xl font-bold rounded-2xl hover:scale-105 transition-all">
-                JOIN FREE FIRE SCRIMS 💰
-              </button>
-            </div>
-          </div>
-        </div>
+  <div class="hero">
+    <span class="eyebrow">🏆 Tournament Live</span>
+    <h1>SCRIMS HUB</h1>
+    <div class="tagline">FAIR MATCHES <span>•</span> REAL COMPETITION <span>•</span> REAL PRIZES</div>
+    <p class="sub">Register your squad, check brackets, and get match notifications — all from the app. Tap in below to join this scrim.</p>
 
-        <!-- BGMI SIDE (Coming Soon + Black & White) -->
-        <div onclick="window.location.href='wait.html'"
-             class="section bgmi-glow bg-gradient-to-br from-cyan-950 to-black border-2 border-cyan-400 rounded-3xl overflow-hidden cursor-pointer relative">
-          
-          <!-- Coming Soon Banner -->
-          <div class="coming-soon">
-            COMING SOON
-          </div>
-
-          <div class="relative h-[520px]">
-            <img src="bgmi-tournament.jpg" class="w-full h-full object-cover grayscale" alt="BGMI Scrims">
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
-           
-            <div class="absolute bottom-0 left-0 right-0 p-10">
-              <div class="flex items-center gap-4 mb-6">
-                <div class="text-6xl">💀</div>
-                <h2 class="text-5xl font-black text-cyan-400 tracking-wider">BGMI</h2>
-              </div>
-              <p class="text-3xl font-bold text-white mb-2">PAID SCRIMS &amp; TOURNAMENTS</p>
-              <p class="text-emerald-400 text-xl mb-8">₹1000 - ₹10000+ PRIZES • DAILY 5 SLOTS</p>
-             
-              <button class="w-full py-6 bg-gradient-to-r from-cyan-500 to-teal-600 text-white text-2xl font-bold rounded-2xl opacity-75 cursor-not-allowed">
-                COMING SOON
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Bottom Note -->
-      <div class="text-center mt-16 text-gray-400 text-lg">
-        <p>Both Free Fire & BGMI supported • No Ban Risk • Instant Room ID</p>
-        <p class="mt-2 text-emerald-400 font-bold">Tap on your game to join paid scrims & tournaments</p>
-      </div>
+    <div class="stats">
+      <div class="stat"><div class="num">32</div><div class="label">Teams</div></div>
+      <div class="stat"><div class="num">500+</div><div class="label">Players</div></div>
+      <div class="stat"><div class="num">₹10K</div><div class="label">Prize Pool</div></div>
     </div>
   </div>
 
-  <!-- Support Button -->
-  <div class="fixed bottom-6 right-6 z-50">
-    <button onclick="window.open('https://t.me/Voidxhubsupport_bot', '_blank')"
-            class="flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-pink-600 hover:to-purple-600 text-white font-bold px-8 py-4 rounded-2xl shadow-2xl">
-      <span>💬 Need Help?</span>
-      <span class="text-lg">→</span>
+  <div class="card">
+    <h2>Join This Scrim</h2>
+    <p>Opens straight into the lobby if you already have the app. Otherwise we'll get you set up first.</p>
+    <button class="join-btn" id="joinBtn" onclick="joinTournament('SCRIM_ID_HERE')">
+      Join Tournament
     </button>
+    <div class="status" id="status"></div>
+
+    <div class="divider">or</div>
+    <div class="manual-link">
+      Didn't redirect? <a href="https://www.mediafire.com/file/42fxmmg8kkdmls7/VxHtourney.apk/file" id="manualDownload">Download the app directly</a>
+    </div>
   </div>
+
+  <div class="features">
+    <div class="feature">
+      <div class="icon">🛡️</div>
+      <h3>Verified Matches</h3>
+      <p>Every scrim is admin-monitored</p>
+    </div>
+    <div class="feature">
+      <div class="icon">⚡</div>
+      <h3>Instant Brackets</h3>
+      <p>Live results, no waiting</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🎯</div>
+      <h3>Fair Play</h3>
+      <p>Equal footing, every match</p>
+    </div>
+  </div>
+
+  <div class="community">
+    <div class="icon-badge">🚀</div>
+    <h2>Join the Community</h2>
+    <p>Get scrim alerts, results, and support</p>
+    <div class="links">
+      <a href="https://t.me/YOUR_SCRIMS_GROUP" target="_blank">📢 Scrims Group</a>
+      <a href="https://t.me/YOUR_OFFICIAL_CHANNEL" target="_blank">📣 Official Channel</a>
+      <a href="https://t.me/YOUR_SUPPORT_BOT" target="_blank">💬 Support Bot</a>
+    </div>
+  </div>
+
+  <div class="footer">Scrims Hub 2026</div>
+
+<script>
+  // ====== EDIT THESE THREE VALUES FOR YOUR APP ======
+  const APP_URL_SCHEME   = "myapp";                        // your custom URL scheme, e.g. "myapp" for myapp://
+  const MEDIAFIRE_URL    = "https://www.mediafire.com/file/YOUR_MEDIAFIRE_LINK_HERE";
+  const ANDROID_PACKAGE  = "com.yourcompany.yourapp";       // used for android intent fallback (optional)
+  // ===================================================
+
+  document.getElementById("manualDownload").href = MEDIAFIRE_URL;
+
+  function joinTournament(scrimId) {
+    const btn = document.getElementById("joinBtn");
+    const status = document.getElementById("status");
+
+    btn.disabled = true;
+    btn.textContent = "Opening app…";
+    status.textContent = "Checking if the app is installed";
+    status.classList.add("active");
+
+    const deepLink = `${APP_URL_SCHEME}://scrim/${scrimId}`;
+    const startTime = Date.now();
+
+    window.location = deepLink;
+
+    const fallbackTimer = setTimeout(() => {
+      if (Date.now() - startTime < 3000) {
+        status.textContent = "App not found — starting download…";
+        window.location = MEDIAFIRE_URL;
+        btn.textContent = "Redirecting to download";
+      }
+      btn.disabled = false;
+    }, 1500);
+
+    window.addEventListener("blur", function onBlur() {
+      clearTimeout(fallbackTimer);
+      window.removeEventListener("blur", onBlur);
+    });
+
+    document.addEventListener("visibilitychange", function onVis() {
+      if (document.hidden) {
+        clearTimeout(fallbackTimer);
+        document.removeEventListener("visibilitychange", onVis);
+      }
+    });
+  }
+</script>
+
 </body>
 </html>
