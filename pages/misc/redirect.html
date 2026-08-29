@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOIDXHUB - SELECT DEVICE</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; min-height: 100vh; overflow-x: hidden; }
+    .bg-blackhole { position: fixed; inset: 0; background: radial-gradient(circle at center, #1a0033 10%, #000000 85%); z-index: -3; }
+    .void-logo-bg { position: fixed; inset: 0; background: url('sQz8x (1).jpg') center/cover no-repeat; opacity: 0.06; filter: blur(3px) brightness(1.2); z-index: -2; mix-blend-mode: screen; }
+    .title-box { border: 2px solid rgba(103,232,249,0.5); padding: 10px 30px; display: inline-block; background: rgba(0,0,0,0.75); }
+    .tool-image-box { background: rgba(17,17,24,0.95); border: 1px solid rgba(103,232,249,0.3); border-radius: 16px; overflow: hidden; max-width: 500px; margin: 0 auto; }
+    .desc-box { background: rgba(17,17,24,0.95); border: 1px solid rgba(103,232,249,0.25); border-radius: 14px; max-width: 700px; margin: 0 auto; }
+    table { width: 100%; border-collapse: collapse; background: rgba(17,17,24,0.95); border: 1px solid rgba(103,232,249,0.3); }
+    th, td { border: 1px solid rgba(103,232,249,0.25); padding: 12px 10px; text-align: center; font-size: 14px; vertical-align: middle; }
+    th { background: rgba(103,232,249,0.1); color: #67e8f9; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; }
+    tr { transition: background 0.25s ease; }
+    tr:hover { background: rgba(103,232,249,0.08); }
+    .brand-img { width: 60px; height: 60px; object-fit: contain; margin: 0 auto; display: block; }
+    .link-btn { display: inline-block; padding: 7px 14px; border-radius: 10px; font-weight: 700; font-size: 12px; transition: all 0.25s ease; text-decoration: none; }
+    .link-btn:hover { transform: translateY(-2px); }
+    .public-btn { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid #4ade80; }
+    .public-btn:hover { background: #4ade80; color: #000; }
+    .private-btn { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid #f87171; }
+    .private-btn:hover { background: #f87171; color: #000; }
+    .personal-btn { background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid #c084fc; }
+    .personal-btn:hover { background: #c084fc; color: #000; }
+    .back-btn { background: linear-gradient(to right, #06b6d4, #9333ea); transition: all 0.3s ease; }
+    .back-btn:hover { transform: scale(1.04); }
+  </style>
+</head>
+<body>
+  <div class="bg-blackhole"></div>
+  <div class="void-logo-bg"></div>
+
+  <div class="relative z-10 py-10 px-3 md:px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-8">
+        <div class="title-box">
+          <h1 class="text-3xl md:text-4xl font-black tracking-wider text-white">
+            void<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">x</span>hub
+          </h1>
+        </div>
+      </div>
+
+      <div class="tool-image-box mb-6">
+        <img id="toolImage" src="" alt="Tool Image" class="w-full h-auto object-cover">
+      </div>
+
+      <div class="desc-box p-5 mb-10 text-center">
+        <h2 id="toolTitle" class="text-2xl font-bold text-cyan-300 mb-2">Loading...</h2>
+        <p id="toolDesc" class="text-gray-300 text-sm md:text-base"></p>
+      </div>
+
+      <h3 class="text-center text-xl text-cyan-300 mb-5 tracking-widest">SELECT YOUR DEVICE</h3>
+
+      <div class="overflow-x-auto rounded-2xl">
+        <table>
+          <thead>
+            <tr>
+              <th>Brand</th>
+              <th>Phone Name</th>
+              <th>Available</th>
+              <th>Public</th>
+              <th>Private</th>
+              <th>Personal</th>
+            </tr>
+          </thead>
+          <tbody id="deviceTable"></tbody>
+        </table>
+      </div>
+
+      <div class="text-center mt-10">
+        <button onclick="window.location.href='../shop/tools.html'" class="back-btn text-white font-bold px-10 py-4 rounded-2xl text-lg">← BACK TO TOOLS</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/auth.js"></script>
+  <script>
+    const tools = {
+      yobb: { title: "BGMI YOUTUBER OBB", desc: "Original Youtuber OBB + Media Files | Latest Bypass for all devices", image: "yobb.jpg" },
+      bobb: { title: "BGMI BRUTAL OBB", desc: "Brutal Graphics + High Damage OBB", image: "bobb.jpg" },
+      holo: { title: "FREE FIRE HOLOGRAM", desc: "Full Body Hologram + 80% Drag Headshot", image: "holo.jpg" },
+      bgmifps: { title: "BGMI HIGH FPS CONFIG", desc: "Unlocks Highest FPS on Low End Device", image: "bgmifps.jpg" },
+      paidpush: { title: "FREE FIRE PAID PUSH", desc: "100% Rank Up Guarantee + No Derank or Ban Issue", image: "brpush.jpg" },
+      arrow: { title: "ARROW LOCATION", desc: "+90% Headshot", image: "arrow.jpg" },
+      card: { title: "CARD LOCATION", desc: "+90% Headshot", image: "card.jpg" },
+      laser: { title: "LASER LOCATION", desc: "+90% Headshot", image: "laser.jpg" },
+      laser2: { title: "LASER LOCATION 2", desc: "+90% Headshot", image: "laser2.jpg" },
+      laser3: { title: "LASER LOCATION 3", desc: "+90% Headshot", image: "laser3.jpg" },
+      magic600: { title: "MAGIC BULLET 600%", desc: "+600% Power (Only for Second Account)", image: "magic600.jpg" },
+      shop: { title: "SHOP LOCATION", desc: "ESP +90% Headshot", image: "shop.jpg" },
+      gloo: { title: "INVISIBLE GLOOWALL", desc: "Unlock All Rare Skins & Bundles", image: "gloo.jpg" },
+      sensi: { title: "SENSITIVITY CONFIG", desc: "Best Custom Sensitivity for Headshot", image: "sensi.jpg" }
+    };
+
+    // Normal prices in ₹ (no credits)
+    const pricing = {
+      budget:  { public: 599,  private: 899,  personal: 1299 },
+      mid:     { public: 899,  private: 1299, personal: 1799 },
+      premium: { public: 999,  private: 1499, personal: 1999 }
+    };
+
+    const brands = [
+      { name: "samsung",  type: "premium", models: "S24 Ultra, A55, A54, M35, M34, F55, etc.", img: "samsung.jpg" },
+      { name: "motorola", type: "mid",     models: "Edge 50, G85, G84, G64, G54, etc.", img: "motorola.jpg" },
+      { name: "iphone",   type: "premium", models: "15 Pro, 15, 14 Pro, 14, 13 series, etc.", img: "iphone.jpg" },
+      { name: "redmi",    type: "budget",  models: "Note 13 Pro, Note 13, Note 12, 13C, 12C, etc.", img: "redmi.jpg" },
+      { name: "realme",   type: "budget",  models: "GT 6, Narzo 70, C67, C55, C53, etc.", img: "realme.png" },
+      { name: "vivo",     type: "mid",     models: "V30, V29, Y200, Y100, Y28, etc.", img: "vivo.png" },
+      { name: "oppo",     type: "mid",     models: "Reno 12, Reno 11, A78, A59, A38, etc.", img: "oppo.png" },
+      { name: "oneplus",  type: "mid",     models: "12, 12R, Nord 4, Nord CE 4, etc.", img: "oneplus.png" },
+      { name: "poco",     type: "budget",  models: "X6 Pro, F6, M6 Pro, C65, etc.", img: "poco.png" },
+      { name: "infinix",  type: "budget",  models: "Note 40, Zero 40, Hot 40, Smart 8, etc.", img: "infinix.jpg" },
+      { name: "techno",   type: "budget",  models: "Camon 30, Spark 20, Pova 6, Pova 5, etc.", img: "techno.png" },
+      { name: "iqoo",     type: "mid",     models: "Neo 9, Z9, Neo 7, etc.", img: "iqoo.jpg" },
+      { name: "nothing",  type: "mid",     models: "Phone (2a), Phone (2), etc.", img: "nothing.jpg" }
+    ];
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const toolKey = urlParams.get('tool') || 'yobb';
+    const tool = tools[toolKey] || tools.yobb;
+
+    document.getElementById('toolImage').src = tool.image;
+    document.getElementById('toolTitle').textContent = tool.title;
+    document.getElementById('toolDesc').textContent = tool.desc;
+
+    const tbody = document.getElementById('deviceTable');
+    let html = '';
+
+    brands.forEach(brand => {
+      const price = pricing[brand.type];
+      html += `
+        <tr>
+          <td><img src="${brand.img}" class="brand-img" alt="${brand.name}"></td>
+          <td>${brand.models}</td>
+          <td class="text-green-400 font-bold">Yes</td>
+          <td>
+            <a href="../shop/payment.html?tool=${toolKey}&type=public&brand=${brand.name}&price=${price.public}"
+               class="link-btn public-btn">Public ₹${price.public}</a>
+          </td>
+          <td>
+            <a href="../shop/payment.html?tool=${toolKey}&type=private&brand=${brand.name}&price=${price.private}"
+               class="link-btn private-btn">Private ₹${price.private}</a>
+          </td>
+          <td>
+            <a href="../shop/payment.html?tool=${toolKey}&type=personal&brand=${brand.name}&price=${price.personal}"
+               class="link-btn personal-btn">Personal ₹${price.personal}</a>
+          </td>
+        </tr>
+      `;
+    });
+
+    tbody.innerHTML = html;
+  </script>
+</body>
+</html>

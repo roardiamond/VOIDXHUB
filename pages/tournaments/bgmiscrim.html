@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOIDXHUB - BGMI SCRIMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: #05050a;
+      color: #e0e0ff;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    .bg-blackhole {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #1a0033 10%, #000000 85%);
+      z-index: -3;
+    }
+    .glow-cyan {
+      box-shadow: 0 0 60px rgba(103, 232, 249, 0.6);
+    }
+    .coming-soon {
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-blackhole"></div>
+
+  <div class="relative z-10 min-h-screen flex items-center justify-center px-6 py-20">
+    <div class="max-w-4xl mx-auto text-center">
+      
+      <!-- Big Coming Soon -->
+      <div class="inline-block bg-gradient-to-r from-cyan-600 to-teal-600 text-white text-sm font-bold px-10 py-4 rounded-full mb-8 tracking-[3px] coming-soon">
+        COMING SOON
+      </div>
+
+      <h1 class="text-7xl md:text-8xl font-black tracking-[6px] mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400">
+        BGMI SCRIMS
+      </h1>
+
+      <p class="text-3xl text-cyan-300 mb-8">Paid Tournaments • Real Cash Prizes</p>
+
+      <div class="bg-zinc-950 border border-cyan-500/30 p-10 rounded-3xl mb-12 max-w-2xl mx-auto">
+        <p class="text-2xl text-gray-300 leading-relaxed">
+          BGMI Paid Scrims & Tournaments section is under development.<br><br>
+          We are working hard to bring you the best BGMI scrim experience with real cash prizes.
+        </p>
+      </div>
+
+      <div class="text-center">
+        <p class="text-emerald-400 text-xl font-medium mb-3">Stay Connected</p>
+        <p class="text-gray-400">We will notify you as soon as BGMI Scrims go live.</p>
+        
+        <div class="mt-10">
+          <a href="https://t.me/Voidxhubsupport_bot" target="_blank"
+             class="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-pink-600 hover:to-purple-600 text-white font-bold px-10 py-5 rounded-2xl shadow-2xl transition-all">
+            <span>💬 Join Our Community</span>
+            <span class="text-lg">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-20 text-sm opacity-60">
+        Built By YASHXCHI • VoidXHub 2026
+      </div>
+    </div>
+  </div>
+</body>
+</html>

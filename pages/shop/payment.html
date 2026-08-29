@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOIDXHUB - PAYMENT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; min-height: 100vh; overflow-x: hidden; }
+    .bg-blackhole { position: fixed; inset: 0; background: radial-gradient(circle at center, #1a0033 10%, #000000 85%); z-index: -3; }
+    .card { background: rgba(17,17,24,0.95); border: 2px solid rgba(103,232,249,0.35); border-radius: 24px; }
+    .pay-btn { background: linear-gradient(to right, #22c55e, #16a34a); transition: all 0.35s ease; }
+    .pay-btn:hover { transform: scale(1.03); box-shadow: 0 0 25px rgba(34,197,94,0.5); }
+    .paid-btn { background: linear-gradient(to right, #06b6d4, #9333ea); transition: all 0.35s ease; }
+    .paid-btn:hover { transform: scale(1.03); }
+    #qrcode { background: white; padding: 14px; border-radius: 16px; display: inline-block; }
+    .price-tag { background: linear-gradient(to right, #06b6d4, #9333ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    input { background: rgba(0,255,255,0.05); border: 1.5px solid #00ffff; color: #e0e0ff; font-family: 'Orbitron', sans-serif; }
+    input:focus { outline: none; border-color: #ff00ff; }
+
+    .step-row { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 1.5rem; }
+    .step-dot {
+      width: 2rem; height: 2rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 700; transition: all 0.3s ease; cursor: default;
+    }
+    .step-dot.inactive { background: #222; color: #777; }
+    .step-dot.active { background: #06b6d4; color: #fff; box-shadow: 0 0 12px rgba(6,182,212,0.5); }
+    .step-dot.done { background: #06b6d4; color: #fff; }
+    .step-line { flex: 1; height: 3px; background: #333; margin: 0 6px; border-radius: 2px; position: relative; overflow: hidden; max-width: 60px; }
+    .step-line-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0; background: #06b6d4; transition: width 0.4s ease; }
+    .step-line.done .step-line-fill { width: 100%; }
+
+    .step-panel { display: none; animation: fadeSlide 0.35s ease; }
+    .step-panel.active { display: block; }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .nav-btn {
+      padding: 0.6rem 1.4rem; border-radius: 9999px; font-weight: 600; font-size: 0.9rem;
+      transition: all 0.3s ease; cursor: pointer; border: none;
+    }
+    .btn-back { background: transparent; color: #888; }
+    .btn-back:hover { color: #67e8f9; }
+    .btn-next { background: #06b6d4; color: #fff; }
+    .btn-next:hover { background: #22d3ee; }
+  </style>
+</head>
+<body>
+  <div class="bg-blackhole"></div>
+
+  <div class="relative z-10 min-h-screen flex items-center justify-center px-4 py-10">
+    <div class="max-w-md w-full">
+      <div class="text-center mb-6">
+        <h1 class="text-3xl sm:text-4xl font-black tracking-wider">
+          VOID<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">X</span>HUB
+        </h1>
+        <p class="text-cyan-300 mt-2 tracking-widest text-sm">SECURE UPI PAYMENT</p>
+      </div>
+
+      <div class="card p-6 sm:p-8">
+        <!-- Step Indicators -->
+        <div class="step-row" id="stepIndicators">
+          <div class="step-dot active" data-step="1">1</div>
+          <div class="step-line" data-line="1"><div class="step-line-fill"></div></div>
+          <div class="step-dot inactive" data-step="2">2</div>
+          <div class="step-line" data-line="2"><div class="step-line-fill"></div></div>
+          <div class="step-dot inactive" data-step="3">3</div>
+          <div class="step-line" data-line="3"><div class="step-line-fill"></div></div>
+          <div class="step-dot inactive" data-step="4">4</div>
+        </div>
+
+        <!-- STEP 1 -->
+        <div class="step-panel active" id="step1">
+          <div class="text-center mb-5">
+            <p class="text-gray-400 text-xs mb-1">Selected Plan</p>
+            <h2 id="planName" class="text-xl font-bold text-white mb-1">Loading...</h2>
+            <p id="brandName" class="text-cyan-300 text-base uppercase tracking-wider"></p>
+            <p id="toolName" class="text-gray-400 text-xs mt-1"></p>
+          </div>
+          <div class="text-center mb-6">
+            <p class="text-gray-400 text-xs mb-1">Amount to Pay</p>
+            <h1 id="priceDisplay" class="text-4xl font-black price-tag">₹0</h1>
+            <p class="text-xs text-gray-500 mt-2">Pay via any UPI app (GPay / PhonePe / Paytm)</p>
+          </div>
+          <div class="flex justify-end">
+            <button type="button" class="nav-btn btn-next" onclick="goStep(2)">Next →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-panel" id="step2">
+          <h3 class="text-lg font-bold text-cyan-300 mb-2">Your Details</h3>
+          <p class="text-gray-400 text-xs mb-4">Telegram required for delivery & support</p>
+          <label class="block text-xs text-cyan-400 mb-2 tracking-wider">TELEGRAM USERNAME</label>
+          <input type="text" id="telegramInput" placeholder="@username" class="w-full px-4 py-3 rounded-xl text-sm mb-6">
+          <div class="flex justify-between">
+            <button type="button" class="nav-btn btn-back" onclick="goStep(1)">← Back</button>
+            <button type="button" class="nav-btn btn-next" onclick="goStep(3)">Next →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-panel" id="step3">
+          <h3 class="text-lg font-bold text-cyan-300 mb-2">Pay Now</h3>
+          <p class="text-gray-400 text-xs mb-4">Open UPI app or scan QR</p>
+
+          <a id="upiDeepLink" href="#" class="pay-btn w-full py-3.5 rounded-2xl text-white font-bold text-base mb-5 block text-center">
+            Open UPI App & Pay
+          </a>
+
+          <div id="qrSection" class="mb-5 text-center">
+            <p class="text-green-400 font-bold mb-3 text-sm">Or Scan QR</p>
+            <div id="qrcode" class="mx-auto"></div>
+            <p class="text-xs text-gray-400 mt-3">Amount already set in QR</p>
+          </div>
+
+          <div class="flex justify-between">
+            <button type="button" class="nav-btn btn-back" onclick="goStep(2)">← Back</button>
+            <button type="button" class="nav-btn btn-next" onclick="goStep(4)">I Paid →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step-panel" id="step4">
+          <h3 class="text-lg font-bold text-cyan-300 mb-2">Submit UTR</h3>
+          <p class="text-gray-400 text-xs mb-4">Enter Transaction ID after payment</p>
+
+          <label class="block text-xs text-cyan-400 mb-2 tracking-wider">UTR / TRANSACTION ID</label>
+          <input type="text" id="utrInput" placeholder="12-digit UTR from payment app" class="w-full px-4 py-3 rounded-xl text-sm mb-5">
+
+          <button type="button" id="paidBtn" onclick="confirmPayment()" class="paid-btn w-full py-3.5 rounded-2xl text-white font-bold text-base mb-4">
+            Submit Order
+          </button>
+
+          <div id="statusMsg" class="hidden text-sm mt-3 p-3 rounded-xl"></div>
+
+          <div id="orderBox" class="hidden mt-4 p-4 rounded-xl bg-green-900/30 border border-green-500/40 text-left text-sm">
+            <p class="text-green-400 font-bold mb-2">Order Created!</p>
+            <p class="text-gray-300">Order Code: <span id="orderCode" class="text-cyan-300 font-bold"></span></p>
+            <p class="text-gray-400 text-xs mt-2">Save this code. After admin verifies your UTR, download link will appear in <a href="../account/my-orders.html" class="text-cyan-400 underline">My Orders</a>.</p>
+          </div>
+
+          <div class="flex justify-start mt-4">
+            <button type="button" class="nav-btn btn-back" onclick="goStep(3)">← Back</button>
+          </div>
+        </div>
+
+        <div class="mt-6 flex flex-col gap-2 text-center">
+          <a href="../account/my-orders.html" class="text-cyan-400 text-sm hover:underline">📦 My Orders</a>
+          <button type="button" onclick="window.history.back()" class="text-gray-400 hover:text-white text-sm">← Go Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Stepper functions FIRST so buttons always work =====
+    let currentStep = 1;
+    const totalSteps = 4;
+
+    function goStep(step) {
+      if (step < 1 || step > totalSteps) return;
+
+      // Validation
+      if (step === 3 && currentStep === 2) {
+        const tg = document.getElementById('telegramInput').value.trim();
+        if (!tg) {
+          alert("Telegram username required");
+          return;
+        }
+      }
+
+      // Switch panels
+      document.querySelectorAll('.step-panel').forEach(function(p) {
+        p.classList.remove('active');
+      });
+      var panel = document.getElementById('step' + step);
+      if (panel) panel.classList.add('active');
+
+      // Update dots
+      document.querySelectorAll('.step-dot').forEach(function(dot) {
+        var s = parseInt(dot.getAttribute('data-step'));
+        dot.classList.remove('active', 'done', 'inactive');
+        if (s < step) {
+          dot.classList.add('done');
+          dot.innerHTML = '✓';
+        } else if (s === step) {
+          dot.classList.add('active');
+          dot.innerHTML = s;
+        } else {
+          dot.classList.add('inactive');
+          dot.innerHTML = s;
+        }
+      });
+
+      // Update lines
+      document.querySelectorAll('.step-line').forEach(function(line) {
+        var l = parseInt(line.getAttribute('data-line'));
+        if (l < step) line.classList.add('done');
+        else line.classList.remove('done');
+      });
+
+      currentStep = step;
+    }
+
+    // ===== Payment data =====
+    var API = "https://voidxhub-backend.onrender.com";
+    var UPI_ID = "yashrawat9873-1@oksbi";
+    var PAYEE_NAME = "VOIDXHUB";
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var type = urlParams.get('type') || 'public';
+    var brand = urlParams.get('brand') || 'unknown';
+    var tool = urlParams.get('tool') || 'unknown';
+    var price = parseInt(urlParams.get('price')) || 0;
+    price = Math.max(1, Math.min(10000, price));
+
+    var planNames = { public: "PUBLIC BYPASS", private: "PRIVATE BYPASS", personal: "PERSONAL BYPASS" };
+    document.getElementById('planName').textContent = planNames[type] || type.toUpperCase();
+    document.getElementById('brandName').textContent = brand.toUpperCase();
+    document.getElementById('toolName').textContent = tool.toUpperCase();
+    document.getElementById('priceDisplay').textContent = "₹" + price;
+
+    var note = encodeURIComponent((brand + ' ' + type + ' ' + tool).toUpperCase());
+    var upiString = "upi://pay?pa=" + UPI_ID + "&pn=" + encodeURIComponent(PAYEE_NAME) + "&am=" + price + "&cu=INR&tn=" + note;
+    document.getElementById('upiDeepLink').href = upiString;
+
+    // QR generate (safe)
+    try {
+      if (typeof QRCode !== 'undefined') {
+        var qrContainer = document.getElementById('qrcode');
+        QRCode.toCanvas(upiString, {
+          width: 200,
+          margin: 2,
+          color: { dark: '#000000', light: '#ffffff' }
+        }, function (error, canvas) {
+          if (!error && qrContainer) {
+            qrContainer.innerHTML = '';
+            qrContainer.appendChild(canvas);
+          }
+        });
+      }
+    } catch (e) {
+      console.log('QR error:', e);
+    }
+
+    async function confirmPayment() {
+      var tg = document.getElementById('telegramInput').value.trim();
+      var utr = document.getElementById('utrInput').value.trim();
+
+      if (!tg) {
+        alert("Telegram username required");
+        goStep(2);
+        return;
+      }
+      if (!utr || utr.length < 8) {
+        alert("Please enter valid UTR / Transaction ID");
+        return;
+      }
+
+      var statusDiv = document.getElementById('statusMsg');
+      statusDiv.classList.remove('hidden');
+      statusDiv.className = "text-sm mt-3 p-3 rounded-xl bg-yellow-500/20 text-yellow-300 border border-yellow-500/40";
+      statusDiv.innerHTML = "⏳ Creating order & notifying admin...";
+
+      var username = "guest";
+      try {
+        var u = JSON.parse(localStorage.getItem("vxh_user") || "null");
+        if (u && u.username) username = u.username;
+      } catch(e) {}
+
+      try {
+        var res = await fetch(API + "/api/orders/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            tool: tool,
+            type: type,
+            brand: brand,
+            price: price,
+            telegram: tg,
+            username: username,
+            utr_number: utr
+          })
+        });
+        var data = await res.json();
+
+        if (data.success) {
+          statusDiv.className = "text-sm mt-3 p-3 rounded-xl bg-green-500/20 text-green-300 border border-green-500/40";
+          statusDiv.innerHTML = "✅ Order placed! Admin will verify your UTR soon.";
+          document.getElementById('orderBox').classList.remove('hidden');
+          document.getElementById('orderCode').textContent = data.order_code;
+          localStorage.setItem("vxh_last_order", data.order_code);
+          localStorage.setItem("vxh_last_tg", tg);
+
+          document.getElementById('paidBtn').disabled = true;
+          document.getElementById('paidBtn').textContent = "Order Submitted ✓";
+        } else {
+          statusDiv.className = "text-sm mt-3 p-3 rounded-xl bg-red-500/20 text-red-300 border border-red-500/40";
+          statusDiv.innerHTML = data.message || "Failed. Try again.";
+        }
+      } catch (err) {
+        statusDiv.className = "text-sm mt-3 p-3 rounded-xl bg-red-500/20 text-red-300 border border-red-500/40";
+        statusDiv.innerHTML = "Server error. Wait 30s if cold start, then retry.";
+      }
+    }
+  </script>
+</body>
+</html>

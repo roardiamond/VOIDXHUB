@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - VOIDXHUB</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; }
+    .card { background: #0a0a15; border: 1px solid #00ffff33; }
+    .status-pending { color: #fbbf24; }
+    .status-verified { color: #34d399; }
+    .status-rejected { color: #f87171; }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Login Screen -->
+  <div id="loginScreen" class="fixed inset-0 flex items-center justify-center bg-black/95 z-50">
+    <div class="card p-10 rounded-3xl max-w-md w-full mx-4 border-2 border-cyan-500/50">
+      <h1 class="text-3xl font-black text-center text-cyan-400 mb-2">ADMIN PANEL</h1>
+      <p class="text-center text-pink-400 mb-8 text-sm tracking-widest">VOIDXHUB CONTROL</p>
+      <input id="adminPass" type="password" placeholder="Enter Admin Password" 
+             class="w-full px-5 py-4 bg-black border border-cyan-500 rounded-xl text-lg mb-6 focus:outline-none focus:border-pink-500">
+      <button onclick="checkAdmin()" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-pink-500 text-black font-black rounded-xl text-lg hover:scale-105 transition">
+        LOGIN
+      </button>
+      <p id="loginError" class="text-red-400 text-center mt-4 hidden">Wrong password!</p>
+    </div>
+  </div>
+
+  <!-- Main Admin Panel -->
+  <div id="adminPanel" class="hidden">
+    <!-- Navbar -->
+    <nav class="bg-zinc-950 border-b border-cyan-500/30 px-6 py-4 flex justify-between items-center sticky top-0 z-40">
+      <h1 class="text-2xl font-black text-cyan-400 tracking-wider">VOIDXHUB ADMIN</h1>
+      <div class="flex gap-4 items-center">
+        <button onclick="loadPayments()" class="px-4 py-2 bg-cyan-600/20 border border-cyan-500 rounded-lg text-sm hover:bg-cyan-600/40">Refresh</button>
+        <a href="../../backend/php/admin.php?pass=7011496531yash" class="px-4 py-2 bg-pink-600/20 border border-pink-500 rounded-lg text-sm hover:bg-pink-600/40">License Keys</a>
+        <button onclick="logoutAdmin()" class="px-4 py-2 bg-red-600/20 border border-red-500 rounded-lg text-sm hover:bg-red-600/40">Logout</button>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto p-6">
+      <!-- Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="card p-5 rounded-2xl text-center">
+          <p class="text-3xl font-black text-cyan-400" id="statTotal">0</p>
+          <p class="text-xs text-gray-400 mt-1 tracking-wider">TOTAL PAYMENTS</p>
+        </div>
+        <div class="card p-5 rounded-2xl text-center">
+          <p class="text-3xl font-black text-yellow-400" id="statPending">0</p>
+          <p class="text-xs text-gray-400 mt-1 tracking-wider">PENDING</p>
+        </div>
+        <div class="card p-5 rounded-2xl text-center">
+          <p class="text-3xl font-black text-green-400" id="statVerified">0</p>
+          <p class="text-xs text-gray-400 mt-1 tracking-wider">VERIFIED</p>
+        </div>
+        <div class="card p-5 rounded-2xl text-center">
+          <p class="text-3xl font-black text-red-400" id="statRejected">0</p>
+          <p class="text-xs text-gray-400 mt-1 tracking-wider">REJECTED</p>
+        </div>
+      </div>
+
+      <!-- Filter -->
+      <div class="flex gap-3 mb-6 flex-wrap">
+        <button onclick="filterPayments('all')" class="filter-btn px-4 py-2 rounded-lg border border-cyan-500/50 text-sm" data-filter="all">All</button>
+        <button onclick="filterPayments('pending')" class="filter-btn px-4 py-2 rounded-lg border border-yellow-500/50 text-sm" data-filter="pending">Pending</button>
+        <button onclick="filterPayments('verified')" class="filter-btn px-4 py-2 rounded-lg border border-green-500/50 text-sm" data-filter="verified">Verified</button>
+        <button onclick="filterPayments('rejected')" class="filter-btn px-4 py-2 rounded-lg border border-red-500/50 text-sm" data-filter="rejected">Rejected</button>
+      </div>
+
+      <!-- Payments Table -->
+      <div class="card rounded-2xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-zinc-900 text-cyan-400">
+              <tr>
+                <th class="px-4 py-3 text-left">ID</th>
+                <th class="px-4 py-3 text-left">Format</th>
+                <th class="px-4 py-3 text-left">Amount</th>
+                <th class="px-4 py-3 text-left">Txn ID</th>
+                <th class="px-4 py-3 text-left">Telegram</th>
+                <th class="px-4 py-3 text-left">Players</th>
+                <th class="px-4 py-3 text-left">Status</th>
+                <th class="px-4 py-3 text-left">Time</th>
+                <th class="px-4 py-3 text-left">Action</th>
+              </tr>
+            </thead>
+            <tbody id="paymentsBody" class="divide-y divide-zinc-800">
+              <tr><td colspan="9" class="text-center py-10 text-gray-500">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ADMIN_PASS = "7011496531yash";
+    let allPayments = [];
+
+    // Check if already logged in
+    if (sessionStorage.getItem('admin_logged') === 'true') {
+      showAdmin();
+    }
+
+    function checkAdmin() {
+      const pass = document.getElementById('adminPass').value;
+      if (pass === ADMIN_PASS) {
+        sessionStorage.setItem('admin_logged', 'true');
+        showAdmin();
+      } else {
+        document.getElementById('loginError').classList.remove('hidden');
+      }
+    }
+
+    document.getElementById('adminPass').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') checkAdmin();
+    });
+
+    function showAdmin() {
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('adminPanel').classList.remove('hidden');
+      loadPayments();
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem('admin_logged');
+      location.reload();
+    }
+
+    async function loadPayments() {
+      try {
+        const res = await fetch('backend/payment.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'list', limit: 200 })
+        });
+        const data = await res.json();
+        if (data.success) {
+          allPayments = data.payments || [];
+          updateStats();
+          renderPayments(allPayments);
+        }
+      } catch (e) {
+        document.getElementById('paymentsBody').innerHTML = '<tr><td colspan="9" class="text-center py-10 text-red-400">Failed to load payments</td></tr>';
+      }
+    }
+
+    function updateStats() {
+      document.getElementById('statTotal').textContent = allPayments.length;
+      document.getElementById('statPending').textContent = allPayments.filter(p => p.status === 'pending').length;
+      document.getElementById('statVerified').textContent = allPayments.filter(p => p.status === 'verified').length;
+      document.getElementById('statRejected').textContent = allPayments.filter(p => p.status === 'rejected').length;
+    }
+
+    function filterPayments(status) {
+      if (status === 'all') renderPayments(allPayments);
+      else renderPayments(allPayments.filter(p => p.status === status));
+    }
+
+    function renderPayments(list) {
+      const body = document.getElementById('paymentsBody');
+      if (!list.length) {
+        body.innerHTML = '<tr><td colspan="9" class="text-center py-10 text-gray-500">No payments found</td></tr>';
+        return;
+      }
+
+      body.innerHTML = list.map(p => {
+        let players = [];
+        try { players = JSON.parse(p.players_json || '[]'); } catch(e) {}
+        const playersStr = players.map(pl => `${pl.name} (${pl.uid})`).join('<br>') || '-';
+
+        return `
+          <tr class="hover:bg-zinc-900/50">
+            <td class="px-4 py-3">#${p.id}</td>
+            <td class="px-4 py-3 font-bold text-cyan-300">${p.format}</td>
+            <td class="px-4 py-3 text-green-400 font-bold">₹${p.total_amount}</td>
+            <td class="px-4 py-3 font-mono text-xs">${p.txn_id}</td>
+            <td class="px-4 py-3">@${p.telegram}</td>
+            <td class="px-4 py-3 text-xs">${playersStr}</td>
+            <td class="px-4 py-3 status-${p.status} font-bold uppercase text-xs">${p.status}</td>
+            <td class="px-4 py-3 text-xs text-gray-400">${formatTime(p.created_at)}</td>
+            <td class="px-4 py-3">
+              ${p.status === 'pending' ? `
+                <div class="flex gap-2">
+                  <button onclick="updateStatus(${p.id}, 'verified')" class="px-3 py-1 bg-green-600/30 border border-green-500 rounded text-xs hover:bg-green-600/50">Verify</button>
+                  <button onclick="updateStatus(${p.id}, 'rejected')" class="px-3 py-1 bg-red-600/30 border border-red-500 rounded text-xs hover:bg-red-600/50">Reject</button>
+                </div>
+              ` : `<span class="text-gray-500 text-xs">Done</span>`}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function updateStatus(id, status) {
+      if (!confirm(`Mark payment #${id} as ${status.toUpperCase()}?`)) return;
+      try {
+        await fetch('backend/payment.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'update_status', id, status })
+        });
+        loadPayments();
+      } catch (e) {
+        alert('Failed to update');
+      }
+    }
+
+    function formatTime(str) {
+      try {
+        return new Date(str).toLocaleString('en-IN');
+      } catch { return str; }
+    }
+  </script>
+</body>
+</html>

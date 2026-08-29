@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - VOIDXHUB</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; min-height: 100vh; }
+    .card { background: rgba(17,17,28,0.9); border: 1px solid rgba(103,232,249,0.25); border-radius: 16px; }
+  </style>
+</head>
+<body class="p-4 md:p-8">
+  <div class="max-w-4xl mx-auto">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+      <div>
+        <h1 class="text-3xl font-black text-cyan-400 tracking-widest">DASHBOARD</h1>
+        <p class="text-gray-400 text-sm mt-1">Welcome, <span id="username" class="text-pink-400 font-bold">Guest</span></p>
+      </div>
+      <div class="flex gap-3 flex-wrap">
+        <a href="../shop/tools.html" class="px-5 py-2 border border-cyan-400 rounded-xl text-cyan-300 hover:bg-cyan-400 hover:text-black transition text-sm font-bold">TOOLS</a>
+        <a href="my-orders.html" class="px-5 py-2 border border-emerald-400 rounded-xl text-emerald-300 hover:bg-emerald-400 hover:text-black transition text-sm font-bold">MY ORDERS</a>
+        <a href="../../index.html" class="px-5 py-2 border border-gray-600 rounded-xl text-gray-400 hover:text-white transition text-sm">HOME</a>
+        <button onclick="logout()" class="px-5 py-2 border border-red-500 rounded-xl text-red-400 hover:bg-red-500 hover:text-white transition text-sm font-bold">LOGOUT</button>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="grid sm:grid-cols-2 gap-4 mb-10">
+      <a href="../shop/tools.html" class="card p-6 hover:border-cyan-400 transition group">
+        <div class="text-2xl mb-2">🛠️</div>
+        <h3 class="font-bold text-cyan-300 group-hover:text-cyan-200">Browse Tools</h3>
+        <p class="text-xs text-gray-400 mt-1">Bypass, configs, locations & more</p>
+      </a>
+      <a href="my-orders.html" class="card p-6 hover:border-emerald-400 transition group">
+        <div class="text-2xl mb-2">📦</div>
+        <h3 class="font-bold text-emerald-300 group-hover:text-emerald-200">My Orders</h3>
+        <p class="text-xs text-gray-400 mt-1">Pending • Delivered • Canceled</p>
+      </a>
+      <a href="../tournaments/scrims.html" class="card p-6 hover:border-orange-400 transition group">
+        <div class="text-2xl mb-2">🏆</div>
+        <h3 class="font-bold text-orange-300 group-hover:text-orange-200">Tournaments / Scrims</h3>
+        <p class="text-xs text-gray-400 mt-1">Paid matches • Win cash</p>
+      </a>
+      <a href="https://t.me/Voidxhubsupport_bot" target="_blank" class="card p-6 hover:border-purple-400 transition group">
+        <div class="text-2xl mb-2">💬</div>
+        <h3 class="font-bold text-purple-300 group-hover:text-purple-200">Support</h3>
+        <p class="text-xs text-gray-400 mt-1">Telegram help & order queries</p>
+      </a>
+    </div>
+
+    <!-- Orders Summary -->
+    <div class="card p-6 mb-8">
+      <h2 class="text-lg font-bold text-cyan-300 mb-4 tracking-wider">RECENT ORDERS</h2>
+      <p class="text-sm text-gray-400 mb-4">Track status of your payments here. Full list in <a href="my-orders.html" class="text-cyan-400 underline">My Orders</a>.</p>
+      <div id="recentOrders" class="space-y-3 text-sm text-gray-400">
+        <p>Enter order code in My Orders to view status (Pending Verification / Delivered / Canceled).</p>
+      </div>
+    </div>
+
+    <div class="card p-6 text-center">
+      <p class="text-gray-400 text-sm mb-3">Payment via UPI only • No credits system</p>
+      <a href="https://t.me/Voidxhubsupport_bot" target="_blank" class="inline-block px-6 py-2 bg-purple-600 hover:bg-purple-500 rounded-xl text-sm font-bold transition">Telegram Support</a>
+    </div>
+  </div>
+
+  <script src="../../assets/js/auth.js"></script>
+  <script>
+    const API = "https://voidxhub-backend.onrender.com";
+    let user = null;
+    try { user = getUser && getUser(); } catch(e) {}
+
+    if (user && user.username) {
+      document.getElementById("username").textContent = user.username;
+    }
+
+    function logout() {
+      try { clearUser && clearUser(); } catch(e) {}
+      fetch(API + "/api/logout", { method: "POST", credentials: "include" }).catch(()=>{});
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
