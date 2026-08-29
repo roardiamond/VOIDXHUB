@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in — VOIDXHUB</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="static/icons/icon-192.png">
+<link rel="apple-touch-icon" href="static/icons/icon-192.png">
+<meta name="theme-color" content="#08080c">
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<nav class="site-nav" id="site-nav"></nav>
+
+<section class="section">
+  <div class="wrap" style="max-width:420px;">
+    <span class="eyebrow">// access</span>
+    <h1 style="font-size:32px; margin-bottom:24px;">Log in</h1>
+    <div class="form-card">
+      <div id="alert"></div>
+      <form id="login-form">
+        <div class="field"><label>Username or email</label><input type="text" name="identifier" required></div>
+        <div class="field"><label>Password</label><input type="password" name="password" required></div>
+        <button class="btn btn-primary btn-block" type="submit">Log in</button>
+      </form>
+      <p style="margin-top:18px; font-size:14px; color:var(--fog-dim);">
+        New here? <a href="register.html">Create an account</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer id="site-footer"></footer>
+
+<script src="static/js/config.js"></script>
+<script src="static/js/api.js"></script>
+<script src="static/js/ui.js"></script>
+<script src="static/js/pages/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tournaments — VOIDXHUB</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="static/icons/icon-192.png">
+<link rel="apple-touch-icon" href="static/icons/icon-192.png">
+<meta name="theme-color" content="#08080c">
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<nav class="site-nav" id="site-nav"></nav>
+
+<section class="section" style="padding-bottom:20px;">
+  <div class="wrap">
+    <span class="eyebrow">// browse</span>
+    <h1 style="font-size:36px;">All tournaments</h1>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="tabs" id="game-tabs"></div>
+  <div class="tabs" id="status-tabs">
+    <button class="tab active" data-status="">All</button>
+    <button class="tab" data-status="upcoming">Upcoming</button>
+    <button class="tab" data-status="live">Live</button>
+    <button class="tab" data-status="completed">Completed</button>
+  </div>
+</section>
+
+<section class="section" style="padding-top:16px;">
+  <div class="wrap">
+    <div class="grid" id="grid">
+      <p class="mono" style="color:var(--fog-dim)">Loading…</p>
+    </div>
+  </div>
+</section>
+
+<footer id="site-footer"></footer>
+
+<script src="static/js/config.js"></script>
+<script src="static/js/api.js"></script>
+<script src="static/js/ui.js"></script>
+<script src="static/js/pages/tournaments.js"></script>
+</body>
+</html>

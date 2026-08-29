@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — VOIDXHUB</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="static/icons/icon-192.png">
+<link rel="apple-touch-icon" href="static/icons/icon-192.png">
+<meta name="theme-color" content="#08080c">
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<nav class="site-nav" id="site-nav"></nav>
+
+<section class="section" style="padding-bottom:20px;">
+  <div class="wrap">
+    <span class="eyebrow">// control room</span>
+    <h1 style="font-size:32px;">Admin</h1>
+  </div>
+</section>
+
+<section class="hud-strip">
+  <div class="wrap" id="stats-strip">
+    <div class="hud-stat"><span class="val mono">—</span><span class="label">Tournaments</span></div>
+    <div class="hud-stat"><span class="val mono">—</span><span class="label">Users</span></div>
+    <div class="hud-stat"><span class="val mono">—</span><span class="label">Pending Payments</span></div>
+    <div class="hud-stat"><span class="val mono">—</span><span class="label">Verified Revenue</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 style="font-size:22px;">Create tournament</h2>
+      <button class="btn btn-ghost btn-sm" id="toggle-create">+ New</button>
+    </div>
+    <div class="form-card" id="create-panel" style="display:none;">
+      <div id="create-alert"></div>
+      <form id="create-form">
+        <div class="field-row">
+          <div class="field"><label>Title</label><input type="text" name="title" required></div>
+          <div class="field"><label>Game</label><select name="game_id" id="game-select" required></select></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Mode</label>
+            <select name="mode">
+              <option value="solo">Solo (1 player)</option>
+              <option value="duo">Duo (2 players)</option>
+              <option value="trio">Trio (3 players)</option>
+              <option value="squad" selected>Squad (4 players)</option>
+              <option value="4v4">4v4 (CS-style)</option>
+              <option value="5v5">5v5 (CS-style)</option>
+              <option value="6v6">6v6 (CS-style)</option>
+            </select>
+          </div>
+          <div class="field"><label>Match date & time</label><input type="datetime-local" name="match_date" required></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Entry fee (₹, 0 = free)</label><input type="number" name="entry_fee" value="0" min="0" required></div>
+          <div class="field"><label>Prize pool (₹)</label><input type="number" name="prize_pool" value="0" min="0" required></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Total slots</label><input type="number" name="slots_total" value="25" min="1" required></div>
+          <div class="field"><label>UPI ID for payments</label><input type="text" name="upi_id" placeholder="voidxhub@upi"></div>
+        </div>
+        <div class="field"><label>Description</label><textarea name="description" rows="3"></textarea></div>
+        <button class="btn btn-primary" type="submit">Create tournament</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <h2 style="font-size:22px; margin-bottom:16px;">Manage tournaments</h2>
+    <div id="admin-alert"></div>
+    <div class="card-plain" style="padding:0; overflow-x:auto;">
+      <table id="tournament-table">
+        <thead><tr><th>Title</th><th>Game</th><th>Status</th><th>Slots</th><th>Entry</th><th></th></tr></thead>
+        <tbody><tr><td colspan="6" class="mono" style="color:var(--fog-dim)">Loading…</td></tr></tbody>
+      </table>
+    </div>
+    <div id="manage-panel"></div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head"><h2 style="font-size:22px;">Account security</h2></div>
+    <div class="card-plain" style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+      <div>
+        <h4 style="font-size:14px; text-transform:uppercase; letter-spacing:0.06em; color:var(--fog-dim);">Change your password</h4>
+        <div id="pw-alert"></div>
+        <form id="pw-form" style="margin-top:12px;">
+          <div class="field"><label>Current password</label><input type="password" name="current_password" required></div>
+          <div class="field"><label>New password (min 8 characters)</label><input type="password" name="new_password" required minlength="8"></div>
+          <button class="btn btn-primary btn-sm" type="submit">Update password</button>
+        </form>
+      </div>
+      <div>
+        <h4 style="font-size:14px; text-transform:uppercase; letter-spacing:0.06em; color:var(--fog-dim);">Lost a device?</h4>
+        <p style="color:var(--fog-dim); font-size:13px; margin:10px 0 14px;">
+          Instantly invalidates every login token for your account, on every device. You'll need to log in again here.
+        </p>
+        <button class="btn btn-danger btn-sm" id="logout-everywhere-btn">Log out everywhere</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head"><h2 style="font-size:22px;">Audit log</h2></div>
+    <div class="card-plain" style="padding:0; overflow-x:auto;">
+      <table id="audit-table">
+        <thead><tr><th>When</th><th>Event</th><th>Who</th><th>IP</th><th>Detail</th></tr></thead>
+        <tbody><tr><td colspan="5" class="mono" style="color:var(--fog-dim)">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer id="site-footer"></footer>
+
+<script src="static/js/config.js"></script>
+<script src="static/js/api.js"></script>
+<script src="static/js/ui.js"></script>
+<script src="static/js/pages/admin.js"></script>
+</body>
+</html>

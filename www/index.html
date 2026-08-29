@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOIDXHUB — Esports Scrims & Tournaments</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="static/icons/icon-192.png">
+<link rel="apple-touch-icon" href="static/icons/icon-192.png">
+<meta name="theme-color" content="#08080c">
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<nav class="site-nav" id="site-nav"></nav>
+
+<header class="section" style="padding-top:64px; padding-bottom:40px;">
+  <div class="wrap">
+    <span class="eyebrow">// live tournament network</span>
+    <h1 style="font-size:52px; max-width:720px; line-height:1.05;">
+      Squad up. Enter the void. Get paid.
+    </h1>
+    <p style="max-width:560px; color:var(--fog-dim); font-size:17px; margin-top:14px;">
+      VOIDXHUB runs paid and free scrims for BGMI, Free Fire, Valorant, CS and CODM.
+      Register your squad, pay entry over UPI, and get your room ID the moment your
+      slot is confirmed.
+    </p>
+    <div style="margin-top:26px; display:flex; gap:14px;">
+      <a href="tournaments.html" class="btn btn-primary">Browse tournaments</a>
+      <a href="register.html" class="btn btn-ghost">Create an account</a>
+    </div>
+  </div>
+</header>
+
+<section class="hud-strip">
+  <div class="wrap" id="hud-stats">
+    <div class="hud-stat"><span class="val mono">—</span><span class="label">OpenSlots</span></div>
+    <div class="hud-stat"><span class="val mono">—</span><span class="label">Upcoming</span></div>
+    <div class="hud-stat"><span class="val mono">—</span><span class="label">Games Live</span></div>
+    <div class="hud-stat"><span class="val mono">—</span><span class="label">Total Prize Pool</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2 style="font-size:28px;">Open for registration</h2>
+        <p>Confirm your slot before the room fills up.</p>
+      </div>
+      <a href="tournaments.html" class="btn btn-ghost btn-sm">View all →</a>
+    </div>
+    <div class="grid" id="featured-grid">
+      <p class="mono" style="color:var(--fog-dim)">Loading tournaments…</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head"><div><h2 style="font-size:28px;">Games we run</h2><p>Every title currently open for tournaments.</p></div>
+      <a href="tournaments.html" class="btn btn-ghost btn-sm">Browse all →</a>
+    </div>
+    <div class="games-grid" id="games-grid">
+      <p class="mono" style="color:var(--fog-dim)">Loading…</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head"><div><h2 style="font-size:28px;">How it works</h2></div></div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));">
+      <div class="card-plain">
+        <span class="eyebrow mono">01 · Pick a slot</span>
+        <h3 style="font-size:18px;">Browse open tournaments</h3>
+        <p style="color:var(--fog-dim); font-size:14px;">Filter by game and mode, check the prize pool and slots left.</p>
+      </div>
+      <div class="card-plain">
+        <span class="eyebrow mono">02 · Register</span>
+        <h3 style="font-size:18px;">Submit your squad</h3>
+        <p style="color:var(--fog-dim); font-size:14px;">Enter your team name and pay the entry fee via UPI if it's a paid lobby.</p>
+      </div>
+      <div class="card-plain">
+        <span class="eyebrow mono">03 · Get verified</span>
+        <h3 style="font-size:18px;">Admin confirms payment</h3>
+        <p style="color:var(--fog-dim); font-size:14px;">Once your UTR is verified, your slot locks in.</p>
+      </div>
+      <div class="card-plain">
+        <span class="eyebrow mono">04 · Drop in</span>
+        <h3 style="font-size:18px;">Room ID unlocks</h3>
+        <p style="color:var(--fog-dim); font-size:14px;">Find your room ID and password on your dashboard before match time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="site-footer"></footer>
+
+<script src="static/js/config.js"></script>
+<script src="static/js/api.js"></script>
+<script src="static/js/ui.js"></script>
+<script src="static/js/pages/home.js"></script>
+</body>
+</html>
