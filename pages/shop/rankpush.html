@@ -37,23 +37,20 @@
       </div>
 
       <div class="card p-6 sm:p-8 fade-in">
-        <!-- Mode Badge -->
         <div class="text-center mb-6">
           <span id="modeBadge" class="inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-wider"></span>
         </div>
 
-        <!-- ===== CS MODE ===== -->
+        <!-- CS MODE -->
         <div id="csSection" class="hidden">
           <div class="mb-5">
             <label class="block text-xs text-cyan-400 mb-2 tracking-wider">SELECT CURRENT RANK</label>
-            <div id="csRankGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-48 overflow-y-auto pr-1"></div>
+            <div id="csRankGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-52 overflow-y-auto pr-1"></div>
           </div>
-
           <div class="mb-5">
             <label class="block text-xs text-cyan-400 mb-2 tracking-wider">CURRENT STARS ON RANK</label>
             <input type="number" id="csCurrentStars" min="0" max="999" value="0" class="input-field w-full px-4 py-3 text-sm" oninput="calcCS()">
           </div>
-
           <div class="mb-5">
             <label class="block text-xs text-cyan-400 mb-2 tracking-wider">STARS NEEDED</label>
             <div class="flex items-center gap-2">
@@ -67,18 +64,16 @@
           </div>
         </div>
 
-        <!-- ===== BR MODE ===== -->
+        <!-- BR MODE -->
         <div id="brSection" class="hidden">
           <div class="mb-5">
             <label class="block text-xs text-cyan-400 mb-2 tracking-wider">SELECT CURRENT RANK</label>
-            <div id="brRankGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-48 overflow-y-auto pr-1"></div>
+            <div id="brRankGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-52 overflow-y-auto pr-1"></div>
           </div>
-
           <div class="mb-5">
             <label class="block text-xs text-cyan-400 mb-2 tracking-wider">CURRENT RANK POINTS</label>
             <input type="number" id="brCurrentPoints" min="0" max="9999" value="0" class="input-field w-full px-4 py-3 text-sm" oninput="calcBR()">
           </div>
-
           <div class="mb-5">
             <label class="block text-xs text-cyan-400 mb-2 tracking-wider">NUMBER OF RANK UPS NEEDED</label>
             <div class="flex items-center gap-2">
@@ -90,14 +85,12 @@
           </div>
         </div>
 
-        <!-- PRICE DISPLAY -->
         <div class="text-center my-6 p-4 rounded-2xl bg-black/40 border border-cyan-500/30">
           <p class="text-xs text-gray-400 mb-1">TOTAL PAYABLE</p>
           <h2 id="totalPrice" class="text-4xl font-black price-tag">₹0</h2>
           <p id="priceDetail" class="text-xs text-gray-500 mt-2"></p>
         </div>
 
-        <!-- SELECTED RANK PREVIEW -->
         <div id="selectedRankPreview" class="hidden mb-5 flex items-center gap-3 p-3 rounded-xl bg-cyan-900/20 border border-cyan-500/30">
           <img id="selectedRankImg" src="" class="rank-img" onerror="this.style.display='none'">
           <div>
@@ -121,73 +114,72 @@
     const urlParams = new URLSearchParams(window.location.search);
     const type = (urlParams.get('type') || 'cs').toLowerCase();
 
-    // ========== CS RANKS ==========
+    // CS ranks with individual badge images
     const csRanks = [
-      { id: 'csbronze1', name: 'Bronze 1', img: 'csbronze.jpg' },
-      { id: 'csbronze2', name: 'Bronze 2', img: 'csbronze.jpg' },
-      { id: 'csbronze3', name: 'Bronze 3', img: 'csbronze.jpg' },
-      { id: 'cssilver1', name: 'Silver 1', img: 'cssilver.jpg' },
-      { id: 'cssilver2', name: 'Silver 2', img: 'cssilver.jpg' },
-      { id: 'cssilver3', name: 'Silver 3', img: 'cssilver.jpg' },
-      { id: 'csgold1', name: 'Gold 1', img: 'csgold.jpg' },
-      { id: 'csgold2', name: 'Gold 2', img: 'csgold.jpg' },
-      { id: 'csgold3', name: 'Gold 3', img: 'csgold.jpg' },
-      { id: 'csgold4', name: 'Gold 4', img: 'csgold.jpg' },
-      { id: 'csplat1', name: 'Platinum 1', img: 'csplatinum.jpg' },
-      { id: 'csplat2', name: 'Platinum 2', img: 'csplatinum.jpg' },
-      { id: 'csplat3', name: 'Platinum 3', img: 'csplatinum.jpg' },
-      { id: 'csplat4', name: 'Platinum 4', img: 'csplatinum.jpg' },
-      { id: 'csplat5', name: 'Platinum 5', img: 'csplatinum.jpg' },
-      { id: 'csdia1', name: 'Diamond 1', img: 'csdiamond.jpg' },
-      { id: 'csdia2', name: 'Diamond 2', img: 'csdiamond.jpg' },
-      { id: 'csdia3', name: 'Diamond 3', img: 'csdiamond.jpg' },
-      { id: 'csdia4', name: 'Diamond 4', img: 'csdiamond.jpg' },
-      { id: 'csdia5', name: 'Diamond 5', img: 'csdiamond.jpg' },
-      { id: 'cshereic', name: 'Heroic (0-29)', img: 'cshereic.jpg' },
-      { id: 'cselite', name: 'Elite Heroic (30-49)', img: 'cselite.jpg' },
-      { id: 'csmaster', name: 'Master (50-99)', img: 'csmaster.jpg' },
-      { id: 'csgrand', name: 'Elite/Grand Master (100+)', img: 'csgrand.jpg' }
+      { id: 'csbronze1', name: 'Bronze 1', img: 'bronze1.jpg' },
+      { id: 'csbronze2', name: 'Bronze 2', img: 'bronze2.jpg' },
+      { id: 'csbronze3', name: 'Bronze 3', img: 'bronze3.jpg' },
+      { id: 'cssilver1', name: 'Silver 1', img: 'silver1.jpg' },
+      { id: 'cssilver2', name: 'Silver 2', img: 'silver2.jpg' },
+      { id: 'cssilver3', name: 'Silver 3', img: 'silver3.jpg' },
+      { id: 'csgold1', name: 'Gold 1', img: 'gold1.jpg' },
+      { id: 'csgold2', name: 'Gold 2', img: 'gold2.jpg' },
+      { id: 'csgold3', name: 'Gold 3', img: 'gold3.jpg' },
+      { id: 'csgold4', name: 'Gold 4', img: 'gold4.jpg' },
+      { id: 'csplat1', name: 'Platinum 1', img: 'platinum1.jpg' },
+      { id: 'csplat2', name: 'Platinum 2', img: 'platinum2.jpg' },
+      { id: 'csplat3', name: 'Platinum 3', img: 'platinum3.jpg' },
+      { id: 'csplat4', name: 'Platinum 4', img: 'platinum4.jpg' },
+      { id: 'csplat5', name: 'Platinum 5', img: 'platinum5.jpg' },
+      { id: 'csdia1', name: 'Diamond 1', img: 'diamond1.jpg' },
+      { id: 'csdia2', name: 'Diamond 2', img: 'diamond2.jpg' },
+      { id: 'csdia3', name: 'Diamond 3', img: 'diamond3.jpg' },
+      { id: 'csdia4', name: 'Diamond 4', img: 'diamond4.jpg' },
+      { id: 'csdia5', name: 'Diamond 5', img: 'diamond5.jpg' },
+      { id: 'cshereic', name: 'Heroic (0-29)', img: 'heroic1.jpg' },
+      { id: 'cselite', name: 'Elite Heroic (30-49)', img: 'heroic3.jpg' },
+      { id: 'csmaster', name: 'Master (50-99)', img: 'grandmaster1.jpg' },
+      { id: 'csgrand', name: 'Elite/Grand Master (100+)', img: 'grandmaster4.jpg' }
     ];
 
-    // ========== BR RANKS ==========
+    // BR ranks with individual badge images
     const brRanks = [
-      { id: 'brbronze1', name: 'Bronze 1', img: 'brbronze.jpg' },
-      { id: 'brbronze2', name: 'Bronze 2', img: 'brbronze.jpg' },
-      { id: 'brbronze3', name: 'Bronze 3', img: 'brbronze.jpg' },
-      { id: 'brsilver1', name: 'Silver 1', img: 'brsilver.jpg' },
-      { id: 'brsilver2', name: 'Silver 2', img: 'brsilver.jpg' },
-      { id: 'brsilver3', name: 'Silver 3', img: 'brsilver.jpg' },
-      { id: 'brsilver4', name: 'Silver 4', img: 'brsilver.jpg' },
-      { id: 'brgold1', name: 'Gold 1', img: 'brgold.jpg' },
-      { id: 'brgold2', name: 'Gold 2', img: 'brgold.jpg' },
-      { id: 'brgold3', name: 'Gold 3', img: 'brgold.jpg' },
-      { id: 'brgold4', name: 'Gold 4', img: 'brgold.jpg' },
-      { id: 'brplat1', name: 'Platinum 1', img: 'brplatinum.jpg' },
-      { id: 'brplat2', name: 'Platinum 2', img: 'brplatinum.jpg' },
-      { id: 'brplat3', name: 'Platinum 3', img: 'brplatinum.jpg' },
-      { id: 'brplat4', name: 'Platinum 4', img: 'brplatinum.jpg' },
-      { id: 'brplat5', name: 'Platinum 5', img: 'brplatinum.jpg' },
-      { id: 'brdia1', name: 'Diamond 1', img: 'brdiamond.jpg' },
-      { id: 'brdia2', name: 'Diamond 2', img: 'brdiamond.jpg' },
-      { id: 'brdia3', name: 'Diamond 3', img: 'brdiamond.jpg' },
-      { id: 'brdia4', name: 'Diamond 4', img: 'brdiamond.jpg' },
-      { id: 'brdia5', name: 'Diamond 5', img: 'brdiamond.jpg' },
-      { id: 'brheroic1', name: 'Heroic 1', img: 'brheroic.jpg' },
-      { id: 'brheroic2', name: 'Heroic 2', img: 'brheroic.jpg' },
-      { id: 'brelite3', name: 'Elite Heroic 3', img: 'brelite.jpg' },
-      { id: 'brelite4', name: 'Elite Heroic 4', img: 'brelite.jpg' },
-      { id: 'brelite5', name: 'Elite Heroic 5', img: 'brelite.jpg' },
-      { id: 'brmaster1', name: 'Master 1', img: 'brmaster.jpg' },
-      { id: 'brmaster2', name: 'Master 2', img: 'brmaster.jpg' },
-      { id: 'brelitem3', name: 'Elite Master 3', img: 'brelitemaster.jpg' },
-      { id: 'brelitem4', name: 'Elite Master 4', img: 'brelitemaster.jpg' },
-      { id: 'brelitem5', name: 'Elite Master 5', img: 'brelitemaster.jpg' }
+      { id: 'brbronze1', name: 'Bronze 1', img: 'bronze1.jpg' },
+      { id: 'brbronze2', name: 'Bronze 2', img: 'bronze2.jpg' },
+      { id: 'brbronze3', name: 'Bronze 3', img: 'bronze3.jpg' },
+      { id: 'brsilver1', name: 'Silver 1', img: 'silver1.jpg' },
+      { id: 'brsilver2', name: 'Silver 2', img: 'silver2.jpg' },
+      { id: 'brsilver3', name: 'Silver 3', img: 'silver3.jpg' },
+      { id: 'brsilver4', name: 'Silver 4', img: 'silver3.jpg' },
+      { id: 'brgold1', name: 'Gold 1', img: 'gold1.jpg' },
+      { id: 'brgold2', name: 'Gold 2', img: 'gold2.jpg' },
+      { id: 'brgold3', name: 'Gold 3', img: 'gold3.jpg' },
+      { id: 'brgold4', name: 'Gold 4', img: 'gold4.jpg' },
+      { id: 'brplat1', name: 'Platinum 1', img: 'platinum1.jpg' },
+      { id: 'brplat2', name: 'Platinum 2', img: 'platinum2.jpg' },
+      { id: 'brplat3', name: 'Platinum 3', img: 'platinum3.jpg' },
+      { id: 'brplat4', name: 'Platinum 4', img: 'platinum4.jpg' },
+      { id: 'brplat5', name: 'Platinum 5', img: 'platinum5.jpg' },
+      { id: 'brdia1', name: 'Diamond 1', img: 'diamond1.jpg' },
+      { id: 'brdia2', name: 'Diamond 2', img: 'diamond2.jpg' },
+      { id: 'brdia3', name: 'Diamond 3', img: 'diamond3.jpg' },
+      { id: 'brdia4', name: 'Diamond 4', img: 'diamond4.jpg' },
+      { id: 'brdia5', name: 'Diamond 5', img: 'diamond5.jpg' },
+      { id: 'brheroic1', name: 'Heroic 1', img: 'heroic1.jpg' },
+      { id: 'brheroic2', name: 'Heroic 2', img: 'heroic2.jpg' },
+      { id: 'brelite3', name: 'Elite Heroic 3', img: 'heroic3.jpg' },
+      { id: 'brelite4', name: 'Elite Heroic 4', img: 'heroic4.jpg' },
+      { id: 'brelite5', name: 'Elite Heroic 5', img: 'heroic4.jpg' },
+      { id: 'brmaster1', name: 'Master 1', img: 'grandmaster1.jpg' },
+      { id: 'brmaster2', name: 'Master 2', img: 'grandmaster2.jpg' },
+      { id: 'brelitem3', name: 'Elite Master 3', img: 'grandmaster3.jpg' },
+      { id: 'brelitem4', name: 'Elite Master 4', img: 'grandmaster4.jpg' },
+      { id: 'brelitem5', name: 'Elite Master 5', img: 'grandmaster5.jpg' }
     ];
 
     let selectedRank = null;
     let totalAmount = 0;
 
-    // Init
     if (type === 'br') {
       document.getElementById('modeTitle').textContent = 'BR RANK PUSH';
       document.getElementById('modeBadge').textContent = '🔥 BATTLE ROYALE';
@@ -224,7 +216,6 @@
       container.querySelectorAll('.rank-option').forEach(o => o.classList.remove('selected'));
       el.classList.add('selected');
       selectedRank = rank;
-
       const preview = document.getElementById('selectedRankPreview');
       preview.classList.remove('hidden');
       document.getElementById('selectedRankName').textContent = rank.name;
@@ -232,7 +223,6 @@
       img.src = `../../assets/images/${rank.img}`;
       img.style.display = 'block';
       img.onerror = function() { this.style.display = 'none'; };
-
       if (type === 'cs') calcCS(); else calcBR();
     }
 
@@ -277,7 +267,6 @@
         alert('Please enter valid amount');
         return;
       }
-
       let toolName = '';
       if (type === 'cs') {
         const stars = document.getElementById('csStarsNeeded').value;
@@ -287,9 +276,7 @@
         const points = document.getElementById('brCurrentPoints').value;
         toolName = `br-push-${selectedRank.id}-${ups}ups-${points}pts`;
       }
-
-      const url = `payment.html?type=push&brand=freefire&tool=${encodeURIComponent(toolName)}&price=${totalAmount}`;
-      window.location.href = url;
+      window.location.href = `payment.html?type=push&brand=freefire&tool=${encodeURIComponent(toolName)}&price=${totalAmount}`;
     }
   </script>
 </body>
