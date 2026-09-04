@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOIDXHUB - RANK PUSH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; min-height: 100vh; overflow-x: hidden; }
+    .bg-blackhole { position: fixed; inset: 0; background: radial-gradient(circle at center, #1a0033 10%, #000000 85%); z-index: -3; }
+    .card { background: rgba(17,17,24,0.95); border: 2px solid rgba(103,232,249,0.35); border-radius: 24px; }
+    .input-field { background: rgba(0,255,255,0.05); border: 1.5px solid rgba(103,232,249,0.4); color: #e0e0ff; border-radius: 12px; outline: none; }
+    .input-field:focus { border-color: #67e8f9; box-shadow: 0 0 12px rgba(103,232,249,0.3); }
+    .counter-btn { background: rgba(103,232,249,0.15); border: 1px solid rgba(103,232,249,0.4); color: #67e8f9; border-radius: 10px; font-weight: 700; transition: all 0.25s; }
+    .counter-btn:hover { background: #67e8f9; color: #000; transform: scale(1.08); }
+    .rank-option { background: rgba(17,17,28,0.8); border: 1.5px solid rgba(103,232,249,0.25); border-radius: 14px; transition: all 0.3s; cursor: pointer; }
+    .rank-option:hover, .rank-option.selected { border-color: #67e8f9; background: rgba(103,232,249,0.12); box-shadow: 0 0 15px rgba(103,232,249,0.25); }
+    .rank-img { width: 42px; height: 42px; object-fit: contain; }
+    .price-tag { background: linear-gradient(to right, #06b6d4, #9333ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .pay-btn { background: linear-gradient(to right, #22c55e, #16a34a); transition: all 0.35s; }
+    .pay-btn:hover { transform: scale(1.03); box-shadow: 0 0 25px rgba(34,197,94,0.5); }
+    .fade-in { animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <div class="bg-blackhole"></div>
+
+  <div class="relative z-10 min-h-screen flex items-center justify-center px-4 py-10">
+    <div class="max-w-lg w-full">
+      <div class="text-center mb-6">
+        <h1 class="text-3xl sm:text-4xl font-black tracking-wider">
+          VOID<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">X</span>HUB
+        </h1>
+        <p id="modeTitle" class="text-cyan-300 mt-2 tracking-widest text-sm">RANK PUSH</p>
+      </div>
+
+      <div class="card p-6 sm:p-8 fade-in">
+        <!-- Mode Badge -->
+        <div class="text-center mb-6">
+          <span id="modeBadge" class="inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-wider"></span>
+        </div>
+
+        <!-- ===== CS MODE ===== -->
+        <div id="csSection" class="hidden">
+          <div class="mb-5">
+            <label class="block text-xs text-cyan-400 mb-2 tracking-wider">SELECT CURRENT RANK</label>
+            <div id="csRankGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-48 overflow-y-auto pr-1"></div>
+          </div>
+
+          <div class="mb-5">
+            <label class="block text-xs text-cyan-400 mb-2 tracking-wider">CURRENT STARS ON RANK</label>
+            <input type="number" id="csCurrentStars" min="0" max="999" value="0" class="input-field w-full px-4 py-3 text-sm" oninput="calcCS()">
+          </div>
+
+          <div class="mb-5">
+            <label class="block text-xs text-cyan-400 mb-2 tracking-wider">STARS NEEDED</label>
+            <div class="flex items-center gap-2">
+              <button type="button" class="counter-btn w-11 h-11" onclick="changeStars(-5)">-5</button>
+              <button type="button" class="counter-btn w-11 h-11" onclick="changeStars(-1)">-1</button>
+              <input type="number" id="csStarsNeeded" min="1" max="999" value="10" class="input-field flex-1 px-4 py-3 text-sm text-center font-bold" oninput="calcCS()">
+              <button type="button" class="counter-btn w-11 h-11" onclick="changeStars(1)">+1</button>
+              <button type="button" class="counter-btn w-11 h-11" onclick="changeStars(5)">+5</button>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">₹8 / star (≤20) • ₹5 / star (>20)</p>
+          </div>
+        </div>
+
+        <!-- ===== BR MODE ===== -->
+        <div id="brSection" class="hidden">
+          <div class="mb-5">
+            <label class="block text-xs text-cyan-400 mb-2 tracking-wider">SELECT CURRENT RANK</label>
+            <div id="brRankGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-48 overflow-y-auto pr-1"></div>
+          </div>
+
+          <div class="mb-5">
+            <label class="block text-xs text-cyan-400 mb-2 tracking-wider">CURRENT RANK POINTS</label>
+            <input type="number" id="brCurrentPoints" min="0" max="9999" value="0" class="input-field w-full px-4 py-3 text-sm" oninput="calcBR()">
+          </div>
+
+          <div class="mb-5">
+            <label class="block text-xs text-cyan-400 mb-2 tracking-wider">NUMBER OF RANK UPS NEEDED</label>
+            <div class="flex items-center gap-2">
+              <button type="button" class="counter-btn w-11 h-11" onclick="changeRankUps(-1)">-1</button>
+              <input type="number" id="brRankUps" min="1" max="50" value="1" class="input-field flex-1 px-4 py-3 text-sm text-center font-bold" oninput="calcBR()">
+              <button type="button" class="counter-btn w-11 h-11" onclick="changeRankUps(1)">+1</button>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">₹100 / rank up (≤2) • ₹80 / rank up (>2)</p>
+          </div>
+        </div>
+
+        <!-- PRICE DISPLAY -->
+        <div class="text-center my-6 p-4 rounded-2xl bg-black/40 border border-cyan-500/30">
+          <p class="text-xs text-gray-400 mb-1">TOTAL PAYABLE</p>
+          <h2 id="totalPrice" class="text-4xl font-black price-tag">₹0</h2>
+          <p id="priceDetail" class="text-xs text-gray-500 mt-2"></p>
+        </div>
+
+        <!-- SELECTED RANK PREVIEW -->
+        <div id="selectedRankPreview" class="hidden mb-5 flex items-center gap-3 p-3 rounded-xl bg-cyan-900/20 border border-cyan-500/30">
+          <img id="selectedRankImg" src="" class="rank-img" onerror="this.style.display='none'">
+          <div>
+            <p class="text-xs text-gray-400">Selected Rank</p>
+            <p id="selectedRankName" class="font-bold text-cyan-300"></p>
+          </div>
+        </div>
+
+        <button id="payBtn" onclick="goToPayment()" class="pay-btn w-full py-4 rounded-2xl text-white font-bold text-base">
+          PROCEED TO PAYMENT →
+        </button>
+
+        <div class="mt-5 text-center">
+          <button onclick="window.location.href='paidpush.html'" class="text-gray-400 hover:text-white text-sm">← Back to Mode Select</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const type = (urlParams.get('type') || 'cs').toLowerCase();
+
+    // ========== CS RANKS ==========
+    const csRanks = [
+      { id: 'csbronze1', name: 'Bronze 1', img: 'csbronze.jpg' },
+      { id: 'csbronze2', name: 'Bronze 2', img: 'csbronze.jpg' },
+      { id: 'csbronze3', name: 'Bronze 3', img: 'csbronze.jpg' },
+      { id: 'cssilver1', name: 'Silver 1', img: 'cssilver.jpg' },
+      { id: 'cssilver2', name: 'Silver 2', img: 'cssilver.jpg' },
+      { id: 'cssilver3', name: 'Silver 3', img: 'cssilver.jpg' },
+      { id: 'csgold1', name: 'Gold 1', img: 'csgold.jpg' },
+      { id: 'csgold2', name: 'Gold 2', img: 'csgold.jpg' },
+      { id: 'csgold3', name: 'Gold 3', img: 'csgold.jpg' },
+      { id: 'csgold4', name: 'Gold 4', img: 'csgold.jpg' },
+      { id: 'csplat1', name: 'Platinum 1', img: 'csplatinum.jpg' },
+      { id: 'csplat2', name: 'Platinum 2', img: 'csplatinum.jpg' },
+      { id: 'csplat3', name: 'Platinum 3', img: 'csplatinum.jpg' },
+      { id: 'csplat4', name: 'Platinum 4', img: 'csplatinum.jpg' },
+      { id: 'csplat5', name: 'Platinum 5', img: 'csplatinum.jpg' },
+      { id: 'csdia1', name: 'Diamond 1', img: 'csdiamond.jpg' },
+      { id: 'csdia2', name: 'Diamond 2', img: 'csdiamond.jpg' },
+      { id: 'csdia3', name: 'Diamond 3', img: 'csdiamond.jpg' },
+      { id: 'csdia4', name: 'Diamond 4', img: 'csdiamond.jpg' },
+      { id: 'csdia5', name: 'Diamond 5', img: 'csdiamond.jpg' },
+      { id: 'cshereic', name: 'Heroic (0-29)', img: 'cshereic.jpg' },
+      { id: 'cselite', name: 'Elite Heroic (30-49)', img: 'cselite.jpg' },
+      { id: 'csmaster', name: 'Master (50-99)', img: 'csmaster.jpg' },
+      { id: 'csgrand', name: 'Elite/Grand Master (100+)', img: 'csgrand.jpg' }
+    ];
+
+    // ========== BR RANKS ==========
+    const brRanks = [
+      { id: 'brbronze1', name: 'Bronze 1', img: 'brbronze.jpg' },
+      { id: 'brbronze2', name: 'Bronze 2', img: 'brbronze.jpg' },
+      { id: 'brbronze3', name: 'Bronze 3', img: 'brbronze.jpg' },
+      { id: 'brsilver1', name: 'Silver 1', img: 'brsilver.jpg' },
+      { id: 'brsilver2', name: 'Silver 2', img: 'brsilver.jpg' },
+      { id: 'brsilver3', name: 'Silver 3', img: 'brsilver.jpg' },
+      { id: 'brsilver4', name: 'Silver 4', img: 'brsilver.jpg' },
+      { id: 'brgold1', name: 'Gold 1', img: 'brgold.jpg' },
+      { id: 'brgold2', name: 'Gold 2', img: 'brgold.jpg' },
+      { id: 'brgold3', name: 'Gold 3', img: 'brgold.jpg' },
+      { id: 'brgold4', name: 'Gold 4', img: 'brgold.jpg' },
+      { id: 'brplat1', name: 'Platinum 1', img: 'brplatinum.jpg' },
+      { id: 'brplat2', name: 'Platinum 2', img: 'brplatinum.jpg' },
+      { id: 'brplat3', name: 'Platinum 3', img: 'brplatinum.jpg' },
+      { id: 'brplat4', name: 'Platinum 4', img: 'brplatinum.jpg' },
+      { id: 'brplat5', name: 'Platinum 5', img: 'brplatinum.jpg' },
+      { id: 'brdia1', name: 'Diamond 1', img: 'brdiamond.jpg' },
+      { id: 'brdia2', name: 'Diamond 2', img: 'brdiamond.jpg' },
+      { id: 'brdia3', name: 'Diamond 3', img: 'brdiamond.jpg' },
+      { id: 'brdia4', name: 'Diamond 4', img: 'brdiamond.jpg' },
+      { id: 'brdia5', name: 'Diamond 5', img: 'brdiamond.jpg' },
+      { id: 'brheroic1', name: 'Heroic 1', img: 'brheroic.jpg' },
+      { id: 'brheroic2', name: 'Heroic 2', img: 'brheroic.jpg' },
+      { id: 'brelite3', name: 'Elite Heroic 3', img: 'brelite.jpg' },
+      { id: 'brelite4', name: 'Elite Heroic 4', img: 'brelite.jpg' },
+      { id: 'brelite5', name: 'Elite Heroic 5', img: 'brelite.jpg' },
+      { id: 'brmaster1', name: 'Master 1', img: 'brmaster.jpg' },
+      { id: 'brmaster2', name: 'Master 2', img: 'brmaster.jpg' },
+      { id: 'brelitem3', name: 'Elite Master 3', img: 'brelitemaster.jpg' },
+      { id: 'brelitem4', name: 'Elite Master 4', img: 'brelitemaster.jpg' },
+      { id: 'brelitem5', name: 'Elite Master 5', img: 'brelitemaster.jpg' }
+    ];
+
+    let selectedRank = null;
+    let totalAmount = 0;
+
+    // Init
+    if (type === 'br') {
+      document.getElementById('modeTitle').textContent = 'BR RANK PUSH';
+      document.getElementById('modeBadge').textContent = '🔥 BATTLE ROYALE';
+      document.getElementById('modeBadge').className = 'inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-wider bg-orange-600/30 text-orange-300 border border-orange-500/50';
+      document.getElementById('brSection').classList.remove('hidden');
+      renderRanks(brRanks, 'brRankGrid');
+      calcBR();
+    } else {
+      document.getElementById('modeTitle').textContent = 'CS RANK PUSH';
+      document.getElementById('modeBadge').textContent = '⚔️ CLASH SQUAD';
+      document.getElementById('modeBadge').className = 'inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-wider bg-cyan-600/30 text-cyan-300 border border-cyan-500/50';
+      document.getElementById('csSection').classList.remove('hidden');
+      renderRanks(csRanks, 'csRankGrid');
+      calcCS();
+    }
+
+    function renderRanks(list, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      list.forEach(rank => {
+        const div = document.createElement('div');
+        div.className = 'rank-option flex items-center gap-2 p-2';
+        div.dataset.id = rank.id;
+        div.innerHTML = `
+          <img src="../../assets/images/${rank.img}" class="rank-img" onerror="this.src='../../assets/images/sensi.jpg'; this.style.opacity='0.5'">
+          <span class="text-xs font-bold text-gray-200">${rank.name}</span>
+        `;
+        div.onclick = () => selectRank(rank, div, container);
+        container.appendChild(div);
+      });
+    }
+
+    function selectRank(rank, el, container) {
+      container.querySelectorAll('.rank-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedRank = rank;
+
+      const preview = document.getElementById('selectedRankPreview');
+      preview.classList.remove('hidden');
+      document.getElementById('selectedRankName').textContent = rank.name;
+      const img = document.getElementById('selectedRankImg');
+      img.src = `../../assets/images/${rank.img}`;
+      img.style.display = 'block';
+      img.onerror = function() { this.style.display = 'none'; };
+
+      if (type === 'cs') calcCS(); else calcBR();
+    }
+
+    function changeStars(delta) {
+      const input = document.getElementById('csStarsNeeded');
+      let val = parseInt(input.value) || 0;
+      val = Math.max(1, Math.min(999, val + delta));
+      input.value = val;
+      calcCS();
+    }
+
+    function changeRankUps(delta) {
+      const input = document.getElementById('brRankUps');
+      let val = parseInt(input.value) || 0;
+      val = Math.max(1, Math.min(50, val + delta));
+      input.value = val;
+      calcBR();
+    }
+
+    function calcCS() {
+      const stars = parseInt(document.getElementById('csStarsNeeded').value) || 0;
+      const rate = stars > 20 ? 5 : 8;
+      totalAmount = stars * rate;
+      document.getElementById('totalPrice').textContent = '₹' + totalAmount;
+      document.getElementById('priceDetail').textContent = stars + ' stars × ₹' + rate + (stars > 20 ? ' (bulk rate)' : '');
+    }
+
+    function calcBR() {
+      const ups = parseInt(document.getElementById('brRankUps').value) || 0;
+      const rate = ups > 2 ? 80 : 100;
+      totalAmount = ups * rate;
+      document.getElementById('totalPrice').textContent = '₹' + totalAmount;
+      document.getElementById('priceDetail').textContent = ups + ' rank up(s) × ₹' + rate + (ups > 2 ? ' (bulk rate)' : '');
+    }
+
+    function goToPayment() {
+      if (!selectedRank) {
+        alert('Please select your current rank first');
+        return;
+      }
+      if (totalAmount < 1) {
+        alert('Please enter valid amount');
+        return;
+      }
+
+      let toolName = '';
+      if (type === 'cs') {
+        const stars = document.getElementById('csStarsNeeded').value;
+        toolName = `cs-push-${selectedRank.id}-${stars}stars`;
+      } else {
+        const ups = document.getElementById('brRankUps').value;
+        const points = document.getElementById('brCurrentPoints').value;
+        toolName = `br-push-${selectedRank.id}-${ups}ups-${points}pts`;
+      }
+
+      const url = `payment.html?type=push&brand=freefire&tool=${encodeURIComponent(toolName)}&price=${totalAmount}`;
+      window.location.href = url;
+    }
+  </script>
+</body>
+</html>

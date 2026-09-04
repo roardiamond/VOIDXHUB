@@ -4,28 +4,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VOIDXHUB - FREE FIRE PAID PUSH</title>
-  <meta http-equiv="refresh" content="0;url=wait.html">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: #111;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #888;
-      font-family: sans-serif;
-      filter: grayscale(100%);
-    }
+    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; overflow-x: hidden; min-height: 100vh; }
+    .bg-blackhole { position: fixed; inset: 0; background: radial-gradient(ellipse at top, #1a0033 0%, #05050a 70%); z-index: -3; }
+    .void-logo-bg { position: fixed; inset: 0; background: url('../../assets/images/sQz8x (1).jpg') center/cover no-repeat; opacity: 0.08; filter: blur(3px) brightness(1.2); animation: logoPulse 25s ease-in-out infinite; z-index: -2; mix-blend-mode: screen; }
+    @keyframes logoPulse { 0%,100%{opacity:0.06;transform:scale(1)} 50%{opacity:0.12;transform:scale(1.05)} }
+    .push-card { background: rgba(17,17,28,0.92); border: 2px solid rgba(103,232,249,0.3); border-radius: 24px; overflow: hidden; transition: all 0.5s cubic-bezier(0.23,1,0.32,1); cursor: pointer; }
+    .push-card:hover { transform: translateY(-12px) scale(1.02); border-color: #67e8f9; box-shadow: 0 25px 60px rgba(103,232,249,0.3); }
+    .push-card:hover img { transform: scale(1.08); }
+    .push-card img { transition: transform 0.6s ease; }
+    .fade-up { opacity: 0; transform: translateY(25px); animation: fadeUp 0.7s ease forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
-  <div style="text-align:center;">
-    <h1 style="filter: grayscale(100%);">FREE FIRE PAID PUSH</h1>
-    <p>Redirecting...</p>
+  <div class="bg-blackhole"></div>
+  <div class="void-logo-bg"></div>
+
+  <div class="relative z-10 py-16 px-4 md:px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14 fade-up">
+        <h1 class="text-4xl md:text-6xl font-black tracking-wider mb-3">
+          FREE FIRE <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500">PAID PUSH</span>
+        </h1>
+        <p class="text-lg text-cyan-300 tracking-widest">CHOOSE YOUR MODE</p>
+        <div class="w-24 h-1 bg-gradient-to-r from-orange-400 to-pink-500 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- CS RANK PUSH -->
+        <div class="push-card fade-up" style="animation-delay:0.1s" onclick="window.location.href='rankpush.html?type=cs'">
+          <div class="relative h-[260px]">
+            <img src="../../assets/images/cspush.jpg" class="w-full h-full object-cover" alt="CS Rank Push">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+            <div class="absolute inset-0 flex flex-col justify-end p-6">
+              <div class="inline-flex items-center gap-2 bg-cyan-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 w-fit">⚔️ CS</div>
+              <h2 class="text-3xl font-black text-cyan-300 tracking-wider mb-1">CS RANK PUSH</h2>
+              <p class="text-sm text-gray-300 mb-4">Clash Squad Rank Push • Stars based pricing</p>
+              <button class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">OPEN CS PUSH →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BR RANK PUSH -->
+        <div class="push-card fade-up" style="animation-delay:0.2s" onclick="window.location.href='rankpush.html?type=br'">
+          <div class="relative h-[260px]">
+            <img src="../../assets/images/brpush.jpg" class="w-full h-full object-cover" alt="BR Rank Push">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+            <div class="absolute inset-0 flex flex-col justify-end p-6">
+              <div class="inline-flex items-center gap-2 bg-orange-600/90 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 w-fit">🔥 BR</div>
+              <h2 class="text-3xl font-black text-orange-300 tracking-wider mb-1">BR RANK PUSH</h2>
+              <p class="text-sm text-gray-300 mb-4">Battle Royale Rank Push • Rank up pricing</p>
+              <button class="w-full py-3.5 bg-gradient-to-r from-orange-500 to-pink-600 rounded-xl font-bold text-sm hover:scale-105 transition-all">OPEN BR PUSH →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-14 fade-up" style="animation-delay:0.3s">
+        <button onclick="window.location.href='../tournaments/ff.html'" class="text-gray-400 hover:text-cyan-300 transition text-sm tracking-wider">← BACK TO FREE FIRE TOOLS</button>
+      </div>
+    </div>
   </div>
-  <script>
-    window.location.href = "../misc/wait.html";
-  </script>
+
+  <div class="fixed bottom-6 right-6 z-50">
+    <button onclick="window.open('https://t.me/Voidxhubsupport_bot', '_blank')" class="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold px-6 py-3.5 rounded-2xl shadow-2xl border border-white/20 hover:scale-105 transition-all">
+      <span>💬 Help</span>
+    </button>
+  </div>
 </body>
 </html>
