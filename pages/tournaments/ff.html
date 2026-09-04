@@ -9,7 +9,7 @@
   <style>
     body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; overflow-x: hidden; min-height: 100vh; }
     .bg-blackhole { position: fixed; inset: 0; background: radial-gradient(ellipse at top, #1a0033 0%, #05050a 70%); z-index: -3; }
-    .void-logo-bg { position: fixed; inset: 0; background: url('sQz8x (1).jpg') center/cover no-repeat; opacity: 0.08; filter: blur(3px) brightness(1.2); animation: logoPulse 25s ease-in-out infinite; z-index: -2; mix-blend-mode: screen; }
+    .void-logo-bg { position: fixed; inset: 0; background: url('../../assets/images/sQz8x (1).jpg') center/cover no-repeat; opacity: 0.08; filter: blur(3px) brightness(1.2); animation: logoPulse 25s ease-in-out infinite; z-index: -2; mix-blend-mode: screen; }
     @keyframes logoPulse { 0%,100%{opacity:0.06;transform:scale(1)} 50%{opacity:0.12;transform:scale(1.05)} }
     .tool-card { background: rgba(17,17,28,0.92); border: 1.5px solid rgba(103,232,249,0.28); border-radius: 22px; overflow: hidden; transition: all 0.55s cubic-bezier(0.23,1,0.32,1); position: relative; }
     .tool-card:hover { transform: translateY(-14px) scale(1.03); border-color: #67e8f9; box-shadow: 0 20px 50px rgba(103,232,249,0.25), 0 0 40px rgba(103,232,249,0.15); }
@@ -41,6 +41,22 @@
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+
+        <!-- NEW: Premium APIs Card -->
+        <div class="tool-card cursor-pointer relative fade-up" style="animation-delay:0.05s" onclick="window.location.href='../tools/api.html'">
+          <div class="absolute top-3 right-3 z-10 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold px-3 py-1 rounded-full border border-white/40">NEW</div>
+          <div class="w-full h-[190px] bg-gradient-to-br from-cyan-900 via-purple-900 to-black flex items-center justify-center">
+            <div class="text-center">
+              <div class="text-5xl mb-2">⚡</div>
+              <div class="text-cyan-300 font-black text-lg tracking-wider">PREMIUM APIs</div>
+            </div>
+          </div>
+          <div class="p-5 text-center">
+            <h3 class="text-xl font-bold text-cyan-300 mb-2">PREMIUM APIs & BOT SOURCE</h3>
+            <p class="text-sm text-gray-400 mb-4">Premium APIs and Bot source code for all services</p>
+            <button class="explore-btn w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-sm">EXPLORE NOW</button>
+          </div>
+        </div>
 
         <div class="tool-card cursor-pointer relative fade-up" style="animation-delay:0.1s" onclick="window.location.href='../misc/redirect.html?tool=holo'">
           <div class="absolute top-3 right-3 z-10 bg-black/80 text-green-400 text-xs font-bold px-3 py-1 rounded-full border border-green-400/60">Recommended</div>
