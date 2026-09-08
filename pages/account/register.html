@@ -29,6 +29,10 @@
         <input type="text" id="username" required minlength="3" placeholder="Min 3 characters" class="w-full px-4 py-3 rounded-xl text-sm">
       </div>
       <div>
+        <label class="block text-xs text-slate-400 mb-1.5 font-medium">Email</label>
+        <input type="email" id="email" required placeholder="you@example.com" class="w-full px-4 py-3 rounded-xl text-sm">
+      </div>
+      <div>
         <label class="block text-xs text-slate-400 mb-1.5 font-medium">Password</label>
         <div class="relative">
           <input type="password" id="password" required minlength="8" placeholder="Min 8 characters" class="w-full px-4 py-3 rounded-xl text-sm pr-12">
@@ -68,17 +72,25 @@
       const msg = document.getElementById("msg");
       btn.disabled = true;
       btn.textContent = "Creating account...";
+      msg.classList.add("hidden");
 
       try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 25000);
+
         const res = await fetch(API + "/api/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
+          signal: controller.signal,
           body: JSON.stringify({
             username: document.getElementById("username").value.trim(),
+            email: document.getElementById("email").value.trim(),
             password: document.getElementById("password").value
           })
         });
+        clearTimeout(timeout);
+
         const data = await res.json();
 
         if (data.token || data.success) {
@@ -97,7 +109,11 @@
         }
       } catch (err) {
         msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-red-500/10 text-red-300 border border-red-500/30";
-        msg.textContent = "Server unavailable. Please try again in 30 seconds (cold start).";
+        if (err.name === "AbortError") {
+          msg.textContent = "Request timed out. Server may be starting. Wait 30s and try again.";
+        } else {
+          msg.textContent = "Network error. Please try again.";
+        }
         msg.classList.remove("hidden");
         btn.disabled = false;
         btn.textContent = "Register";
