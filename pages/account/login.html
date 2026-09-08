@@ -5,75 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - VOIDXHUB</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Orbitron', sans-serif;
-      background: #05050a;
-      color: #e0e0ff;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .login-box {
-      background: #0a0a15;
-      border: 2px solid #00ffff;
-      border-radius: 16px;
-      box-shadow: 0 0 40px rgba(0,255,255,0.25);
-      width: 100%;
-      max-width: 420px;
-      padding: 40px;
-    }
-    input {
-      background: rgba(0,255,255,0.05);
-      border: 2px solid #00ffff;
-      color: #e0e0ff;
-      font-family: 'Orbitron', sans-serif;
-    }
-    input:focus {
-      outline: none;
-      border-color: #ff00ff;
-      box-shadow: 0 0 20px rgba(0,255,255,0.4);
-    }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0f; color: #e2e8f0; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+    .box { background: rgba(15,15,25,0.95); border: 1px solid rgba(148,163,184,0.15); border-radius: 20px; width: 100%; max-width: 400px; padding: 36px; }
+    input { background: rgba(255,255,255,0.04); border: 1px solid rgba(148,163,184,0.2); color: #e2e8f0; }
+    input:focus { outline: none; border-color: #67e8f9; box-shadow: 0 0 0 3px rgba(103,232,249,0.12); }
+    .btn-primary { background: linear-gradient(135deg, #06b6d4, #8b5cf6); }
   </style>
 </head>
 <body>
-  <div class="login-box">
+  <div class="box">
     <div class="text-center mb-8">
-      <h1 class="text-3xl font-black text-cyan-400 tracking-widest">VOIDXHUB</h1>
-      <p class="text-pink-400 text-sm mt-2 tracking-wider">LOGIN TO YOUR ACCOUNT</p>
+      <h1 class="text-2xl font-bold tracking-tight">VOID<span class="text-cyan-400">X</span>HUB</h1>
+      <p class="text-sm text-slate-400 mt-1">Login to your account</p>
     </div>
 
-    <div id="msg" class="hidden mb-4 p-3 rounded-lg text-sm text-center"></div>
+    <div id="msg" class="hidden mb-4 p-3 rounded-xl text-sm text-center"></div>
 
-    <form id="loginForm" class="space-y-5">
+    <form id="loginForm" class="space-y-4">
       <div>
-        <label class="block text-cyan-400 text-xs font-bold mb-2 tracking-wider">USERNAME</label>
-        <input type="text" id="username" required placeholder="Enter username"
-               class="w-full px-4 py-3 rounded-lg">
+        <label class="block text-xs text-slate-400 mb-1.5 font-medium">Username</label>
+        <input type="text" id="username" required placeholder="Enter username" class="w-full px-4 py-3 rounded-xl text-sm">
       </div>
       <div>
-        <label class="block text-cyan-400 text-xs font-bold mb-2 tracking-wider">PASSWORD</label>
-        <input type="password" id="password" required placeholder="Enter password"
-               class="w-full px-4 py-3 rounded-lg">
+        <label class="block text-xs text-slate-400 mb-1.5 font-medium">Password</label>
+        <div class="relative">
+          <input type="password" id="password" required placeholder="Enter password" class="w-full px-4 py-3 rounded-xl text-sm pr-12">
+          <button type="button" onclick="togglePassword()" id="toggleBtn" class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-cyan-400 transition">Show</button>
+        </div>
       </div>
 
-      <button type="submit" id="btn"
-              class="w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-black font-bold rounded-lg tracking-wider hover:scale-105 transition">
-        LOGIN
+      <div class="flex justify-end">
+        <a href="https://t.me/Voidxhubsupport_bot" target="_blank" class="text-xs text-cyan-400 hover:underline">Forgot / Reset Password?</a>
+      </div>
+
+      <button type="submit" id="btn" class="btn-primary w-full py-3.5 rounded-xl text-sm font-semibold text-white hover:opacity-90 transition">
+        Login
       </button>
     </form>
 
-    <div class="text-center mt-6 text-sm text-gray-400">
-      Don't have account?
-      <a href="register.html" class="text-cyan-400 font-bold hover:underline">Register</a>
+    <div class="text-center mt-6 text-sm text-slate-400">
+      Don't have an account?
+      <a href="register.html" class="text-cyan-400 font-medium hover:underline">Register</a>
     </div>
   </div>
 
   <script>
     const API = "https://voidxhub-backend.onrender.com";
+
+    function togglePassword() {
+      const input = document.getElementById("password");
+      const btn = document.getElementById("toggleBtn");
+      if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "Hide";
+      } else {
+        input.type = "password";
+        btn.textContent = "Show";
+      }
+    }
 
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -83,7 +74,7 @@
       btn.textContent = "Logging in...";
 
       try {
-        const res = await fetch(API + "/api/login", {
+        const res = await fetch(API + "/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
@@ -94,25 +85,26 @@
         });
         const data = await res.json();
 
-        if (data.success) {
-          localStorage.setItem("vxh_user", JSON.stringify(data.user));
-          msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-green-900/40 text-green-400 border border-green-500";
+        if (data.token || data.success) {
+          if (data.user) localStorage.setItem("vxh_user", JSON.stringify(data.user));
+          if (data.token) localStorage.setItem("vxh_token", data.token);
+          msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-green-500/10 text-green-300 border border-green-500/30";
           msg.textContent = "Login successful! Redirecting...";
           msg.classList.remove("hidden");
           setTimeout(() => window.location.href = "dashboard.html", 1000);
         } else {
-          msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
-          msg.textContent = data.message || "Login failed";
+          msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-red-500/10 text-red-300 border border-red-500/30";
+          msg.textContent = data.error || data.message || "Login failed";
           msg.classList.remove("hidden");
           btn.disabled = false;
-          btn.textContent = "LOGIN";
+          btn.textContent = "Login";
         }
       } catch (err) {
-        msg.className = "mb-4 p-3 rounded-lg text-sm text-center bg-red-900/40 text-red-400 border border-red-500";
-        msg.textContent = "Server error. Try again.";
+        msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-red-500/10 text-red-300 border border-red-500/30";
+        msg.textContent = "Server unavailable. Please try again in 30 seconds (cold start).";
         msg.classList.remove("hidden");
         btn.disabled = false;
-        btn.textContent = "LOGIN";
+        btn.textContent = "Login";
       }
     });
   </script>
