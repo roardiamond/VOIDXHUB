@@ -3,167 +3,182 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VOIDXHUB - Premium Tools Hub</title>
+  <title>VOIDXHUB — Premium Gaming Tools & Tournaments</title>
+  <meta name="description" content="VOIDXHUB - Premium tools, configs and tournament platform for competitive gamers.">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; overflow-x: hidden; }
-    .hero { min-height: 100vh; background: radial-gradient(ellipse at top, #1a0033 0%, #05050a 60%); position: relative; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
-    .bg-logo { position: absolute; inset: 0; background: url('sQz8x (1).jpg') center/cover no-repeat; opacity: 0.12; filter: blur(2px) brightness(1.2); animation: logoFloat 20s ease-in-out infinite; z-index: 0; }
-    @keyframes logoFloat { 0%,100%{transform:scale(1) translateY(0);opacity:0.1} 50%{transform:scale(1.08) translateY(-15px);opacity:0.16} }
-    .particle { position: absolute; width: 4px; height: 4px; background: #67e8f9; border-radius: 50%; opacity: 0.6; animation: floatUp linear infinite; z-index: 1; }
-    @keyframes floatUp { 0%{transform:translateY(100vh) scale(0);opacity:0} 10%{opacity:0.7} 90%{opacity:0.4} 100%{transform:translateY(-10vh) scale(1);opacity:0} }
-    .scanline { position: absolute; inset: 0; background: linear-gradient(transparent 50%, rgba(0,255,255,0.04) 50%); background-size: 100% 6px; animation: scan 12s linear infinite; pointer-events: none; z-index: 2; }
-    @keyframes scan { 0%{transform:translateY(-100%)} 100%{transform:translateY(100%)} }
-    .glitch { position: relative; text-shadow: 0 0 20px #00ffff, 0 0 40px #ff00ff, 0 0 60px #00ffff; }
-    .neon-btn { position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.23,1,0.32,1); box-shadow: 0 0 20px rgba(0,255,255,0.4); }
-    .neon-btn:hover { box-shadow: 0 0 40px rgba(255,0,255,0.6), 0 0 80px rgba(0,255,255,0.4); }
-    .feature-card { background: rgba(17,17,30,0.7); border: 1px solid rgba(103,232,249,0.25); backdrop-filter: blur(12px); transition: all 0.4s ease; }
-    .feature-card:hover { border-color: #67e8f9; box-shadow: 0 15px 40px rgba(103,232,249,0.25); }
-    .stat-number { background: linear-gradient(to right, #67e8f9, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .anim-item { opacity: 0; }
-    .popup-enter { animation: popupIn 0.35s cubic-bezier(0.23,1,0.32,1); }
-    @keyframes popupIn { from { opacity: 0; transform: scale(0.85) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0f; color: #e2e8f0; overflow-x: hidden; }
+    .hero {
+      min-height: 100vh;
+      background: radial-gradient(ellipse 80% 60% at 50% -20%, #1e1b4b 0%, #0a0a0f 55%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #67e8f9 0%, #a78bfa 50%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      transition: all 0.25s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(6,182,212,0.35);
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1.5px solid rgba(148,163,184,0.35);
+      transition: all 0.25s ease;
+    }
+    .btn-secondary:hover {
+      border-color: #67e8f9;
+      background: rgba(103,232,249,0.08);
+    }
+    .feature-card {
+      background: rgba(15,15,25,0.8);
+      border: 1px solid rgba(148,163,184,0.12);
+      transition: all 0.3s ease;
+    }
+    .feature-card:hover {
+      border-color: rgba(103,232,249,0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 0.7s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
   </style>
 </head>
 <body>
-  <div class="hero">
-    <div class="bg-logo"></div>
-    <div class="scanline"></div>
-    <div id="particles"></div>
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+      <a href="/" class="text-xl font-extrabold tracking-tight">
+        VOID<span class="gradient-text">X</span>HUB
+      </a>
+      <div class="hidden sm:flex items-center gap-6 text-sm text-slate-400">
+        <a href="pages/shop/tools.html" class="hover:text-white transition">Tools</a>
+        <a href="pages/account/login.html" class="hover:text-white transition">Account</a>
+        <a href="https://t.me/voidxhub" target="_blank" class="hover:text-white transition">Community</a>
+      </div>
+      <a href="pages/shop/tools.html" class="btn-primary px-5 py-2 rounded-xl text-sm font-semibold text-white">
+        Browse Tools
+      </a>
+    </div>
+  </nav>
 
-    <div class="relative z-10 max-w-5xl px-6 py-16">
-      <div class="anim-item mb-6">
-        <span class="inline-block px-5 py-2 rounded-full text-sm font-bold tracking-wider bg-cyan-500/10 border border-cyan-400/40 text-cyan-300">⚡ PREMIUM TOOLS HUB 2026</span>
+  <!-- Hero -->
+  <section class="hero pt-20">
+    <div class="relative z-10 max-w-4xl px-6 py-20 text-center">
+      <div class="fade-up delay-1 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-cyan-300 text-xs font-medium tracking-wide mb-8">
+        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+        Premium Tools Hub
       </div>
 
-      <h1 class="text-6xl sm:text-7xl md:text-8xl font-black tracking-[4px] md:tracking-[8px] glitch mb-4 anim-item">
-        VOID<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">X</span>HUB
+      <h1 class="fade-up delay-2 text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.1] mb-6">
+        VOID<span class="gradient-text">X</span>HUB
       </h1>
 
-      <p class="text-xl sm:text-2xl md:text-3xl text-cyan-300 mb-4 tracking-widest anim-item">UNDETECTABLE • POWERFUL • PREMIUM</p>
-      <p class="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed anim-item">
-        Welcome to the underground hub for high-success automation tools.<br class="hidden sm:block">Built for winners. Designed for the elite.
+      <p class="fade-up delay-3 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-4 leading-relaxed">
+        High-performance tools and tournament platform built for competitive gamers.
+      </p>
+      <p class="fade-up delay-3 text-sm text-slate-500 max-w-xl mx-auto mb-12">
+        Clean configs • Fast delivery • Reliable support
       </p>
 
-      <div class="mt-12 flex flex-col sm:flex-row gap-5 justify-center items-center anim-item">
-        <button onclick="window.location.href='pages/shop/tools.html'" class="neon-btn px-10 py-5 text-lg font-bold border-2 border-cyan-400 bg-transparent rounded-2xl hover:bg-cyan-400 hover:text-black w-full sm:w-auto">🔥 BROWSE TOOLS</button>
-        <button onclick="window.location.href='pages/account/login.html'" class="neon-btn px-10 py-5 text-lg font-bold border-2 border-purple-500 bg-transparent rounded-2xl hover:bg-purple-500 hover:text-white w-full sm:w-auto">🔐 LOGIN / ACCOUNT</button>
-        <button onclick="showTGPopup()" class="neon-btn px-10 py-5 text-lg font-bold border-2 border-pink-500 bg-transparent rounded-2xl hover:bg-pink-500 hover:text-white w-full sm:w-auto">💬 JOIN COMMUNITY</button>
+      <div class="fade-up delay-4 flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="pages/shop/tools.html" class="btn-primary px-8 py-3.5 rounded-2xl text-base font-semibold text-white w-full sm:w-auto">
+          Browse Tools
+        </a>
+        <a href="pages/account/login.html" class="btn-secondary px-8 py-3.5 rounded-2xl text-base font-medium text-slate-200 w-full sm:w-auto">
+          Login / Account
+        </a>
       </div>
 
-      <div class="mt-20 grid grid-cols-3 gap-4 max-w-lg mx-auto anim-item">
-        <div class="text-center"><div class="text-2xl sm:text-3xl font-black stat-number" data-count="50">0</div><div class="text-xs text-gray-500 mt-1 tracking-wider">TOOLS</div></div>
-        <div class="text-center border-x border-white/10"><div class="text-2xl sm:text-3xl font-black stat-number" data-count="10000">0</div><div class="text-xs text-gray-500 mt-1 tracking-wider">USERS</div></div>
-        <div class="text-center"><div class="text-2xl sm:text-3xl font-black stat-number" data-count="99">0</div><div class="text-xs text-gray-500 mt-1 tracking-wider">SUCCESS</div></div>
+      <!-- Stats -->
+      <div class="fade-up delay-5 mt-20 grid grid-cols-3 gap-6 max-w-md mx-auto">
+        <div class="text-center">
+          <div class="text-2xl sm:text-3xl font-bold text-white">50+</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Tools</div>
+        </div>
+        <div class="text-center border-x border-white/10">
+          <div class="text-2xl sm:text-3xl font-bold text-white">10K+</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Users</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl sm:text-3xl font-bold text-white">99%</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Success</div>
+        </div>
       </div>
-
-      <div class="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-3xl mx-auto">
-        <div class="feature-card rounded-2xl p-5 anim-item"><div class="text-3xl mb-3">🛡️</div><h3 class="font-bold text-cyan-300 mb-1">Undetectable</h3><p class="text-xs text-gray-400">Safe & clean configs</p></div>
-        <div class="feature-card rounded-2xl p-5 anim-item"><div class="text-3xl mb-3">⚡</div><h3 class="font-bold text-purple-300 mb-1">Lightning Fast</h3><p class="text-xs text-gray-400">Instant delivery</p></div>
-        <div class="feature-card rounded-2xl p-5 anim-item"><div class="text-3xl mb-3">🎯</div><h3 class="font-bold text-pink-300 mb-1">High Success</h3><p class="text-xs text-gray-400">Proven results</p></div>
-      </div>
-
-      <div class="mt-16 text-sm text-gray-600 tracking-wider anim-item">Built by YASHXCHI • VoidXHub 2026</div>
     </div>
-  </div>
+  </section>
 
-  <div id="tgPopup" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-[100] px-4">
-    <div class="bg-zinc-900/95 border-2 border-purple-500/60 rounded-3xl p-8 max-w-md w-full text-center popup-enter shadow-2xl shadow-purple-500/20">
-      <div class="text-5xl mb-5">🚀</div>
-      <h2 class="text-2xl font-black text-purple-400 mb-2">JOIN VOIDXHUB</h2>
-      <p class="text-gray-400 text-sm mb-7">Connect with the community</p>
-      <div class="space-y-3">
-        <a href="https://t.me/voidxhubscrims" target="_blank" class="block w-full py-4 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold rounded-2xl hover:scale-105 transition-all">📢 SCRIMS GROUP</a>
-        <a href="https://t.me/voidxhub" target="_blank" class="block w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-2xl hover:scale-105 transition-all">📣 OFFICIAL CHANNEL</a>
-        <a href="https://t.me/Voidxhubsupport_bot" target="_blank" class="block w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold rounded-2xl hover:scale-105 transition-all">💬 SUPPORT BOT</a>
+  <!-- Features -->
+  <section class="py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl font-bold text-white mb-3">Why VoidXHub</h2>
+        <p class="text-slate-400 text-sm">Built for performance and reliability</p>
       </div>
-      <button onclick="closeTGPopup()" class="mt-7 text-gray-500 hover:text-white text-sm transition">✕ Close</button>
+
+      <div class="grid sm:grid-cols-3 gap-6">
+        <div class="feature-card rounded-2xl p-7">
+          <div class="w-11 h-11 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-xl mb-5">🛡️</div>
+          <h3 class="font-semibold text-white mb-2">Clean & Safe</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Regularly updated configs designed for stability and safety.</p>
+        </div>
+        <div class="feature-card rounded-2xl p-7">
+          <div class="w-11 h-11 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-xl mb-5">⚡</div>
+          <h3 class="font-semibold text-white mb-2">Fast Delivery</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Instant access after payment confirmation. No long waits.</p>
+        </div>
+        <div class="feature-card rounded-2xl p-7">
+          <div class="w-11 h-11 rounded-xl bg-pink-500/10 flex items-center justify-center text-pink-400 text-xl mb-5">🎯</div>
+          <h3 class="font-semibold text-white mb-2">Proven Results</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Trusted by thousands of competitive players.</p>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-20 px-6 border-t border-white/5">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-4">Ready to get started?</h2>
+      <p class="text-slate-400 mb-8 text-sm">Browse tools or join the community for updates and support.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="pages/shop/tools.html" class="btn-primary px-8 py-3.5 rounded-2xl text-base font-semibold text-white">
+          Browse Tools
+        </a>
+        <a href="https://t.me/voidxhub" target="_blank" class="btn-secondary px-8 py-3.5 rounded-2xl text-base font-medium text-slate-200">
+          Join Telegram
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-10 px-6 border-t border-white/5 text-center">
+    <p class="text-sm text-slate-500">© 2026 VoidXHub • Built by YashXChi</p>
+  </footer>
 
   <script src="assets/js/auth.js"></script>
-  <script>
-    function createParticles() {
-      const c = document.getElementById('particles');
-      for (let i = 0; i < 30; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.style.left = Math.random() * 100 + '%';
-        p.style.animationDuration = (8 + Math.random() * 12) + 's';
-        p.style.animationDelay = Math.random() * 10 + 's';
-        p.style.width = p.style.height = (2 + Math.random() * 3) + 'px';
-        c.appendChild(p);
-      }
-    }
-    createParticles();
-
-    // Anime.js staggered entrance (animejs.com style)
-    anime({
-      targets: '.anim-item',
-      opacity: [0, 1],
-      translateY: [40, 0],
-      delay: anime.stagger(100, {start: 200}),
-      duration: 900,
-      easing: 'easeOutExpo'
-    });
-
-    // Glitch pulse on title
-    anime({
-      targets: '.glitch',
-      textShadow: [
-        {value: '0 0 20px #00ffff, 0 0 40px #ff00ff, 0 0 60px #00ffff'},
-        {value: '2px 0 #ff00ff, -2px 0 #00ffff'},
-        {value: '0 0 20px #00ffff, 0 0 40px #ff00ff, 0 0 60px #00ffff'}
-      ],
-      duration: 3000,
-      loop: true,
-      easing: 'easeInOutSine'
-    });
-
-    // Count-up stats
-    document.querySelectorAll('.stat-number').forEach(el => {
-      const target = parseInt(el.getAttribute('data-count'));
-      const isUsers = target >= 1000;
-      anime({
-        targets: el,
-        innerHTML: [0, target],
-        round: 1,
-        duration: 2000,
-        delay: 800,
-        easing: 'easeOutExpo',
-        update: function(anim) {
-          const val = Math.round(anim.animations[0].currentValue);
-          el.innerHTML = isUsers ? (val >= 1000 ? (val/1000).toFixed(0) + 'K+' : val) : (target === 99 ? val + '%' : val + '+');
-        }
-      });
-    });
-
-    // Button hover spring-like
-    document.querySelectorAll('.neon-btn').forEach(btn => {
-      btn.addEventListener('mouseenter', () => {
-        anime({ targets: btn, scale: 1.08, translateY: -4, duration: 350, easing: 'easeOutElastic(1, .6)' });
-      });
-      btn.addEventListener('mouseleave', () => {
-        anime({ targets: btn, scale: 1, translateY: 0, duration: 400, easing: 'easeOutElastic(1, .5)' });
-      });
-    });
-
-    // Feature cards hover
-    document.querySelectorAll('.feature-card').forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        anime({ targets: card, translateY: -12, duration: 400, easing: 'easeOutExpo' });
-      });
-      card.addEventListener('mouseleave', () => {
-        anime({ targets: card, translateY: 0, duration: 400, easing: 'easeOutExpo' });
-      });
-    });
-
-    function showTGPopup() { const p = document.getElementById('tgPopup'); p.classList.remove('hidden'); p.classList.add('flex'); }
-    function closeTGPopup() { const p = document.getElementById('tgPopup'); p.classList.add('hidden'); p.classList.remove('flex'); }
-    document.getElementById('tgPopup').addEventListener('click', function(e) { if (e.target === this) closeTGPopup(); });
-  </script>
 </body>
 </html>
