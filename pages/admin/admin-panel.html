@@ -3,93 +3,128 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - VOIDXHUB</title>
+  <title>VOIDXHUB - Secure Admin Panel</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; }
-    .card { background: #0a0a15; border: 1px solid #00ffff33; }
+    body { font-family: 'Orbitron', sans-serif; background: #05050a; color: #e0e0ff; min-height: 100vh; }
+    .card { background: rgba(12,12,22,0.95); border: 1px solid rgba(103,232,249,0.25); border-radius: 20px; }
     .status-pending { color: #fbbf24; }
-    .status-verified { color: #34d399; }
+    .status-verified, .status-completed, .status-delivered { color: #34d399; }
     .status-rejected { color: #f87171; }
+    input, select, textarea { background: rgba(0,255,255,0.04); border: 1.5px solid rgba(0,255,255,0.4); color: #e0e0ff; font-family: 'Orbitron', sans-serif; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #c084fc; box-shadow: 0 0 12px rgba(192,132,252,0.25); }
+    .tab-btn.active { background: linear-gradient(to right, #06b6d4, #9333ea); color: white; border-color: transparent; }
   </style>
 </head>
 <body class="min-h-screen">
 
-  <!-- Login Screen -->
-  <div id="loginScreen" class="fixed inset-0 flex items-center justify-center bg-black/95 z-50">
-    <div class="card p-10 rounded-3xl max-w-md w-full mx-4 border-2 border-cyan-500/50">
-      <h1 class="text-3xl font-black text-center text-cyan-400 mb-2">ADMIN PANEL</h1>
-      <p class="text-center text-pink-400 mb-8 text-sm tracking-widest">VOIDXHUB CONTROL</p>
-      <input id="adminPass" type="password" placeholder="Enter Admin Password" 
-             class="w-full px-5 py-4 bg-black border border-cyan-500 rounded-xl text-lg mb-6 focus:outline-none focus:border-pink-500">
-      <button onclick="checkAdmin()" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-pink-500 text-black font-black rounded-xl text-lg hover:scale-105 transition">
-        LOGIN
-      </button>
-      <p id="loginError" class="text-red-400 text-center mt-4 hidden">Wrong password!</p>
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen" class="fixed inset-0 flex items-center justify-center bg-black/95 z-50 px-4">
+    <div class="card p-8 md:p-10 max-w-md w-full border-2 border-cyan-500/40 shadow-2xl shadow-cyan-500/10">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 tracking-wider">VOIDXHUB</h1>
+        <p class="text-cyan-300 text-sm tracking-widest mt-2">SECURE ADMIN PANEL</p>
+        <p class="text-xs text-gray-500 mt-1">Authorized Access Only</p>
+      </div>
+      <div id="loginError" class="hidden mb-4 p-3 rounded-xl text-sm text-center bg-red-900/40 text-red-300 border border-red-500/50"></div>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs text-cyan-400 mb-2 tracking-wider">USERNAME</label>
+          <input type="text" id="adminUser" placeholder="Enter username" class="w-full px-4 py-3.5 rounded-xl text-sm" autocomplete="username">
+        </div>
+        <div>
+          <label class="block text-xs text-cyan-400 mb-2 tracking-wider">PASSWORD</label>
+          <input type="password" id="adminPass" placeholder="Enter password" class="w-full px-4 py-3.5 rounded-xl text-sm" autocomplete="current-password">
+        </div>
+        <button onclick="checkAdmin()" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-black font-black rounded-xl text-base hover:scale-[1.02] transition-all shadow-lg shadow-cyan-500/20">
+          LOGIN
+        </button>
+      </div>
+      <p class="text-center text-xs text-gray-600 mt-6">Only authorized admin can access</p>
     </div>
   </div>
 
-  <!-- Main Admin Panel -->
+  <!-- MAIN ADMIN PANEL -->
   <div id="adminPanel" class="hidden">
-    <!-- Navbar -->
-    <nav class="bg-zinc-950 border-b border-cyan-500/30 px-6 py-4 flex justify-between items-center sticky top-0 z-40">
-      <h1 class="text-2xl font-black text-cyan-400 tracking-wider">VOIDXHUB ADMIN</h1>
-      <div class="flex gap-4 items-center">
-        <button onclick="loadPayments()" class="px-4 py-2 bg-cyan-600/20 border border-cyan-500 rounded-lg text-sm hover:bg-cyan-600/40">Refresh</button>
-        <a href="../../backend/php/admin.php?pass=7011496531yash" class="px-4 py-2 bg-pink-600/20 border border-pink-500 rounded-lg text-sm hover:bg-pink-600/40">License Keys</a>
-        <button onclick="logoutAdmin()" class="px-4 py-2 bg-red-600/20 border border-red-500 rounded-lg text-sm hover:bg-red-600/40">Logout</button>
+    <nav class="bg-zinc-950/95 border-b border-cyan-500/20 px-4 md:px-6 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sticky top-0 z-40 backdrop-blur-md">
+      <div>
+        <h1 class="text-xl md:text-2xl font-black text-cyan-400 tracking-wider">VOIDXHUB ADMIN</h1>
+        <p class="text-xs text-gray-500">Logged in as <span class="text-purple-400">yashxchi</span></p>
+      </div>
+      <div class="flex gap-2 flex-wrap">
+        <button onclick="loadOrders()" class="px-4 py-2 bg-cyan-600/20 border border-cyan-500/50 rounded-lg text-xs hover:bg-cyan-600/40 transition">Refresh</button>
+        <button onclick="logoutAdmin()" class="px-4 py-2 bg-red-600/20 border border-red-500/50 rounded-lg text-xs hover:bg-red-600/40 transition">Logout</button>
       </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto p-6">
-      <!-- Stats -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div class="card p-5 rounded-2xl text-center">
-          <p class="text-3xl font-black text-cyan-400" id="statTotal">0</p>
-          <p class="text-xs text-gray-400 mt-1 tracking-wider">TOTAL PAYMENTS</p>
+    <div class="max-w-7xl mx-auto p-4 md:p-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
+        <div class="card p-4 md:p-5 text-center">
+          <p class="text-2xl md:text-3xl font-black text-cyan-400" id="statTotal">0</p>
+          <p class="text-xs text-gray-500 mt-1 tracking-wider">TOTAL ORDERS</p>
         </div>
-        <div class="card p-5 rounded-2xl text-center">
-          <p class="text-3xl font-black text-yellow-400" id="statPending">0</p>
-          <p class="text-xs text-gray-400 mt-1 tracking-wider">PENDING</p>
+        <div class="card p-4 md:p-5 text-center">
+          <p class="text-2xl md:text-3xl font-black text-yellow-400" id="statPending">0</p>
+          <p class="text-xs text-gray-500 mt-1 tracking-wider">PENDING</p>
         </div>
-        <div class="card p-5 rounded-2xl text-center">
-          <p class="text-3xl font-black text-green-400" id="statVerified">0</p>
-          <p class="text-xs text-gray-400 mt-1 tracking-wider">VERIFIED</p>
+        <div class="card p-4 md:p-5 text-center">
+          <p class="text-2xl md:text-3xl font-black text-green-400" id="statCompleted">0</p>
+          <p class="text-xs text-gray-500 mt-1 tracking-wider">COMPLETED</p>
         </div>
-        <div class="card p-5 rounded-2xl text-center">
-          <p class="text-3xl font-black text-red-400" id="statRejected">0</p>
-          <p class="text-xs text-gray-400 mt-1 tracking-wider">REJECTED</p>
+        <div class="card p-4 md:p-5 text-center">
+          <p class="text-2xl md:text-3xl font-black text-red-400" id="statRejected">0</p>
+          <p class="text-xs text-gray-500 mt-1 tracking-wider">REJECTED</p>
         </div>
       </div>
 
-      <!-- Filter -->
-      <div class="flex gap-3 mb-6 flex-wrap">
-        <button onclick="filterPayments('all')" class="filter-btn px-4 py-2 rounded-lg border border-cyan-500/50 text-sm" data-filter="all">All</button>
-        <button onclick="filterPayments('pending')" class="filter-btn px-4 py-2 rounded-lg border border-yellow-500/50 text-sm" data-filter="pending">Pending</button>
-        <button onclick="filterPayments('verified')" class="filter-btn px-4 py-2 rounded-lg border border-green-500/50 text-sm" data-filter="verified">Verified</button>
-        <button onclick="filterPayments('rejected')" class="filter-btn px-4 py-2 rounded-lg border border-red-500/50 text-sm" data-filter="rejected">Rejected</button>
+      <div class="flex gap-2 mb-5 flex-wrap">
+        <button onclick="switchTab('pending')" class="tab-btn active px-4 py-2 rounded-xl border border-cyan-500/40 text-sm font-bold" data-tab="pending">Pending Orders</button>
+        <button onclick="switchTab('completed')" class="tab-btn px-4 py-2 rounded-xl border border-cyan-500/40 text-sm font-bold" data-tab="completed">Completed</button>
+        <button onclick="switchTab('all')" class="tab-btn px-4 py-2 rounded-xl border border-cyan-500/40 text-sm font-bold" data-tab="all">All Orders</button>
+        <button onclick="switchTab('fulfill')" class="tab-btn px-4 py-2 rounded-xl border border-cyan-500/40 text-sm font-bold" data-tab="fulfill">Key / Link</button>
       </div>
 
-      <!-- Payments Table -->
-      <div class="card rounded-2xl overflow-hidden">
+      <div id="fulfillSection" class="hidden card p-5 md:p-6 mb-6">
+        <h2 class="text-lg font-bold text-cyan-300 mb-4 tracking-wider">SET KEY / DOWNLOAD LINK</h2>
+        <p class="text-xs text-gray-400 mb-4">Order verify hone ke baad yahan se key ya download link set karo. User ko My Orders mein dikhega.</p>
+        <div id="fulfillMsg" class="hidden mb-4 p-3 rounded-xl text-sm text-center"></div>
+        <div class="grid sm:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-xs text-cyan-400 mb-2">Unique Order ID</label>
+            <input type="text" id="fulfillOrderId" placeholder="VxH-XXXXXXXX or Order Code" class="w-full px-4 py-3 rounded-xl text-sm">
+          </div>
+          <div>
+            <label class="block text-xs text-cyan-400 mb-2">Key / Download Link</label>
+            <input type="text" id="fulfillLink" placeholder="Key ya Google Drive / Mediafire link" class="w-full px-4 py-3 rounded-xl text-sm">
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="block text-xs text-cyan-400 mb-2">Note / Password (optional)</label>
+          <input type="text" id="fulfillNote" placeholder="Password or instructions for user" class="w-full px-4 py-3 rounded-xl text-sm">
+        </div>
+        <button onclick="fulfillOrder()" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-bold rounded-xl hover:scale-105 transition">
+          SEND KEY / LINK TO USER
+        </button>
+      </div>
+
+      <div id="ordersSection" class="card rounded-2xl overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
-            <thead class="bg-zinc-900 text-cyan-400">
+            <thead class="bg-zinc-900/80 text-cyan-400">
               <tr>
-                <th class="px-4 py-3 text-left">ID</th>
-                <th class="px-4 py-3 text-left">Format</th>
+                <th class="px-4 py-3 text-left">Order ID</th>
+                <th class="px-4 py-3 text-left">Tool / Plan</th>
                 <th class="px-4 py-3 text-left">Amount</th>
-                <th class="px-4 py-3 text-left">Txn ID</th>
                 <th class="px-4 py-3 text-left">Telegram</th>
-                <th class="px-4 py-3 text-left">Players</th>
+                <th class="px-4 py-3 text-left">UTR</th>
                 <th class="px-4 py-3 text-left">Status</th>
                 <th class="px-4 py-3 text-left">Time</th>
                 <th class="px-4 py-3 text-left">Action</th>
               </tr>
             </thead>
-            <tbody id="paymentsBody" class="divide-y divide-zinc-800">
-              <tr><td colspan="9" class="text-center py-10 text-gray-500">Loading...</td></tr>
+            <tbody id="ordersBody" class="divide-y divide-zinc-800/80">
+              <tr><td colspan="8" class="text-center py-12 text-gray-500">Loading orders...</td></tr>
             </tbody>
           </table>
         </div>
@@ -98,122 +133,244 @@
   </div>
 
   <script>
-    const ADMIN_PASS = "7011496531yash";
-    let allPayments = [];
+    const ADMIN_USER = "yashxchi";
+    const ADMIN_PASS = "9873987036@yashrawat";
+    const API = "https://voidxhub-backend.onrender.com";
 
-    // Check if already logged in
-    if (sessionStorage.getItem('admin_logged') === 'true') {
+    let allOrders = [];
+    let currentTab = "pending";
+
+    if (sessionStorage.getItem("vxh_admin_auth") === "true") {
       showAdmin();
     }
 
     function checkAdmin() {
-      const pass = document.getElementById('adminPass').value;
-      if (pass === ADMIN_PASS) {
-        sessionStorage.setItem('admin_logged', 'true');
+      const user = document.getElementById("adminUser").value.trim().toLowerCase();
+      const pass = document.getElementById("adminPass").value;
+      const err = document.getElementById("loginError");
+
+      if (user === ADMIN_USER.toLowerCase() && pass === ADMIN_PASS) {
+        sessionStorage.setItem("vxh_admin_auth", "true");
         showAdmin();
       } else {
-        document.getElementById('loginError').classList.remove('hidden');
+        err.textContent = "Invalid username or password";
+        err.classList.remove("hidden");
       }
     }
 
-    document.getElementById('adminPass').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') checkAdmin();
+    document.getElementById("adminPass").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") checkAdmin();
+    });
+    document.getElementById("adminUser").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") checkAdmin();
     });
 
     function showAdmin() {
-      document.getElementById('loginScreen').classList.add('hidden');
-      document.getElementById('adminPanel').classList.remove('hidden');
-      loadPayments();
+      document.getElementById("loginScreen").classList.add("hidden");
+      document.getElementById("adminPanel").classList.remove("hidden");
+      loadOrders();
     }
 
     function logoutAdmin() {
-      sessionStorage.removeItem('admin_logged');
+      sessionStorage.removeItem("vxh_admin_auth");
       location.reload();
     }
 
-    async function loadPayments() {
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelector(`[data-tab="${tab}"]`).classList.add("active");
+
+      if (tab === "fulfill") {
+        document.getElementById("fulfillSection").classList.remove("hidden");
+        document.getElementById("ordersSection").classList.add("hidden");
+      } else {
+        document.getElementById("fulfillSection").classList.add("hidden");
+        document.getElementById("ordersSection").classList.remove("hidden");
+        renderOrders();
+      }
+    }
+
+    async function loadOrders() {
       try {
-        const res = await fetch('backend/payment.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'list', limit: 200 })
-        });
+        const res = await fetch(API + "/api/admin/orders", { credentials: "include" });
         const data = await res.json();
-        if (data.success) {
-          allPayments = data.payments || [];
-          updateStats();
-          renderPayments(allPayments);
+        if (data.success && data.orders) {
+          allOrders = data.orders.map(o => ({
+            id: o.id || o.order_code,
+            order_code: o.order_code || ("VxH-" + (o.id || Math.random().toString(36).substr(2,8).toUpperCase())),
+            tool: o.tool || o.plan_type || "-",
+            brand: o.brand || "-",
+            type: o.type || o.plan_type || "-",
+            price: o.price || o.price_inr || 0,
+            telegram: o.telegram || "-",
+            utr: o.utr_number || o.utr || "-",
+            status: (o.status || "pending").toLowerCase(),
+            created_at: o.created_at || "-",
+            download_link: o.download_link || "",
+            key: o.key || ""
+          }));
+        } else {
+          allOrders = [];
         }
       } catch (e) {
-        document.getElementById('paymentsBody').innerHTML = '<tr><td colspan="9" class="text-center py-10 text-red-400">Failed to load payments</td></tr>';
+        try {
+          const res2 = await fetch("../../backend/php/payment.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "list", limit: 200 })
+          });
+          const data2 = await res2.json();
+          if (data2.success && data2.payments) {
+            allOrders = data2.payments.map(p => ({
+              id: p.id,
+              order_code: "VxH-" + String(p.id).padStart(6, "0"),
+              tool: p.format || "-",
+              brand: "-",
+              type: "-",
+              price: p.total_amount || 0,
+              telegram: p.telegram || "-",
+              utr: p.txn_id || "-",
+              status: (p.status || "pending").toLowerCase(),
+              created_at: p.created_at || "-",
+              download_link: "",
+              key: ""
+            }));
+          }
+        } catch (e2) {
+          allOrders = [];
+        }
       }
+      updateStats();
+      renderOrders();
     }
 
     function updateStats() {
-      document.getElementById('statTotal').textContent = allPayments.length;
-      document.getElementById('statPending').textContent = allPayments.filter(p => p.status === 'pending').length;
-      document.getElementById('statVerified').textContent = allPayments.filter(p => p.status === 'verified').length;
-      document.getElementById('statRejected').textContent = allPayments.filter(p => p.status === 'rejected').length;
+      document.getElementById("statTotal").textContent = allOrders.length;
+      document.getElementById("statPending").textContent = allOrders.filter(o => o.status === "pending").length;
+      document.getElementById("statCompleted").textContent = allOrders.filter(o => ["verified","completed","delivered"].includes(o.status)).length;
+      document.getElementById("statRejected").textContent = allOrders.filter(o => o.status === "rejected").length;
     }
 
-    function filterPayments(status) {
-      if (status === 'all') renderPayments(allPayments);
-      else renderPayments(allPayments.filter(p => p.status === status));
-    }
+    function renderOrders() {
+      let list = allOrders;
+      if (currentTab === "pending") list = allOrders.filter(o => o.status === "pending");
+      else if (currentTab === "completed") list = allOrders.filter(o => ["verified","completed","delivered"].includes(o.status));
 
-    function renderPayments(list) {
-      const body = document.getElementById('paymentsBody');
+      const body = document.getElementById("ordersBody");
       if (!list.length) {
-        body.innerHTML = '<tr><td colspan="9" class="text-center py-10 text-gray-500">No payments found</td></tr>';
+        body.innerHTML = `<tr><td colspan="8" class="text-center py-12 text-gray-500">No ${currentTab} orders found</td></tr>`;
         return;
       }
 
-      body.innerHTML = list.map(p => {
-        let players = [];
-        try { players = JSON.parse(p.players_json || '[]'); } catch(e) {}
-        const playersStr = players.map(pl => `${pl.name} (${pl.uid})`).join('<br>') || '-';
-
-        return `
-          <tr class="hover:bg-zinc-900/50">
-            <td class="px-4 py-3">#${p.id}</td>
-            <td class="px-4 py-3 font-bold text-cyan-300">${p.format}</td>
-            <td class="px-4 py-3 text-green-400 font-bold">₹${p.total_amount}</td>
-            <td class="px-4 py-3 font-mono text-xs">${p.txn_id}</td>
-            <td class="px-4 py-3">@${p.telegram}</td>
-            <td class="px-4 py-3 text-xs">${playersStr}</td>
-            <td class="px-4 py-3 status-${p.status} font-bold uppercase text-xs">${p.status}</td>
-            <td class="px-4 py-3 text-xs text-gray-400">${formatTime(p.created_at)}</td>
-            <td class="px-4 py-3">
-              ${p.status === 'pending' ? `
-                <div class="flex gap-2">
-                  <button onclick="updateStatus(${p.id}, 'verified')" class="px-3 py-1 bg-green-600/30 border border-green-500 rounded text-xs hover:bg-green-600/50">Verify</button>
-                  <button onclick="updateStatus(${p.id}, 'rejected')" class="px-3 py-1 bg-red-600/30 border border-red-500 rounded text-xs hover:bg-red-600/50">Reject</button>
-                </div>
-              ` : `<span class="text-gray-500 text-xs">Done</span>`}
-            </td>
-          </tr>
-        `;
-      }).join('');
+      body.innerHTML = list.map(o => `
+        <tr class="hover:bg-zinc-900/40 transition">
+          <td class="px-4 py-3">
+            <span class="font-mono text-cyan-300 font-bold text-xs">${o.order_code}</span>
+          </td>
+          <td class="px-4 py-3">
+            <div class="font-bold text-sm">${String(o.tool).toUpperCase()}</div>
+            <div class="text-xs text-gray-500">${String(o.brand).toUpperCase()} • ${String(o.type).toUpperCase()}</div>
+          </td>
+          <td class="px-4 py-3 text-green-400 font-bold">₹${o.price}</td>
+          <td class="px-4 py-3 text-sm">@${String(o.telegram).replace(/^@/,"")}</td>
+          <td class="px-4 py-3 font-mono text-xs text-gray-400">${o.utr}</td>
+          <td class="px-4 py-3">
+            <span class="status-${o.status} font-bold uppercase text-xs tracking-wider">${o.status}</span>
+          </td>
+          <td class="px-4 py-3 text-xs text-gray-500">${formatTime(o.created_at)}</td>
+          <td class="px-4 py-3">
+            ${o.status === "pending" ? `
+              <div class="flex gap-1.5 flex-wrap">
+                <button onclick="updateStatus('${o.order_code}', 'verified')" class="px-2.5 py-1 bg-green-600/30 border border-green-500/60 rounded text-xs hover:bg-green-600/50">Verify</button>
+                <button onclick="updateStatus('${o.order_code}', 'rejected')" class="px-2.5 py-1 bg-red-600/30 border border-red-500/60 rounded text-xs hover:bg-red-600/50">Reject</button>
+                <button onclick="fillFulfill('${o.order_code}')" class="px-2.5 py-1 bg-purple-600/30 border border-purple-500/60 rounded text-xs hover:bg-purple-600/50">Key</button>
+              </div>
+            ` : `
+              <button onclick="fillFulfill('${o.order_code}')" class="px-2.5 py-1 bg-cyan-600/20 border border-cyan-500/40 rounded text-xs hover:bg-cyan-600/40">Set Link</button>
+            `}
+          </td>
+        </tr>
+      `).join("");
     }
 
-    async function updateStatus(id, status) {
-      if (!confirm(`Mark payment #${id} as ${status.toUpperCase()}?`)) return;
+    function fillFulfill(orderId) {
+      document.getElementById("fulfillOrderId").value = orderId;
+      switchTab("fulfill");
+    }
+
+    async function updateStatus(orderId, status) {
+      if (!confirm(`Mark ${orderId} as ${status.toUpperCase()}?`)) return;
       try {
-        await fetch('backend/payment.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'update_status', id, status })
+        await fetch(API + "/api/admin/orders/status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ order_code: orderId, status })
         });
-        loadPayments();
+      } catch (e) {}
+      const o = allOrders.find(x => x.order_code === orderId);
+      if (o) o.status = status;
+      updateStats();
+      renderOrders();
+    }
+
+    async function fulfillOrder() {
+      const orderId = document.getElementById("fulfillOrderId").value.trim();
+      const link = document.getElementById("fulfillLink").value.trim();
+      const note = document.getElementById("fulfillNote").value.trim();
+      const msg = document.getElementById("fulfillMsg");
+
+      if (!orderId || !link) {
+        msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-red-900/40 text-red-300 border border-red-500/50";
+        msg.textContent = "Order ID aur Key/Link dono required hain";
+        msg.classList.remove("hidden");
+        return;
+      }
+
+      try {
+        const res = await fetch(API + "/api/admin/orders/fulfill", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ order_code: orderId, download_link: link, admin_note: note })
+        });
+        const data = await res.json();
+        msg.className = data.success
+          ? "mb-4 p-3 rounded-xl text-sm text-center bg-green-900/40 text-green-300 border border-green-500/50"
+          : "mb-4 p-3 rounded-xl text-sm text-center bg-red-900/40 text-red-300 border border-red-500/50";
+        msg.textContent = data.message || (data.success ? "Key/Link successfully set!" : "Failed");
+        msg.classList.remove("hidden");
+
+        if (data.success) {
+          const o = allOrders.find(x => x.order_code === orderId);
+          if (o) {
+            o.download_link = link;
+            o.status = "delivered";
+          }
+          document.getElementById("fulfillLink").value = "";
+          document.getElementById("fulfillNote").value = "";
+          updateStats();
+        }
       } catch (e) {
-        alert('Failed to update');
+        msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-yellow-900/40 text-yellow-300 border border-yellow-500/50";
+        msg.textContent = "Backend unavailable. Local update done.";
+        msg.classList.remove("hidden");
+        const o = allOrders.find(x => x.order_code === orderId);
+        if (o) {
+          o.download_link = link;
+          o.status = "delivered";
+        }
+        updateStats();
       }
     }
 
     function formatTime(str) {
       try {
-        return new Date(str).toLocaleString('en-IN');
-      } catch { return str; }
+        return new Date(str).toLocaleString("en-IN", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+      } catch {
+        return str;
+      }
     }
   </script>
 </body>
