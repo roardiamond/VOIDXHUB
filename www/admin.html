@@ -58,13 +58,11 @@
           <div class="field"><label>Match date & time</label><input type="datetime-local" name="match_date" required></div>
         </div>
         <div class="field-row">
-          <div class="field"><label>Entry fee (₹, 0 = free)</label><input type="number" name="entry_fee" value="0" min="0" required></div>
-          <div class="field"><label>Prize pool (₹)</label><input type="number" name="prize_pool" value="0" min="0" required></div>
+          <div class="field"><label>Entry fee (₹)</label><input type="number" name="entry_fee" value="0" min="0"></div>
+          <div class="field"><label>Prize pool (₹)</label><input type="number" name="prize_pool" value="0" min="0"></div>
+          <div class="field"><label>Slots</label><input type="number" name="slots_total" value="25" min="1"></div>
         </div>
-        <div class="field-row">
-          <div class="field"><label>Total slots</label><input type="number" name="slots_total" value="25" min="1" required></div>
-          <div class="field"><label>UPI ID for payments</label><input type="text" name="upi_id" placeholder="voidxhub@upi"></div>
-        </div>
+        <div class="field"><label>UPI ID</label><input type="text" name="upi_id" placeholder="voidxhub@upi"></div>
         <div class="field"><label>Description</label><textarea name="description" rows="3"></textarea></div>
         <button class="btn btn-primary" type="submit">Create tournament</button>
       </form>
@@ -74,38 +72,63 @@
 
 <section class="section" style="padding-top:0;">
   <div class="wrap">
-    <h2 style="font-size:22px; margin-bottom:16px;">Manage tournaments</h2>
-    <div id="admin-alert"></div>
-    <div class="card-plain" style="padding:0; overflow-x:auto;">
-      <table id="tournament-table">
-        <thead><tr><th>Title</th><th>Game</th><th>Status</th><th>Slots</th><th>Entry</th><th></th></tr></thead>
-        <tbody><tr><td colspan="6" class="mono" style="color:var(--fog-dim)">Loading…</td></tr></tbody>
-      </table>
-    </div>
-    <div id="manage-panel"></div>
+    <div class="section-head"><h2 style="font-size:22px;">Tournaments</h2></div>
+    <div id="tournaments-list"></div>
+    <div id="manage-panel" style="display:none; margin-top:20px;"></div>
   </div>
 </section>
 
 <section class="section" style="padding-top:0;">
   <div class="wrap">
     <div class="section-head"><h2 style="font-size:22px;">Account security</h2></div>
-    <div class="card-plain" style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
-      <div>
-        <h4 style="font-size:14px; text-transform:uppercase; letter-spacing:0.06em; color:var(--fog-dim);">Change your password</h4>
-        <div id="pw-alert"></div>
-        <form id="pw-form" style="margin-top:12px;">
+    <div class="form-card">
+      <div id="pw-alert"></div>
+      <form id="pw-form">
+        <div class="field-row">
           <div class="field"><label>Current password</label><input type="password" name="current_password" required></div>
-          <div class="field"><label>New password (min 8 characters)</label><input type="password" name="new_password" required minlength="8"></div>
-          <button class="btn btn-primary btn-sm" type="submit">Update password</button>
-        </form>
-      </div>
-      <div>
-        <h4 style="font-size:14px; text-transform:uppercase; letter-spacing:0.06em; color:var(--fog-dim);">Lost a device?</h4>
+          <div class="field"><label>New password</label><input type="password" name="new_password" required minlength="8"></div>
+        </div>
+        <button class="btn btn-primary btn-sm" type="submit">Change password</button>
+      </form>
+      <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--line);">
+        <h4 style="font-size:14px; margin:0;">Log out everywhere?</h4>
         <p style="color:var(--fog-dim); font-size:13px; margin:10px 0 14px;">
           Instantly invalidates every login token for your account, on every device. You'll need to log in again here.
         </p>
         <button class="btn btn-danger btn-sm" id="logout-everywhere-btn">Log out everywhere</button>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head"><h2 style="font-size:22px;">Users</h2></div>
+    <div class="card-plain" style="padding:0; overflow-x:auto;">
+      <table id="users-table">
+        <thead><tr><th>Username</th><th>Email</th><th>Phone</th><th>Role</th><th>Orders</th><th>Verified spend</th><th>Joined</th></tr></thead>
+        <tbody><tr><td colspan="7" class="mono" style="color:var(--fog-dim)">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 style="font-size:22px;">Orders &amp; payment history</h2>
+      <select id="orders-status-filter" class="btn btn-ghost btn-sm" style="width:auto;">
+        <option value="">All statuses</option>
+        <option value="pending">Pending</option>
+        <option value="verified">Verified</option>
+        <option value="rejected">Rejected</option>
+      </select>
+    </div>
+    <div class="card-plain" style="padding:0; overflow-x:auto;">
+      <table id="orders-table">
+        <thead><tr><th>When</th><th>Tournament</th><th>Game</th><th>User</th><th>Team</th><th>Entry fee</th><th>UTR</th><th>Status</th></tr></thead>
+        <tbody><tr><td colspan="8" class="mono" style="color:var(--fog-dim)">Loading…</td></tr></tbody>
+      </table>
     </div>
   </div>
 </section>
