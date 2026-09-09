@@ -66,90 +66,76 @@ async function loadUsers() {
         <td>${escapeHtml(u.username)}${u.role === "admin" ? ' <span class="mono" style="color:var(--fog-dim); font-size:11px;">(admin)</span>' : ""}</td>
         <td class="mono" style="font-size:12px;">${escapeHtml(u.email)}</td>
         <td class="mono" style="font-size:12px;">${escapeHtml(u.phone || "—")}</td>
-        <td class="mono">${escapeHtml(u.role)}</td>
-        <td class="mono">${u.total_orders || 0}</td>
-        <td class="mono">₹${u.verified_spend || 0}</td>
-        <td class="mono" style="font-size:12px;">${u.created_at ? String(u.created_at).slice(0, 10) : "—"}</td>
+        <td>${escapeHtml(u.role)}</td>
+        <td class="mono">${u.total_orders}</td>
+        <td class="mono">${fmtMoney(u.total_spent)}</td>
+        <td class="mono" style="font-size:12px;">${escapeHtml(u.created_at)}</td>
       </tr>`).join("");
-  } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="7" class="mono" style="color:var(--danger)">${escapeHtml(err.message)}</td></tr>`;
+  } catch (e) {
+    tbody.innerHTML = `<tr><td colspan="7" class="mono" style="color:var(--alert-red)">Couldn't load users.</td></tr>`;
   }
 }
 
-async function loadOrders(status = "") {
+async function loadOrders(status) {
   const tbody = document.querySelector("#orders-table tbody");
+  tbody.innerHTML = `<tr><td colspan="8" class="mono" style="color:var(--fog-dim)">Loading…</td></tr>`;
   try {
-    const qs = status ? `?status=${encodeURIComponent(status)}` : "";
-    const rows = await VX.get("/api/admin/registrations" + qs);
+    const url = status ? `/api/admin/registrations?status=${encodeURIComponent(status)}` : "/api/admin/registrations";
+    const rows = await VX.get(url);
     if (rows.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="8" class="mono" style="color:var(--fog-dim)">No orders found.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="8" class="mono" style="color:var(--fog-dim)">No orders yet.</td></tr>`;
       return;
     }
     tbody.innerHTML = rows.map((r) => `
       <tr>
-        <td class="mono" style="font-size:12px;">${r.registered_at ? String(r.registered_at).slice(0, 16).replace("T", " ") : "—"}</td>
-        <td>${escapeHtml(r.tournament_title || "—")}</td>
-        <td class="mono">${escapeHtml(r.game_name || "—")}</td>
-        <td>${escapeHtml(r.username || "—")}</td>
-        <td>${escapeHtml(r.team_name || "—")}</td>
-        <td class="mono">₹${r.entry_fee || 0}</td>
+        <td class="mono" style="font-size:12px;">${escapeHtml(r.registered_at)}</td>
+        <td>${escapeHtml(r.tournament_title)}</td>
+        <td class="mono" style="font-size:12px;">${escapeHtml(r.game_name)}</td>
+        <td>${escapeHtml(r.username)}</td>
+        <td>${escapeHtml(r.team_name)}</td>
+        <td class="mono">${fmtMoney(r.entry_fee)}</td>
         <td class="mono" style="font-size:12px;">${escapeHtml(r.utr_number || "—")}</td>
-        <td><span class="mono">${escapeHtml(r.payment_status)}</span></td>
+        <td>${paymentBadge(r.payment_status)}</td>
       </tr>`).join("");
-  } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="8" class="mono" style="color:var(--danger)">${escapeHtml(err.message)}</td></tr>`;
+  } catch (e) {
+    tbody.innerHTML = `<tr><td colspan="8" class="mono" style="color:var(--alert-red)">Couldn't load orders.</td></tr>`;
+  }
+}
+
+async function loadAuditLog() {
+  const tbody = document.querySelector("#audit-table tbody");
+  try {
+    const rows = await VX.get("/api/admin/audit-log");
+    if (rows.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" class="mono" style="color:var(--fog-dim)">No events yet.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = rows.map((r) => `
+      <tr>
+        <td class="mono" style="font-size:12px;">${escapeHtml(r.created_at)}</td>
+        <td class="mono" style="font-size:12px;">${escapeHtml(r.event)}</td>
+        <td>${escapeHtml(r.username || "—")}</td>
+        <td class="mono" style="font-size:12px;">${escapeHtml(r.ip_address || "—")}</td>
+        <td class="mono" style="font-size:12px; color:var(--fog-dim);">${escapeHtml(r.detail || "")}</td>
+      </tr>`).join("");
+  } catch (e) {
+    tbody.innerHTML = `<tr><td colspan="5" class="mono" style="color:var(--alert-red)">Couldn't load audit log.</td></tr>`;
   }
 }
 
 async function loadStats() {
-  try {
-    const s = await VX.get("/api/admin/stats");
-    const vals = document.querySelectorAll("#stats-strip .val");
-    if (vals[0]) vals[0].textContent = s.total_tournaments;
-    if (vals[1]) vals[1].textContent = s.total_users;
-    if (vals[2]) vals[2].textContent = s.pending_payments;
-    if (vals[3]) vals[3].textContent = "₹" + s.revenue;
-  } catch (e) {}
+  const s = await VX.get("/api/admin/stats");
+  const vals = document.querySelectorAll("#stats-strip .val");
+  vals[0].textContent = s.total_tournaments;
+  vals[1].textContent = s.total_users;
+  vals[2].textContent = s.pending_payments;
+  vals[3].textContent = fmtMoney(s.revenue);
 }
 
 async function loadGames() {
   gamesCache = await VX.get("/api/games");
-  const sel = document.getElementById("game-select");
-  sel.innerHTML = gamesCache.map((g) => `<option value="${g.id}">${escapeHtml(g.name)}</option>`).join("");
-}
-
-async function loadTournaments() {
-  const list = document.getElementById("tournaments-list");
-  try {
-    const tours = await VX.get("/api/tournaments");
-    if (!tours.length) {
-      list.innerHTML = `<p class="mono" style="color:var(--fog-dim)">No tournaments yet.</p>`;
-      return;
-    }
-    list.innerHTML = tours.map((t) => `
-      <div class="card-plain" style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
-        <div>
-          <strong>${escapeHtml(t.title)}</strong>
-          <div class="mono" style="font-size:12px; color:var(--fog-dim); margin-top:4px;">
-            ${escapeHtml(t.game_name || "")} · ${escapeHtml(t.mode)} · ${t.slots_filled || 0}/${t.slots_total} slots · ₹${t.entry_fee} · ${escapeHtml(t.status)}
-          </div>
-        </div>
-        <div style="display:flex; gap:8px;">
-          <button class="btn btn-ghost btn-sm" data-manage="${t.id}">Manage</button>
-          <button class="btn btn-danger btn-sm" data-del="${t.id}">Delete</button>
-        </div>
-      </div>`).join("");
-
-    list.querySelectorAll("[data-manage]").forEach((b) => b.addEventListener("click", () => openManagePanel(Number(b.dataset.manage))));
-    list.querySelectorAll("[data-del]").forEach((b) => b.addEventListener("click", async () => {
-      if (!confirm("Delete this tournament and all its registrations?")) return;
-      await VX.del(`/api/admin/tournaments/${b.dataset.del}`);
-      await loadTournaments();
-      await loadStats();
-    }));
-  } catch (err) {
-    list.innerHTML = `<p class="mono" style="color:var(--danger)">${escapeHtml(err.message)}</p>`;
-  }
+  document.getElementById("game-select").innerHTML =
+    gamesCache.map((g) => `<option value="${g.id}">${escapeHtml(g.name)}</option>`).join("");
 }
 
 async function onCreateSubmit(e) {
@@ -159,105 +145,114 @@ async function onCreateSubmit(e) {
   alertEl.innerHTML = "";
   try {
     await VX.post("/api/admin/tournaments", {
-      title: fd.get("title"),
-      game_id: Number(fd.get("game_id")),
-      mode: fd.get("mode"),
-      match_date: fd.get("match_date"),
-      entry_fee: Number(fd.get("entry_fee") || 0),
-      prize_pool: Number(fd.get("prize_pool") || 0),
-      slots_total: Number(fd.get("slots_total") || 25),
-      upi_id: fd.get("upi_id") || "",
-      description: fd.get("description") || "",
+      title: fd.get("title"), game_id: Number(fd.get("game_id")), mode: fd.get("mode"),
+      match_date: fd.get("match_date"), entry_fee: Number(fd.get("entry_fee")),
+      prize_pool: Number(fd.get("prize_pool")), slots_total: Number(fd.get("slots_total")),
+      upi_id: fd.get("upi_id"), description: fd.get("description"),
     });
-    alertEl.innerHTML = `<div class="alert alert-success">Tournament created.</div>`;
     e.target.reset();
     document.getElementById("create-panel").style.display = "none";
-    await loadTournaments();
     await loadStats();
+    await loadTournaments();
   } catch (err) {
     alertEl.innerHTML = `<div class="alert alert-error">${escapeHtml(err.message)}</div>`;
   }
 }
 
-async function loadAuditLog() {
-  const tbody = document.querySelector("#audit-table tbody");
-  try {
-    const rows = await VX.get("/api/admin/audit-log");
-    if (!rows.length) {
-      tbody.innerHTML = `<tr><td colspan="5" class="mono" style="color:var(--fog-dim)">Empty.</td></tr>`;
-      return;
-    }
-    tbody.innerHTML = rows.map((r) => `
-      <tr>
-        <td class="mono" style="font-size:12px;">${r.created_at ? String(r.created_at).slice(0, 19).replace("T", " ") : "—"}</td>
-        <td class="mono">${escapeHtml(r.event)}</td>
-        <td>${escapeHtml(r.username || "—")}</td>
-        <td class="mono" style="font-size:12px;">${escapeHtml(r.ip_address || "—")}</td>
-        <td style="font-size:12px;">${escapeHtml(r.detail || "")}</td>
-      </tr>`).join("");
-  } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="5" class="mono" style="color:var(--danger)">${escapeHtml(err.message)}</td></tr>`;
+async function loadTournaments() {
+  const tournaments = await VX.get("/api/tournaments");
+  const tbody = document.querySelector("#tournament-table tbody");
+  if (tournaments.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="mono" style="color:var(--fog-dim)">No tournaments yet.</td></tr>`;
+    return;
   }
+  tbody.innerHTML = tournaments.map((t) => `
+    <tr>
+      <td>${escapeHtml(t.title)}</td>
+      <td class="mono">${escapeHtml(t.game_name)}</td>
+      <td>${statusBadge(t.status)}</td>
+      <td class="mono">${t.slots_filled}/${t.slots_total}</td>
+      <td class="mono">${fmtMoney(t.entry_fee)}</td>
+      <td><button class="btn btn-ghost btn-sm" data-manage="${t.id}">Manage</button></td>
+    </tr>`).join("");
+
+  tbody.querySelectorAll("[data-manage]").forEach((btn) => {
+    btn.addEventListener("click", () => openManagePanel(Number(btn.dataset.manage)));
+  });
 }
 
 async function openManagePanel(tid) {
   const panel = document.getElementById("manage-panel");
-  panel.style.display = "block";
-  panel.innerHTML = `<p class="mono">Loading…</p>`;
-  try {
-    const t = await VX.get(`/api/tournaments/${tid}`);
-    const regs = await VX.get(`/api/admin/tournaments/${tid}/registrations`);
-    renderManagePanel(panel, tid, t, regs);
-  } catch (err) {
-    panel.innerHTML = `<p class="mono" style="color:var(--danger)">${escapeHtml(err.message)}</p>`;
-  }
-}
+  panel.innerHTML = `<p class="mono" style="color:var(--fog-dim); margin-top:20px;">Loading tournament…</p>`;
+  panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
-function renderManagePanel(panel, tid, t, regs) {
+  const [t, regs] = await Promise.all([
+    VX.get(`/api/tournaments/${tid}`),
+    VX.get(`/api/admin/tournaments/${tid}/registrations`),
+  ]);
+
+  const regRows = regs.length ? regs.map((r) => {
+    let players = [];
+    try { players = JSON.parse(r.players || "[]"); } catch (e) { players = []; }
+    const playersHtml = players.length
+      ? players.map((p) => `<div>${escapeHtml(p.ign || p)}${p.uid ? ` <span class="mono" style="color:var(--fog-dim);">#${escapeHtml(p.uid)}</span>` : ""}</div>`).join("")
+      : `<span class="mono" style="color:var(--fog-dim);">—</span>`;
+    return `
+    <tr>
+      <td>${escapeHtml(r.team_name)}</td>
+      <td class="mono">${escapeHtml(r.username)}</td>
+      <td style="font-size:13px;">${playersHtml}</td>
+      <td class="mono">${escapeHtml(r.utr_number || "—")}</td>
+      <td>${paymentBadge(r.payment_status)}</td>
+      <td style="white-space:nowrap;">
+        <button class="btn btn-sm btn-ghost" data-verify="${r.id}">Verify</button>
+        <button class="btn btn-sm btn-danger" data-reject="${r.id}">Reject</button>
+      </td>
+    </tr>`;
+  }).join("") : `<tr><td colspan="6" class="mono" style="color:var(--fog-dim)">No registrations yet.</td></tr>`;
+
+  const resultRows = (t.results && t.results.length ? t.results : [{}, {}, {}]).map((r, i) => `
+    <div class="field-row" style="grid-template-columns: 40px 2fr 1fr 1fr; align-items:end; margin-bottom:8px;">
+      <div class="field" style="margin-bottom:0;"><label>#</label><input class="mono" name="pos" value="${r.position || i + 1}" style="text-align:center;"></div>
+      <div class="field" style="margin-bottom:0;"><label>Team</label><input name="team" value="${escapeHtml(r.team_name || "")}"></div>
+      <div class="field" style="margin-bottom:0;"><label>Kills</label><input class="mono" name="kills" value="${r.kills || 0}"></div>
+      <div class="field" style="margin-bottom:0;"><label>Prize ₹</label><input class="mono" name="prize" value="${r.prize_amount || 0}"></div>
+    </div>`).join("");
+
   panel.innerHTML = `
-    <div class="form-card">
-      <h3 style="margin-top:0;">${escapeHtml(t.title)}</h3>
+    <div class="card-plain" style="margin-top:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <h3 style="font-size:20px;">${escapeHtml(t.title)}</h3>
+        ${statusBadge(t.status)}
+      </div>
+
+      <h4 style="font-size:14px; text-transform:uppercase; letter-spacing:0.06em; color:var(--fog-dim); margin-top:24px;">Match settings</h4>
       <form id="settings-form">
         <div class="field-row">
           <div class="field"><label>Status</label>
             <select name="status">
-              <option value="upcoming" ${t.status === "upcoming" ? "selected" : ""}>upcoming</option>
-              <option value="live" ${t.status === "live" ? "selected" : ""}>live</option>
-              <option value="completed" ${t.status === "completed" ? "selected" : ""}>completed</option>
-              <option value="cancelled" ${t.status === "cancelled" ? "selected" : ""}>cancelled</option>
+              <option value="upcoming" ${t.status === "upcoming" ? "selected" : ""}>Upcoming</option>
+              <option value="live" ${t.status === "live" ? "selected" : ""}>Live</option>
+              <option value="completed" ${t.status === "completed" ? "selected" : ""}>Completed</option>
             </select>
           </div>
-          <div class="field"><label>Room ID</label><input name="room_id" value="${escapeHtml(t.room_id || "")}"></div>
-          <div class="field"><label>Room Pass</label><input name="room_pass" value="${escapeHtml(t.room_pass || "")}"></div>
+          <div class="field"><label>Room ID</label><input class="mono" name="room_id" value="${escapeHtml(t.room_id || "")}"></div>
         </div>
+        <div class="field"><label>Room password</label><input class="mono" name="room_pass" value="${escapeHtml(t.room_pass || "")}"></div>
         <button class="btn btn-primary btn-sm" type="submit">Save settings</button>
       </form>
 
-      <h4 style="margin-top:24px;">Registrations (${regs.length})</h4>
-      <div style="overflow-x:auto;">
-        <table>
-          <thead><tr><th>User</th><th>Team</th><th>UTR</th><th>Status</th><th>Actions</th></tr></thead>
-          <tbody>
-            ${regs.map((r) => `
-              <tr>
-                <td>${escapeHtml(r.username)}</td>
-                <td>${escapeHtml(r.team_name)}</td>
-                <td class="mono" style="font-size:12px;">${escapeHtml(r.utr_number || "—")}</td>
-                <td class="mono">${escapeHtml(r.payment_status)}</td>
-                <td style="white-space:nowrap;">
-                  <button class="btn btn-ghost btn-sm" data-verify="${r.id}">Verify</button>
-                  <button class="btn btn-danger btn-sm" data-reject="${r.id}">Reject</button>
-                </td>
-              </tr>`).join("")}
-          </tbody>
-        </table>
-      </div>
+      <h4 style="font-size:14px; text-transform:uppercase; letter-spacing:0.06em; color:var(--fog-dim); margin-top:28px;">Registrations &amp; payments</h4>
+      <table>
+        <thead><tr><th>Team</th><th>User</th><th>Players</th><th>UTR</th><th>Status</th><th></th></tr></thead>
+        <tbody>${regRows}</tbody>
+      </table>
 
-      <h4 style="margin-top:24px;">Publish results</h4>
-      <div id="results-rows"></div>
-      <button class="btn btn-ghost btn-sm" id="add-result-row" type="button">+ Add row</button>
-      <form id="results-form" style="margin-top:12px;">
-        <button class="btn btn-primary btn-sm" type="submit">Publish results</button>
+      <h4 style="font-size:14px; text-transform:uppercase; letter-spacing:0.06em; color:var(--fog-dim); margin-top:28px;">Publish results</h4>
+      <form id="results-form">
+        <div id="results-rows">${resultRows}</div>
+        <button type="button" class="btn btn-ghost btn-sm" id="add-result-row">+ Add row</button>
+        <div style="margin-top:14px;"><button class="btn btn-primary btn-sm" type="submit">Publish results</button></div>
       </form>
     </div>`;
 
