@@ -47,7 +47,7 @@
 
     <div class="text-center mt-6 text-sm text-slate-400">
       Don't have an account?
-      <a href="register.html" class="text-cyan-400 font-medium hover:underline">Register</a>
+      <a href="/www/register.html" class="text-cyan-400 font-medium hover:underline">Register</a>
     </div>
   </div>
 
@@ -77,7 +77,6 @@
         const res = await fetch(API + "/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          credentials: "include",
           body: JSON.stringify({
             username: document.getElementById("username").value.trim(),
             password: document.getElementById("password").value
@@ -85,13 +84,21 @@
         });
         const data = await res.json();
 
-        if (data.token || data.success) {
-          if (data.user) localStorage.setItem("vxh_user", JSON.stringify(data.user));
-          if (data.token) localStorage.setItem("vxh_token", data.token);
+        if (data.token) {
+          // Store for both old + new frontend systems
+          localStorage.setItem("vxh_user", JSON.stringify(data.user));
+          localStorage.setItem("vxh_token", data.token);
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("user", JSON.stringify(data.user));
+
           msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-green-500/10 text-green-300 border border-green-500/30";
           msg.textContent = "Login successful! Redirecting...";
           msg.classList.remove("hidden");
-          setTimeout(() => window.location.href = "dashboard.html", 1000);
+
+          // Admin → full control panel, normal user → dashboard
+          const isAdmin = data.user && data.user.role === "admin";
+          const target = isAdmin ? "/www/admin.html" : "/www/dashboard.html";
+          setTimeout(() => window.location.href = target, 800);
         } else {
           msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-red-500/10 text-red-300 border border-red-500/30";
           msg.textContent = data.error || data.message || "Login failed";
