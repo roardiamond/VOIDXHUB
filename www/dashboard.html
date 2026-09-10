@@ -16,9 +16,32 @@
 
 <section class="section">
   <div class="wrap">
-    <span class="eyebrow">// your slots</span>
+    <span class="eyebrow">// account</span>
     <h1 style="font-size:32px;">Dashboard</h1>
-    <div id="list" style="margin-top:28px; display:flex; flex-direction:column; gap:16px;">
+
+    <div class="card-plain" style="margin-top:24px; max-width:520px;">
+      <h3 style="font-size:17px; margin-bottom:12px;">Your account</h3>
+      <div id="account-info" class="mono" style="font-size:13px; color:var(--fog-dim); line-height:1.9;">Loading…</div>
+    </div>
+
+    <div class="card-plain" style="margin-top:16px; max-width:520px;">
+      <h3 style="font-size:17px; margin-bottom:12px;">Change password</h3>
+      <div id="pw-alert"></div>
+      <form id="pw-form">
+        <div class="field"><label>Current password</label><input type="password" name="current_password" required></div>
+        <div class="field"><label>New password</label><input type="password" name="new_password" required minlength="8">
+          <div class="hint">At least 8 characters.</div>
+        </div>
+        <button class="btn btn-primary" type="submit">Update password</button>
+      </form>
+      <p style="margin-top:14px; font-size:13px; color:var(--fog-dim);">
+        Signed in somewhere you don't recognise?
+        <button class="btn btn-ghost btn-sm" id="logout-everywhere-btn" type="button" style="margin-left:6px;">Log out everywhere</button>
+      </p>
+    </div>
+
+    <h2 style="font-size:22px; margin-top:40px;">Your slots &amp; payments</h2>
+    <div id="list" style="margin-top:20px; display:flex; flex-direction:column; gap:16px;">
       <p class="mono" style="color:var(--fog-dim)">Loading…</p>
     </div>
   </div>

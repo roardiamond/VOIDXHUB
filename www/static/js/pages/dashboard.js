@@ -1,8 +1,47 @@
-// Page script for dashboard.html (a user's own registrations).
+// Page script for dashboard.html (account info + a user's own registrations).
 
 if (requireAuth()) {
   renderNav("dashboard");
+  loadAccount();
   load();
+
+  document.getElementById("pw-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const alertEl = document.getElementById("pw-alert");
+    alertEl.innerHTML = "";
+    try {
+      const res = await VX.post("/api/auth/change-password", {
+        current_password: fd.get("current_password"),
+        new_password: fd.get("new_password"),
+      });
+      VX.setSession(res.token, VX.getUser());
+      alertEl.innerHTML = `<div class="alert alert-success">Password updated. Other devices are now logged out.</div>`;
+      e.target.reset();
+    } catch (err) {
+      alertEl.innerHTML = `<div class="alert alert-error">${escapeHtml(err.message)}</div>`;
+    }
+  });
+
+  document.getElementById("logout-everywhere-btn").addEventListener("click", async () => {
+    if (!confirm("This logs you out on every device, including this one. Continue?")) return;
+    await VX.post("/api/auth/logout-everywhere", {});
+    VX.clearSession();
+    window.location.href = vxPath("/login.html");
+  });
+}
+
+async function loadAccount() {
+  const el = document.getElementById("account-info");
+  try {
+    const me = await VX.get("/api/auth/me");
+    el.innerHTML = `
+      <div>Username: <span style="color:#fff;">${escapeHtml(me.username)}</span></div>
+      <div>Email: <span style="color:#fff;">${escapeHtml(me.email)}</span></div>
+      <div>Phone: <span style="color:#fff;">${escapeHtml(me.phone || "—")}</span></div>`;
+  } catch (e) {
+    el.innerHTML = `<span style="color:var(--alert-red)">Couldn't load account info.</span>`;
+  }
 }
 
 async function load() {
