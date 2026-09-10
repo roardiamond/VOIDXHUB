@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signing you in — VOIDXHUB</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="static/icons/icon-192.png">
+<meta name="theme-color" content="#08080c">
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<section class="section">
+  <div class="wrap" style="max-width:420px; text-align:center;">
+    <p class="mono" id="msg" style="color:var(--fog-dim);">Signing you in…</p>
+  </div>
+</section>
+
+<script src="static/js/config.js"></script>
+<script src="static/js/api.js"></script>
+<script>
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const msg = document.getElementById("msg");
+
+    if (!token) {
+      msg.textContent = "Login failed — no token received. Redirecting…";
+      setTimeout(() => { window.location.href = "login.html?error=oauth_failed"; }, 1200);
+      return;
+    }
+
+    // We only have the token here (the callback redirect can't carry a
+    // full user object cleanly) — /api/auth/me fills in the rest.
+    VX.setSession(token, {});
+    VX.get("/api/auth/me")
+      .then((me) => {
+        VX.setSession(token, me);
+        window.location.href = me.role === "admin" ? "admin.html" : "dashboard.html";
+      })
+      .catch(() => {
+        VX.clearSession();
+        window.location.href = "login.html?error=oauth_failed";
+      });
+  })();
+</script>
+</body>
+</html>

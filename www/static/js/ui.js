@@ -177,6 +177,28 @@ function requireAdmin() {
   return true;
 }
 
+async function initOAuthButtons() {
+  const wrap = document.getElementById("oauth-buttons");
+  if (!wrap) return;
+  try {
+    const providers = await VX.get("/api/auth/oauth/providers");
+    let anyEnabled = false;
+    for (const name of ["google", "discord"]) {
+      const btn = document.getElementById("oauth-" + name);
+      if (!btn) continue;
+      if (providers[name]) {
+        btn.href = VX.apiUrl("/api/auth/oauth/" + name + "/start");
+        btn.style.display = "";
+        anyEnabled = true;
+      }
+    }
+    if (anyEnabled) wrap.style.display = "";
+  } catch (e) {
+    // Providers endpoint unreachable — leave the buttons hidden, the
+    // password form still works.
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderFooter();
 });

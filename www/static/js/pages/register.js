@@ -1,6 +1,8 @@
 // Page script for register.html (sign-up form).
 
 renderNav("");
+initOAuthButtons();
+
 document.getElementById("register-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const fd = new FormData(e.target);

@@ -54,6 +54,6 @@ const VX = (() => {
     post: (path, data) => api("POST", path, data),
     patch: (path, data) => api("PATCH", path, data),
     del: (path) => api("DELETE", path),
-    getToken, getUser, setSession, clearSession,
+    getToken, getUser, setSession, clearSession, apiUrl,
   };
 })();
