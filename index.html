@@ -3,8 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VOIDXHUB — Premium Gaming Tools & Tournaments</title>
-  <meta name="description" content="VOIDXHUB - Premium tools, configs and tournament platform for competitive gamers.">
+  <title>VOIDXHUB — Premium Gaming Tools & Tournament Platform</title>
+  <meta name="description" content="VOIDXHUB provides high-performance gaming tools, configs and tournament management for competitive players. Clean delivery, secure payments and reliable support.">
+  <meta name="theme-color" content="#0a0a0f">
+  <link rel="canonical" href="https://voidxhub.in/">
+  <meta property="og:title" content="VOIDXHUB — Premium Gaming Tools & Tournaments">
+  <meta property="og:description" content="High-performance tools and tournament platform built for competitive gamers.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://voidxhub.in/">
+  <meta name="twitter:card" content="summary_large_image">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -64,6 +71,9 @@
     .delay-3 { animation-delay: 0.3s; }
     .delay-4 { animation-delay: 0.4s; }
     .delay-5 { animation-delay: 0.5s; }
+    @media (prefers-reduced-motion: reduce) {
+      .fade-up { animation: none; opacity: 1; transform: none; }
+    }
   </style>
 </head>
 <body>
@@ -74,11 +84,11 @@
         VOID<span class="gradient-text">X</span>HUB
       </a>
       <div class="hidden sm:flex items-center gap-6 text-sm text-slate-400">
-        <a href="pages/shop/tools.html" class="hover:text-white transition">Tools</a>
-        <a href="pages/account/login.html" class="hover:text-white transition">Account</a>
-        <a href="https://t.me/voidxhub" target="_blank" class="hover:text-white transition">Community</a>
+        <a href="/pages/shop/tools.html" class="hover:text-white transition">Tools</a>
+        <a href="/pages/account/login.html" class="hover:text-white transition">Account</a>
+        <a href="https://t.me/voidxhub" target="_blank" rel="noopener" class="hover:text-white transition">Community</a>
       </div>
-      <a href="pages/shop/tools.html" class="btn-primary px-5 py-2 rounded-xl text-sm font-semibold text-white">
+      <a href="/pages/shop/tools.html" class="btn-primary px-5 py-2 rounded-xl text-sm font-semibold text-white">
         Browse Tools
       </a>
     </div>
@@ -97,34 +107,38 @@
       </h1>
 
       <p class="fade-up delay-3 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-4 leading-relaxed">
-        High-performance tools and tournament platform built for competitive gamers.
+        Premium tools, configs and tournament platform built for competitive gamers.
       </p>
       <p class="fade-up delay-3 text-sm text-slate-500 max-w-xl mx-auto mb-12">
-        Clean configs • Fast delivery • Reliable support
+        Clean configs • Fast delivery • Secure payments • Reliable support
       </p>
 
       <div class="fade-up delay-4 flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="pages/shop/tools.html" class="btn-primary px-8 py-3.5 rounded-2xl text-base font-semibold text-white w-full sm:w-auto">
+        <a href="/pages/shop/tools.html" class="btn-primary px-8 py-3.5 rounded-2xl text-base font-semibold text-white w-full sm:w-auto">
           Browse Tools
         </a>
-        <a href="pages/account/login.html" class="btn-secondary px-8 py-3.5 rounded-2xl text-base font-medium text-slate-200 w-full sm:w-auto">
-          Login / Account
+        <a href="/pages/account/login.html" class="btn-secondary px-8 py-3.5 rounded-2xl text-base font-medium text-slate-200 w-full sm:w-auto">
+          Login / Dashboard
         </a>
       </div>
 
-      <!-- Stats -->
-      <div class="fade-up delay-5 mt-20 grid grid-cols-3 gap-6 max-w-md mx-auto">
+      <!-- Trust indicators (only real / verifiable claims) -->
+      <div class="fade-up delay-5 mt-20 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl mx-auto">
         <div class="text-center">
           <div class="text-2xl sm:text-3xl font-bold text-white">50+</div>
           <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Tools</div>
         </div>
-        <div class="text-center border-x border-white/10">
-          <div class="text-2xl sm:text-3xl font-bold text-white">10K+</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Users</div>
+        <div class="text-center">
+          <div class="text-2xl sm:text-3xl font-bold text-white">Fast</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Delivery</div>
         </div>
         <div class="text-center">
-          <div class="text-2xl sm:text-3xl font-bold text-white">99%</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Success</div>
+          <div class="text-2xl sm:text-3xl font-bold text-white">Secure</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Payments</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl sm:text-3xl font-bold text-white">24/7</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Support</div>
         </div>
       </div>
     </div>
@@ -135,24 +149,24 @@
     <div class="max-w-5xl mx-auto">
       <div class="text-center mb-14">
         <h2 class="text-3xl font-bold text-white mb-3">Why VoidXHub</h2>
-        <p class="text-slate-400 text-sm">Built for performance and reliability</p>
+        <p class="text-slate-400 text-sm">Built for performance, reliability and clean delivery</p>
       </div>
 
       <div class="grid sm:grid-cols-3 gap-6">
         <div class="feature-card rounded-2xl p-7">
           <div class="w-11 h-11 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-xl mb-5">🛡️</div>
-          <h3 class="font-semibold text-white mb-2">Clean & Safe</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Regularly updated configs designed for stability and safety.</p>
+          <h3 class="font-semibold text-white mb-2">Clean & Updated</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Configs and tools are regularly tested and updated for stability.</p>
         </div>
         <div class="feature-card rounded-2xl p-7">
           <div class="w-11 h-11 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-xl mb-5">⚡</div>
           <h3 class="font-semibold text-white mb-2">Fast Delivery</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Instant access after payment confirmation. No long waits.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Instant or near-instant access after payment confirmation.</p>
         </div>
         <div class="feature-card rounded-2xl p-7">
           <div class="w-11 h-11 rounded-xl bg-pink-500/10 flex items-center justify-center text-pink-400 text-xl mb-5">🎯</div>
-          <h3 class="font-semibold text-white mb-2">Proven Results</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Trusted by thousands of competitive players.</p>
+          <h3 class="font-semibold text-white mb-2">Reliable Support</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Dedicated Telegram support for orders and technical help.</p>
         </div>
       </div>
     </div>
@@ -162,12 +176,12 @@
   <section class="py-20 px-6 border-t border-white/5">
     <div class="max-w-3xl mx-auto text-center">
       <h2 class="text-2xl sm:text-3xl font-bold text-white mb-4">Ready to get started?</h2>
-      <p class="text-slate-400 mb-8 text-sm">Browse tools or join the community for updates and support.</p>
+      <p class="text-slate-400 mb-8 text-sm">Browse available tools or join the community for updates and support.</p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="pages/shop/tools.html" class="btn-primary px-8 py-3.5 rounded-2xl text-base font-semibold text-white">
+        <a href="/pages/shop/tools.html" class="btn-primary px-8 py-3.5 rounded-2xl text-base font-semibold text-white">
           Browse Tools
         </a>
-        <a href="https://t.me/voidxhub" target="_blank" class="btn-secondary px-8 py-3.5 rounded-2xl text-base font-medium text-slate-200">
+        <a href="https://t.me/voidxhub" target="_blank" rel="noopener" class="btn-secondary px-8 py-3.5 rounded-2xl text-base font-medium text-slate-200">
           Join Telegram
         </a>
       </div>
@@ -175,10 +189,43 @@
   </section>
 
   <!-- Footer -->
-  <footer class="py-10 px-6 border-t border-white/5 text-center">
-    <p class="text-sm text-slate-500">© 2026 VoidXHub • Built by YashXChi</p>
+  <footer class="py-12 px-6 border-t border-white/5">
+    <div class="max-w-5xl mx-auto">
+      <div class="flex flex-col md:flex-row justify-between gap-8 mb-8">
+        <div>
+          <div class="text-xl font-extrabold mb-2">VOID<span class="gradient-text">X</span>HUB</div>
+          <p class="text-sm text-slate-500 max-w-xs">Premium gaming tools and tournament platform for competitive players.</p>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-8 text-sm">
+          <div>
+            <div class="font-semibold text-white mb-3">Product</div>
+            <ul class="space-y-2 text-slate-400">
+              <li><a href="/pages/shop/tools.html" class="hover:text-cyan-400 transition">Tools</a></li>
+              <li><a href="/pages/account/login.html" class="hover:text-cyan-400 transition">Dashboard</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="font-semibold text-white mb-3">Support</div>
+            <ul class="space-y-2 text-slate-400">
+              <li><a href="https://t.me/voidxhub" target="_blank" rel="noopener" class="hover:text-cyan-400 transition">Telegram</a></li>
+              <li><a href="https://t.me/Voidxhubsupport_bot" target="_blank" rel="noopener" class="hover:text-cyan-400 transition">Support Bot</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="font-semibold text-white mb-3">Legal</div>
+            <ul class="space-y-2 text-slate-400">
+              <li><a href="/pages/misc/privacy.html" class="hover:text-cyan-400 transition">Privacy</a></li>
+              <li><a href="/pages/misc/terms.html" class="hover:text-cyan-400 transition">Terms</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="pt-6 border-t border-white/5 text-center text-sm text-slate-500">
+        © 2026 VoidXHub • Built by YashXChi
+      </div>
+    </div>
   </footer>
 
-  <script src="assets/js/auth.js"></script>
+  <script src="/assets/js/auth.js"></script>
 </body>
 </html>

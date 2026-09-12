@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - VOIDXHUB</title>
+  <title>Login — VOIDXHUB</title>
+  <meta name="description" content="Login to your VOIDXHUB account to access tools, orders and dashboard.">
+  <meta name="robots" content="noindex, nofollow">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -17,7 +19,7 @@
 <body>
   <div class="box">
     <div class="text-center mb-8">
-      <h1 class="text-2xl font-bold tracking-tight">VOID<span class="text-cyan-400">X</span>HUB</h1>
+      <a href="/" class="text-2xl font-bold tracking-tight">VOID<span class="text-cyan-400">X</span>HUB</a>
       <p class="text-sm text-slate-400 mt-1">Login to your account</p>
     </div>
 
@@ -25,19 +27,19 @@
 
     <form id="loginForm" class="space-y-4">
       <div>
-        <label class="block text-xs text-slate-400 mb-1.5 font-medium">Username</label>
-        <input type="text" id="username" required placeholder="Enter username" class="w-full px-4 py-3 rounded-xl text-sm">
+        <label class="block text-xs text-slate-400 mb-1.5 font-medium">Username or Email</label>
+        <input type="text" id="username" required placeholder="Enter username or email" class="w-full px-4 py-3 rounded-xl text-sm" autocomplete="username">
       </div>
       <div>
         <label class="block text-xs text-slate-400 mb-1.5 font-medium">Password</label>
         <div class="relative">
-          <input type="password" id="password" required placeholder="Enter password" class="w-full px-4 py-3 rounded-xl text-sm pr-12">
+          <input type="password" id="password" required placeholder="Enter password" class="w-full px-4 py-3 rounded-xl text-sm pr-12" autocomplete="current-password">
           <button type="button" onclick="togglePassword()" id="toggleBtn" class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-cyan-400 transition">Show</button>
         </div>
       </div>
 
       <div class="flex justify-end">
-        <a href="https://t.me/Voidxhubsupport_bot" target="_blank" class="text-xs text-cyan-400 hover:underline">Forgot / Reset Password?</a>
+        <a href="https://t.me/Voidxhubsupport_bot" target="_blank" rel="noopener" class="text-xs text-cyan-400 hover:underline">Forgot / Reset Password?</a>
       </div>
 
       <button type="submit" id="btn" class="btn-primary w-full py-3.5 rounded-xl text-sm font-semibold text-white hover:opacity-90 transition">
@@ -47,7 +49,7 @@
 
     <div class="text-center mt-6 text-sm text-slate-400">
       Don't have an account?
-      <a href="/www/register.html" class="text-cyan-400 font-medium hover:underline">Register</a>
+      <a href="/pages/account/register.html" class="text-cyan-400 font-medium hover:underline">Register</a>
     </div>
   </div>
 
@@ -85,7 +87,6 @@
         const data = await res.json();
 
         if (data.token) {
-          // Store for both old + new frontend systems
           localStorage.setItem("vxh_user", JSON.stringify(data.user));
           localStorage.setItem("vxh_token", data.token);
           localStorage.setItem("token", data.token);
@@ -95,9 +96,8 @@
           msg.textContent = "Login successful! Redirecting...";
           msg.classList.remove("hidden");
 
-          // Admin → full control panel, normal user → dashboard
           const isAdmin = data.user && data.user.role === "admin";
-          const target = isAdmin ? "/www/admin.html" : "/www/dashboard.html";
+          const target = isAdmin ? "/pages/admin/admin-panel.html" : "/pages/account/dashboard.html";
           setTimeout(() => window.location.href = target, 800);
         } else {
           msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-red-500/10 text-red-300 border border-red-500/30";
@@ -108,7 +108,7 @@
         }
       } catch (err) {
         msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-red-500/10 text-red-300 border border-red-500/30";
-        msg.textContent = "Server unavailable. Please try again in 30 seconds (cold start).";
+        msg.textContent = "Server unavailable. Please wait 20-30 seconds and try again (cold start).";
         msg.classList.remove("hidden");
         btn.disabled = false;
         btn.textContent = "Login";
