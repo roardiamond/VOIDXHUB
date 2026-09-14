@@ -1,27 +1,44 @@
-// =========================================================
-// VOIDXHUB TOURNAMENTS — API layer
-// Every network call and every bit of session storage in the
-// app goes through this one wrapper. No DOM code lives here —
-// see ui.js for rendering helpers and www/static/js/pages/*.js
-// for page-specific logic.
-// =========================================================
+// VOIDXHUB — API layer (shared with tools site via dual localStorage keys)
 
 const VX = (() => {
-  const TOKEN_KEY = "voidxhub_token";
-  const USER_KEY = "voidxhub_user";
+  const TOKEN_KEYS = ["voidxhub_token", "vxh_token", "token"];
+  const USER_KEYS = ["voidxhub_user", "vxh_user", "user"];
 
-  function getToken() { return localStorage.getItem(TOKEN_KEY); }
+  function getToken() {
+    for (const k of TOKEN_KEYS) {
+      const v = localStorage.getItem(k);
+      if (v) return v;
+    }
+    return null;
+  }
+
   function getUser() {
-    const raw = localStorage.getItem(USER_KEY);
-    return raw ? JSON.parse(raw) : null;
+    for (const k of USER_KEYS) {
+      try {
+        const raw = localStorage.getItem(k);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+    }
+    return null;
   }
+
   function setSession(token, user) {
-    localStorage.setItem(TOKEN_KEY, token);
-    localStorage.setItem(USER_KEY, JSON.stringify(user));
+    if (token) {
+      localStorage.setItem("voidxhub_token", token);
+      localStorage.setItem("vxh_token", token);
+      localStorage.setItem("token", token);
+    }
+    if (user) {
+      const s = JSON.stringify(user);
+      localStorage.setItem("voidxhub_user", s);
+      localStorage.setItem("vxh_user", s);
+      localStorage.setItem("user", s);
+    }
   }
+
   function clearSession() {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
+    TOKEN_KEYS.forEach((k) => localStorage.removeItem(k));
+    USER_KEYS.forEach((k) => localStorage.removeItem(k));
   }
 
   function apiUrl(path) {
@@ -39,11 +56,17 @@ const VX = (() => {
       body: data !== undefined ? JSON.stringify(data) : undefined,
     });
     let body = null;
-    try { body = await res.json(); } catch (e) { /* no body */ }
+    try {
+      body = await res.json();
+    } catch (e) {}
     if (!res.ok) {
       const err = new Error((body && body.error) || "Something went wrong");
       err.status = res.status;
       err.body = body;
+      if (res.status === 401) {
+        // stale token — clear so UI shows login
+        clearSession();
+      }
       throw err;
     }
     return body;
@@ -54,6 +77,10 @@ const VX = (() => {
     post: (path, data) => api("POST", path, data),
     patch: (path, data) => api("PATCH", path, data),
     del: (path) => api("DELETE", path),
-    getToken, getUser, setSession, clearSession, apiUrl,
+    getToken,
+    getUser,
+    setSession,
+    clearSession,
+    apiUrl,
   };
 })();

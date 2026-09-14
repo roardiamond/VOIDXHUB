@@ -20,7 +20,7 @@
   <div class="box">
     <div class="text-center mb-8">
       <a href="/" class="text-2xl font-bold tracking-tight">VOID<span class="text-cyan-400">X</span>HUB</a>
-      <p class="text-sm text-slate-400 mt-1">Login to your account</p>
+      <p class="text-sm text-slate-400 mt-1">Login · tools &amp; tournaments</p>
     </div>
 
     <div id="msg" class="hidden mb-4 p-3 rounded-xl text-sm text-center"></div>
@@ -39,7 +39,7 @@
       </div>
 
       <div class="flex justify-end">
-        <a href="https://t.me/Voidxhubsupport_bot" target="_blank" rel="noopener" class="text-xs text-cyan-400 hover:underline">Forgot / Reset Password?</a>
+        <a href="https://t.me/Voidxhubsupport_bot" target="_blank" rel="noopener" class="text-xs text-cyan-400 hover:underline">Forgot / Reset?</a>
       </div>
 
       <button type="submit" id="btn" class="btn-primary w-full py-3.5 rounded-xl text-sm font-semibold text-white hover:opacity-90 transition">
@@ -47,14 +47,31 @@
       </button>
     </form>
 
-    <div class="text-center mt-6 text-sm text-slate-400">
-      Don't have an account?
-      <a href="/pages/account/register.html" class="text-cyan-400 font-medium hover:underline">Register</a>
+    <div class="text-center mt-6 text-sm text-slate-400 space-y-2">
+      <div>
+        Don't have an account?
+        <a href="/pages/account/register.html" class="text-cyan-400 font-medium hover:underline">Register</a>
+      </div>
+      <a href="/www/tournaments.html" class="text-xs text-slate-500 hover:text-cyan-400">← Back to tournaments</a>
     </div>
   </div>
 
   <script>
     const API = "https://voidxhub-backend.onrender.com";
+
+    function saveSession(token, user) {
+      if (token) {
+        localStorage.setItem("voidxhub_token", token);
+        localStorage.setItem("vxh_token", token);
+        localStorage.setItem("token", token);
+      }
+      if (user) {
+        const s = JSON.stringify(user);
+        localStorage.setItem("voidxhub_user", s);
+        localStorage.setItem("vxh_user", s);
+        localStorage.setItem("user", s);
+      }
+    }
 
     function togglePassword() {
       const input = document.getElementById("password");
@@ -76,29 +93,34 @@
       btn.textContent = "Logging in...";
 
       try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 25000);
+
         const res = await fetch(API + "/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
           body: JSON.stringify({
             username: document.getElementById("username").value.trim(),
             password: document.getElementById("password").value
           })
         });
+        clearTimeout(timeout);
         const data = await res.json();
 
         if (data.token) {
-          localStorage.setItem("vxh_user", JSON.stringify(data.user));
-          localStorage.setItem("vxh_token", data.token);
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-
+          saveSession(data.token, data.user);
           msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-green-500/10 text-green-300 border border-green-500/30";
           msg.textContent = "Login successful! Redirecting...";
           msg.classList.remove("hidden");
 
+          const next = new URLSearchParams(window.location.search).get("next");
           const isAdmin = data.user && data.user.role === "admin";
-          const target = isAdmin ? "/pages/admin/admin-panel.html" : "/pages/account/dashboard.html";
-          setTimeout(() => window.location.href = target, 800);
+          let target = "/pages/account/dashboard.html";
+          if (next) target = next.startsWith("/") ? next : "/www/" + next;
+          else if (isAdmin) target = "/www/admin.html";
+
+          setTimeout(() => (window.location.href = target), 700);
         } else {
           msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-red-500/10 text-red-300 border border-red-500/30";
           msg.textContent = data.error || data.message || "Login failed";
@@ -108,7 +130,10 @@
         }
       } catch (err) {
         msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-red-500/10 text-red-300 border border-red-500/30";
-        msg.textContent = "Server unavailable. Please wait 20-30 seconds and try again (cold start).";
+        msg.textContent =
+          err.name === "AbortError"
+            ? "Server waking up — wait 20s and try again."
+            : "Network error. Check connection and try again.";
         msg.classList.remove("hidden");
         btn.disabled = false;
         btn.textContent = "Login";
