@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — VOIDXHUB</title>
+  <meta name="robots" content="noindex, nofollow">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: Inter, system-ui, sans-serif; background: #0a0a0f; color: #e2e8f0; min-height: 100vh; }
+    .card { background: rgba(15,15,25,0.95); border: 1px solid rgba(148,163,184,0.15); border-radius: 16px; }
+    input, select, textarea {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(148,163,184,0.2);
+      color: #e2e8f0; border-radius: 10px; padding: 10px 12px; width: 100%; font-size: 14px;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #67e8f9; }
+    .tab { padding: 10px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; color: #94a3b8; cursor: pointer; border: 1px solid transparent; }
+    .tab.active { background: rgba(103,232,249,0.12); color: #67e8f9; border-color: rgba(103,232,249,0.3); }
+    .btn { padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
+    .btn-cyan { background: linear-gradient(135deg,#06b6d4,#8b5cf6); color: #fff; }
+    .btn-ghost { background: transparent; border: 1px solid rgba(148,163,184,0.25); color: #cbd5e1; }
+    .btn-sm { padding: 6px 10px; font-size: 12px; }
+    .btn-ok { background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.4); }
+    .btn-bad { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.35); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; color: #64748b; font-weight: 600; padding: 10px 8px; border-bottom: 1px solid rgba(148,163,184,0.12); }
+    td { padding: 10px 8px; border-bottom: 1px solid rgba(148,163,184,0.08); vertical-align: top; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+    .badge-pending { background: rgba(251,191,36,0.15); color: #fbbf24; }
+    .badge-verified { background: rgba(16,185,129,0.15); color: #34d399; }
+    .badge-rejected { background: rgba(239,68,68,0.15); color: #f87171; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body class="p-4 md:p-8">
+
+  <!-- Login -->
+  <div id="loginScreen" class="max-w-md mx-auto mt-16">
+    <div class="card p-8">
+      <h1 class="text-2xl font-bold text-center mb-1">VOID<span class="text-cyan-400">X</span>HUB</h1>
+      <p class="text-center text-slate-400 text-sm mb-6">Admin · Tournament &amp; Services</p>
+      <div id="loginMsg" class="hidden mb-4 p-3 rounded-xl text-sm text-center"></div>
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="text-xs text-slate-400 mb-1 block">Username or email</label>
+          <input type="text" id="loginUser" required autocomplete="username">
+        </div>
+        <div>
+          <label class="text-xs text-slate-400 mb-1 block">Password</label>
+          <input type="password" id="loginPass" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-cyan w-full">Login</button>
+      </form>
+      <p class="text-center text-xs text-slate-500 mt-4"><a href="/" class="hover:text-cyan-400">← Site</a></p>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dash" class="hidden max-w-5xl mx-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold">Admin</h1>
+        <p class="text-sm text-slate-400">Logged in as <span id="adminName" class="text-cyan-400">—</span></p>
+      </div>
+      <div class="flex gap-2 flex-wrap">
+        <a href="/www/tournaments.html" class="btn btn-ghost btn-sm">Tournaments site</a>
+        <button type="button" class="btn btn-ghost btn-sm" id="btnRefresh">Refresh</button>
+        <button type="button" class="btn btn-bad btn-sm" id="btnLogout">Logout</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6" id="stats">
+      <div class="card p-4"><div class="text-xs text-slate-500">Tournaments</div><div class="text-2xl font-bold text-cyan-400" id="s-t">—</div></div>
+      <div class="card p-4"><div class="text-xs text-slate-500">Users</div><div class="text-2xl font-bold" id="s-u">—</div></div>
+      <div class="card p-4"><div class="text-xs text-slate-500">Pending</div><div class="text-2xl font-bold text-amber-400" id="s-p">—</div></div>
+      <div class="card p-4"><div class="text-xs text-slate-500">Revenue</div><div class="text-2xl font-bold text-emerald-400" id="s-r">—</div></div>
+    </div>
+
+    <!-- Tabs: only 2 -->
+    <div class="flex gap-2 mb-6">
+      <button type="button" class="tab active" data-tab="tournament">Tournament</button>
+      <button type="button" class="tab" data-tab="services">Services</button>
+    </div>
+
+    <!-- TOURNAMENT TAB -->
+    <div id="tab-tournament">
+      <div class="card p-5 mb-6">
+        <h2 class="font-semibold mb-3">Create tournament</h2>
+        <div id="createMsg" class="hidden mb-3 p-3 rounded-xl text-sm"></div>
+        <form id="createForm" class="grid sm:grid-cols-2 gap-3">
+          <div class="sm:col-span-2">
+            <label class="text-xs text-slate-400">Title</label>
+            <input name="title" required placeholder="FF Scrim Night">
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">Game</label>
+            <select name="game_id" id="gameSelect" required></select>
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">Mode</label>
+            <select name="mode">
+              <option value="solo">Solo</option>
+              <option value="duo">Duo</option>
+              <option value="trio">Trio</option>
+              <option value="squad" selected>Squad</option>
+              <option value="4v4">4v4</option>
+              <option value="5v5">5v5</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">Match date</label>
+            <input type="datetime-local" name="match_date" required>
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">Slots</label>
+            <input type="number" name="slots_total" value="32" min="2">
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">Entry fee (₹)</label>
+            <input type="number" name="entry_fee" value="0" min="0">
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">Prize pool (₹)</label>
+            <input type="number" name="prize_pool" value="0" min="0">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="text-xs text-slate-400">Description</label>
+            <textarea name="description" rows="2" placeholder="Rules, check-in…"></textarea>
+          </div>
+          <div class="sm:col-span-2">
+            <button type="submit" class="btn btn-cyan">Create tournament</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card p-5 overflow-x-auto">
+        <h2 class="font-semibold mb-3">All tournaments</h2>
+        <table>
+          <thead>
+            <tr><th>Title</th><th>Game</th><th>Status</th><th>Slots</th><th>Prize</th><th></th></tr>
+          </thead>
+          <tbody id="tourneyBody"><tr><td colspan="6" class="text-slate-500">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SERVICES TAB -->
+    <div id="tab-services" class="hidden">
+      <div class="card p-5 mb-6 overflow-x-auto">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <h2 class="font-semibold">Registrations / payments</h2>
+          <select id="payFilter" class="w-auto">
+            <option value="">All</option>
+            <option value="pending" selected>Pending</option>
+            <option value="verified">Verified</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Team</th><th>Tournament</th><th>UTR</th><th>Status</th><th></th></tr>
+          </thead>
+          <tbody id="payBody"><tr><td colspan="5" class="text-slate-500">Loading…</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="card p-5 overflow-x-auto">
+        <h2 class="font-semibold mb-3">Users</h2>
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th></tr>
+          </thead>
+          <tbody id="userBody"><tr><td colspan="4" class="text-slate-500">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<script>
+const API = "https://voidxhub-backend.onrender.com";
+
+function getToken() {
+  return localStorage.getItem("voidxhub_token") || localStorage.getItem("vxh_token") || localStorage.getItem("token");
+}
+function getUser() {
+  try {
+    return JSON.parse(localStorage.getItem("voidxhub_user") || localStorage.getItem("vxh_user") || localStorage.getItem("user") || "null");
+  } catch { return null; }
+}
+function saveSession(token, user) {
+  if (token) {
+    localStorage.setItem("voidxhub_token", token);
+    localStorage.setItem("vxh_token", token);
+    localStorage.setItem("token", token);
+  }
+  if (user) {
+    const s = JSON.stringify(user);
+    localStorage.setItem("voidxhub_user", s);
+    localStorage.setItem("vxh_user", s);
+    localStorage.setItem("user", s);
+  }
+}
+function clearSession() {
+  ["voidxhub_token","vxh_token","token","voidxhub_user","vxh_user","user"].forEach(k => localStorage.removeItem(k));
+}
+
+async function api(method, path, body) {
+  const headers = { "Content-Type": "application/json" };
+  const t = getToken();
+  if (t) headers.Authorization = "Bearer " + t;
+  const res = await fetch(API + path, { method, headers, body: body ? JSON.stringify(body) : undefined });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const err = new Error(data.error || data.message || "Request failed");
+    err.status = res.status;
+    throw err;
+  }
+  return data;
+}
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+}
+
+function showDash() {
+  document.getElementById("loginScreen").classList.add("hidden");
+  document.getElementById("dash").classList.remove("hidden");
+  const u = getUser();
+  document.getElementById("adminName").textContent = u?.username || "admin";
+  loadAll();
+}
+
+function showLogin() {
+  document.getElementById("loginScreen").classList.remove("hidden");
+  document.getElementById("dash").classList.add("hidden");
+}
+
+// Tabs
+document.querySelectorAll(".tab").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const tab = btn.dataset.tab;
+    document.getElementById("tab-tournament").classList.toggle("hidden", tab !== "tournament");
+    document.getElementById("tab-services").classList.toggle("hidden", tab !== "services");
+  });
+});
+
+// Login
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById("loginMsg");
+  msg.classList.add("hidden");
+  try {
+    const data = await api("POST", "/api/auth/login", {
+      username: document.getElementById("loginUser").value.trim(),
+      password: document.getElementById("loginPass").value,
+    });
+    if (data.user?.role !== "admin") {
+      clearSession();
+      msg.textContent = "This account is not admin.";
+      msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-red-500/10 text-red-300";
+      msg.classList.remove("hidden");
+      return;
+    }
+    saveSession(data.token, data.user);
+    showDash();
+  } catch (err) {
+    msg.textContent = err.message || "Login failed";
+    msg.className = "mb-4 p-3 rounded-xl text-sm text-center bg-red-500/10 text-red-300";
+    msg.classList.remove("hidden");
+  }
+});
+
+document.getElementById("btnLogout").addEventListener("click", () => {
+  clearSession();
+  showLogin();
+});
+document.getElementById("btnRefresh").addEventListener("click", loadAll);
+
+async function loadAll() {
+  await Promise.all([loadStats(), loadGames(), loadTourneys(), loadPayments(), loadUsers()]);
+}
+
+async function loadStats() {
+  try {
+    const s = await api("GET", "/api/admin/stats");
+    document.getElementById("s-t").textContent = s.total_tournaments ?? "—";
+    document.getElementById("s-u").textContent = s.total_users ?? "—";
+    document.getElementById("s-p").textContent = s.pending_payments ?? "—";
+    document.getElementById("s-r").textContent = "₹" + (s.revenue ?? 0);
+  } catch {}
+}
+
+async function loadGames() {
+  try {
+    const games = await api("GET", "/api/games");
+    const sel = document.getElementById("gameSelect");
+    sel.innerHTML = games.map(g => `<option value="${g.id}">${esc(g.name)}</option>`).join("");
+  } catch {}
+}
+
+async function loadTourneys() {
+  const body = document.getElementById("tourneyBody");
+  try {
+    const list = await api("GET", "/api/tournaments");
+    if (!list.length) {
+      body.innerHTML = `<tr><td colspan="6" class="text-slate-500">No tournaments yet</td></tr>`;
+      return;
+    }
+    body.innerHTML = list.map(t => `
+      <tr>
+        <td class="font-medium">${esc(t.title)}</td>
+        <td>${esc(t.game_name || t.game_slug)}</td>
+        <td><span class="badge badge-${t.status === 'completed' ? 'verified' : 'pending'}">${esc(t.status || '—')}</span></td>
+        <td>${t.slots_filled ?? 0}/${t.slots_total ?? '—'}</td>
+        <td>₹${t.prize_pool ?? 0}</td>
+        <td><button type="button" class="btn btn-bad btn-sm" data-del="${t.id}">Delete</button></td>
+      </tr>`).join("");
+    body.querySelectorAll("[data-del]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("Delete this tournament?")) return;
+        try {
+          await api("DELETE", "/api/admin/tournaments/" + btn.dataset.del);
+          loadTourneys();
+          loadStats();
+        } catch (e) { alert(e.message); }
+      });
+    });
+  } catch (e) {
+    body.innerHTML = `<tr><td colspan="6" class="text-red-400">${esc(e.message)}</td></tr>`;
+  }
+}
+
+document.getElementById("createForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const msg = document.getElementById("createMsg");
+  const match = fd.get("match_date");
+  // datetime-local → "YYYY-MM-DD HH:MM:SS"
+  const match_date = match ? match.replace("T", " ") + ":00" : "";
+  try {
+    await api("POST", "/api/admin/tournaments", {
+      title: fd.get("title"),
+      game_id: parseInt(fd.get("game_id"), 10),
+      mode: fd.get("mode"),
+      match_date,
+      slots_total: parseInt(fd.get("slots_total"), 10) || 32,
+      entry_fee: parseInt(fd.get("entry_fee"), 10) || 0,
+      prize_pool: parseInt(fd.get("prize_pool"), 10) || 0,
+      description: fd.get("description") || "",
+      upi_id: "",
+    });
+    msg.textContent = "Tournament created";
+    msg.className = "mb-3 p-3 rounded-xl text-sm bg-emerald-500/10 text-emerald-300";
+    msg.classList.remove("hidden");
+    e.target.reset();
+    loadTourneys();
+    loadStats();
+  } catch (err) {
+    msg.textContent = err.message;
+    msg.className = "mb-3 p-3 rounded-xl text-sm bg-red-500/10 text-red-300";
+    msg.classList.remove("hidden");
+  }
+});
+
+async function loadPayments() {
+  const body = document.getElementById("payBody");
+  const status = document.getElementById("payFilter").value;
+  try {
+    const q = status ? "?status=" + encodeURIComponent(status) : "";
+    const list = await api("GET", "/api/admin/registrations" + q);
+    const rows = Array.isArray(list) ? list : (list.registrations || list.payments || []);
+    if (!rows.length) {
+      body.innerHTML = `<tr><td colspan="5" class="text-slate-500">No registrations</td></tr>`;
+      return;
+    }
+    body.innerHTML = rows.map(r => {
+      const st = r.payment_status || r.status || "pending";
+      return `<tr>
+        <td>${esc(r.team_name || "—")}<div class="text-xs text-slate-500">user #${r.user_id ?? "—"}</div></td>
+        <td>${esc(r.tournament_title || r.tournament_id || "—")}</td>
+        <td class="font-mono text-xs">${esc(r.utr_number || "—")}</td>
+        <td><span class="badge badge-${st}">${esc(st)}</span></td>
+        <td class="whitespace-nowrap">
+          ${st !== "verified" ? `<button type="button" class="btn btn-ok btn-sm" data-pay="${r.id}" data-st="verified">OK</button>` : ""}
+          ${st !== "rejected" ? `<button type="button" class="btn btn-bad btn-sm" data-pay="${r.id}" data-st="rejected">X</button>` : ""}
+        </td>
+      </tr>`;
+    }).join("");
+    body.querySelectorAll("[data-pay]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        try {
+          await api("PATCH", "/api/admin/registrations/" + btn.dataset.pay + "/payment", { status: btn.dataset.st });
+          loadPayments();
+          loadStats();
+        } catch (e) { alert(e.message); }
+      });
+    });
+  } catch (e) {
+    body.innerHTML = `<tr><td colspan="5" class="text-red-400">${esc(e.message)}</td></tr>`;
+  }
+}
+
+document.getElementById("payFilter").addEventListener("change", loadPayments);
+
+async function loadUsers() {
+  const body = document.getElementById("userBody");
+  try {
+    const list = await api("GET", "/api/admin/users");
+    const rows = Array.isArray(list) ? list : [];
+    if (!rows.length) {
+      body.innerHTML = `<tr><td colspan="4" class="text-slate-500">No users</td></tr>`;
+      return;
+    }
+    body.innerHTML = rows.map(u => `
+      <tr>
+        <td>${u.id}</td>
+        <td>${esc(u.username)}</td>
+        <td>${esc(u.email)}</td>
+        <td>${esc(u.role || "user")}</td>
+      </tr>`).join("");
+  } catch (e) {
+    body.innerHTML = `<tr><td colspan="4" class="text-red-400">${esc(e.message)}</td></tr>`;
+  }
+}
+
+// Boot
+(async () => {
+  const token = getToken();
+  const user = getUser();
+  if (token && user?.role === "admin") {
+    try {
+      const me = await api("GET", "/api/auth/me");
+      if (me.role === "admin") {
+        saveSession(token, me);
+        showDash();
+        return;
+      }
+    } catch {}
+    clearSession();
+  }
+  showLogin();
+})();
+</script>
+</body>
+</html>
