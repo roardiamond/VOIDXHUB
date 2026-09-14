@@ -9,15 +9,96 @@
 <link rel="apple-touch-icon" href="static/icons/icon-192.png">
 <meta name="theme-color" content="#08080c">
 <link rel="stylesheet" href="static/css/style.css">
+<style>
+  .ai-panel {
+    background: var(--void-surface);
+    border: 1px solid var(--void-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+  .ai-panel textarea {
+    width: 100%;
+    min-height: 80px;
+    background: var(--void-black);
+    border: 1px solid var(--void-border);
+    color: var(--fog);
+    padding: 12px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    border-radius: var(--radius);
+    resize: vertical;
+  }
+  .ai-panel textarea:focus { outline: none; border-color: var(--signal-cyan); }
+  .ai-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .ai-chip {
+    font-size: 12px;
+    padding: 6px 10px;
+    border: 1px solid var(--void-border);
+    background: transparent;
+    color: var(--fog-dim);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: var(--font-body);
+  }
+  .ai-chip:hover { border-color: var(--signal-cyan); color: var(--fog); }
+  .ai-result {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--void-border);
+    display: none;
+  }
+  .ai-result.show { display: block; }
+  .ai-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .ai-grid .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fog-faint); }
+  .ai-grid .val { font-family: var(--font-display); font-size: 18px; color: var(--signal-cyan); }
+  .ai-msg { font-size: 13px; margin-top: 10px; color: var(--fog-dim); }
+  .ai-msg.ok { color: var(--signal-cyan); }
+  .ai-msg.warn { color: var(--alert-amber); }
+</style>
 </head>
 <body>
 
 <nav class="site-nav" id="site-nav"></nav>
 
-<section class="section" style="padding-bottom:20px;">
+<section class="section" style="padding-bottom:12px;">
   <div class="wrap">
-    <span class="eyebrow">// browse</span>
-    <h1 style="font-size:36px;">All tournaments</h1>
+    <span class="eyebrow">// tournaments + AI</span>
+    <h1 style="font-size:36px;">Tournaments</h1>
+    <p style="color:var(--fog-dim); max-width:560px; margin-top:6px;">
+      Browse live scrims or describe one in plain language — AI drafts the config and admin can publish to the same backend.
+    </p>
+  </div>
+</section>
+
+<section class="wrap" style="padding-bottom:8px;">
+  <div class="ai-panel">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+      <span class="eyebrow" style="margin:0;">// AI create</span>
+      <span class="mono" style="font-size:11px; color:var(--fog-faint);">ArenaX · built into VOIDXHUB</span>
+    </div>
+    <textarea id="ai-prompt" placeholder="e.g. 64 team Free Fire BR tonight, ₹20k prize, entry ₹50…"></textarea>
+    <div class="ai-chips" id="ai-chips"></div>
+    <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+      <button type="button" class="btn btn-primary" id="ai-generate">Generate with AI</button>
+      <button type="button" class="btn btn-ghost btn-sm" id="ai-publish" style="display:none;">Publish tournament</button>
+      <span class="mono" style="font-size:11px; color:var(--fog-faint);">Publish needs admin login</span>
+    </div>
+    <div class="ai-result" id="ai-result">
+      <div class="ai-grid">
+        <div><div class="label">Game</div><div class="val" id="ai-game">—</div></div>
+        <div><div class="label">Mode</div><div class="val" id="ai-mode">—</div></div>
+        <div><div class="label">Slots</div><div class="val" id="ai-slots">—</div></div>
+        <div><div class="label">Prize</div><div class="val" id="ai-prize">—</div></div>
+      </div>
+      <p id="ai-desc" style="font-size:13px; color:var(--fog-dim);"></p>
+      <p class="ai-msg" id="ai-msg"></p>
+    </div>
   </div>
 </section>
 

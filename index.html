@@ -3,28 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VOIDXHUB — Premium Gaming Tools & Tournament Platform</title>
-  <meta name="description" content="VOIDXHUB provides high-performance gaming tools, configs and tournament management for competitive players. Clean delivery, secure payments and reliable support.">
+  <title>VOIDXHUB — Tools & Tournaments</title>
+  <meta name="description" content="VOIDXHUB — gaming tools and AI-powered tournament platform for competitive players.">
   <meta name="theme-color" content="#0a0a0f">
   <link rel="canonical" href="https://voidxhub.in/">
-  <meta property="og:title" content="VOIDXHUB — Premium Gaming Tools & Tournaments">
-  <meta property="og:description" content="High-performance tools and tournament platform built for competitive gamers.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://voidxhub.in/">
-  <meta name="twitter:card" content="summary_large_image">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0f; color: #e2e8f0; overflow-x: hidden; }
-    .hero {
-      min-height: 100vh;
-      background: radial-gradient(ellipse 80% 60% at 50% -20%, #1e1b4b 0%, #0a0a0f 55%);
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0f; color: #e2e8f0; }
     .gradient-text {
       background: linear-gradient(135deg, #67e8f9 0%, #a78bfa 50%, #f472b6 100%);
       -webkit-background-clip: text;
@@ -35,216 +22,76 @@
       background: linear-gradient(135deg, #06b6d4, #8b5cf6);
       transition: all 0.25s ease;
     }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(6,182,212,0.35);
-    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(6,182,212,0.35); }
     .btn-secondary {
       background: transparent;
       border: 1.5px solid rgba(148,163,184,0.35);
       transition: all 0.25s ease;
     }
-    .btn-secondary:hover {
-      border-color: #67e8f9;
-      background: rgba(103,232,249,0.08);
-    }
-    .feature-card {
-      background: rgba(15,15,25,0.8);
+    .btn-secondary:hover { border-color: #67e8f9; background: rgba(103,232,249,0.08); }
+    .card {
+      background: rgba(15,15,25,0.85);
       border: 1px solid rgba(148,163,184,0.12);
       transition: all 0.3s ease;
     }
-    .feature-card:hover {
+    .card:hover {
       border-color: rgba(103,232,249,0.35);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    }
-    .fade-up {
-      opacity: 0;
-      transform: translateY(24px);
-      animation: fadeUp 0.7s ease forwards;
-    }
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.2s; }
-    .delay-3 { animation-delay: 0.3s; }
-    .delay-4 { animation-delay: 0.4s; }
-    .delay-5 { animation-delay: 0.5s; }
-    @media (prefers-reduced-motion: reduce) {
-      .fade-up { animation: none; opacity: 1; transform: none; }
+      transform: translateY(-3px);
     }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-white/5">
-    <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-      <a href="/" class="text-xl font-extrabold tracking-tight">
-        VOID<span class="gradient-text">X</span>HUB
-      </a>
-      <div class="hidden sm:flex items-center gap-6 text-sm text-slate-400">
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/90 backdrop-blur-xl border-b border-white/5">
+    <div class="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between">
+      <a href="/" class="text-lg font-extrabold tracking-tight">VOID<span class="gradient-text">X</span>HUB</a>
+      <div class="flex items-center gap-5 text-sm text-slate-400">
         <a href="/pages/shop/tools.html" class="hover:text-white transition">Tools</a>
-        <a href="https://roardiamond.github.io/ArenaX/" class="hover:text-cyan-300 transition font-medium">ArenaX</a>
-        <a href="/pages/account/login.html" class="hover:text-white transition">Account</a>
-        <a href="https://t.me/voidxhub" target="_blank" rel="noopener" class="hover:text-white transition">Community</a>
+        <a href="/www/tournaments.html" class="hover:text-cyan-300 transition">Tournaments</a>
+        <a href="/www/login.html" class="hover:text-white transition">Login</a>
+        <a href="https://t.me/voidxhub" target="_blank" rel="noopener" class="hover:text-white transition hidden sm:inline">Telegram</a>
       </div>
-      <a href="/pages/shop/tools.html" class="btn-primary px-5 py-2 rounded-xl text-sm font-semibold text-white">
-        Browse Tools
-      </a>
     </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="hero pt-20">
-    <div class="relative z-10 max-w-4xl px-6 py-20 text-center">
-      <div class="fade-up delay-1 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-cyan-300 text-xs font-medium tracking-wide mb-8">
-        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-        Premium Tools Hub
-      </div>
-
-      <h1 class="fade-up delay-2 text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.1] mb-6">
+  <main class="min-h-screen flex flex-col items-center justify-center px-6 pt-20 pb-16">
+    <div class="max-w-2xl w-full text-center">
+      <p class="text-xs font-medium tracking-widest uppercase text-cyan-400/80 mb-4">Tools · Tournaments · One hub</p>
+      <h1 class="text-5xl sm:text-6xl font-extrabold tracking-tight mb-4">
         VOID<span class="gradient-text">X</span>HUB
       </h1>
-
-      <p class="fade-up delay-3 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-4 leading-relaxed">
-        Premium tools, configs and tournament platform built for competitive gamers.
-      </p>
-      <p class="fade-up delay-3 text-sm text-slate-500 max-w-xl mx-auto mb-12">
-        Clean configs • Fast delivery • Secure payments • Reliable support
+      <p class="text-slate-400 text-base sm:text-lg mb-10 leading-relaxed">
+        Gaming tools and AI tournament infrastructure for Free Fire, BGMI and more.
+        Clean, fast, one account.
       </p>
 
-      <div class="fade-up delay-4 flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="/pages/shop/tools.html" class="btn-primary px-8 py-3.5 rounded-2xl text-base font-semibold text-white w-full sm:w-auto">
-          Browse Tools
+      <div class="grid sm:grid-cols-2 gap-4 text-left">
+        <a href="/pages/shop/tools.html" class="card rounded-2xl p-6 block">
+          <div class="text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-2">Product</div>
+          <h2 class="text-xl font-bold text-white mb-1">Tools</h2>
+          <p class="text-sm text-slate-400">Configs, utilities and shop — fast delivery after payment.</p>
         </a>
-        <a href="https://roardiamond.github.io/ArenaX/" class="btn-secondary px-8 py-3.5 rounded-2xl text-base font-medium text-slate-200 w-full sm:w-auto">
-          ArenaX · AI Tournaments
-        </a>
-      </div>
-
-      <div class="fade-up delay-5 mt-20 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl mx-auto">
-        <div class="text-center">
-          <div class="text-2xl sm:text-3xl font-bold text-white">50+</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Tools</div>
-        </div>
-        <div class="text-center">
-          <div class="text-2xl sm:text-3xl font-bold text-white">Fast</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Delivery</div>
-        </div>
-        <div class="text-center">
-          <div class="text-2xl sm:text-3xl font-bold text-white">Secure</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Payments</div>
-        </div>
-        <div class="text-center">
-          <div class="text-2xl sm:text-3xl font-bold text-white">24/7</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Support</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ArenaX product highlight -->
-  <section class="py-16 px-6 border-t border-white/5 bg-[#0c0c14]">
-    <div class="max-w-5xl mx-auto rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8">
-      <div class="text-left">
-        <div class="text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">New · AI-First</div>
-        <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">ArenaX</h2>
-        <p class="text-slate-400 text-sm max-w-lg leading-relaxed">
-          AI tournament infrastructure for Free Fire, BGMI & Valorant organizers.
-          One-line create, live board, registration — same login & backend as VOIDXHUB.
-        </p>
-      </div>
-      <a href="https://roardiamond.github.io/ArenaX/" class="btn-primary px-8 py-3.5 rounded-2xl text-base font-semibold text-white whitespace-nowrap shrink-0">
-        Open ArenaX →
-      </a>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section class="py-24 px-6">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-14">
-        <h2 class="text-3xl font-bold text-white mb-3">Why VoidXHub</h2>
-        <p class="text-slate-400 text-sm">Built for performance, reliability and clean delivery</p>
-      </div>
-
-      <div class="grid sm:grid-cols-3 gap-6">
-        <div class="feature-card rounded-2xl p-7">
-          <div class="w-11 h-11 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-xl mb-5">🛡️</div>
-          <h3 class="font-semibold text-white mb-2">Clean & Updated</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Configs and tools are regularly tested and updated for stability.</p>
-        </div>
-        <div class="feature-card rounded-2xl p-7">
-          <div class="w-11 h-11 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-xl mb-5">⚡</div>
-          <h3 class="font-semibold text-white mb-2">Fast Delivery</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Instant or near-instant access after payment confirmation.</p>
-        </div>
-        <div class="feature-card rounded-2xl p-7">
-          <div class="w-11 h-11 rounded-xl bg-pink-500/10 flex items-center justify-center text-pink-400 text-xl mb-5">🎯</div>
-          <h3 class="font-semibold text-white mb-2">Reliable Support</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Dedicated Telegram support for orders and technical help.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="py-20 px-6 border-t border-white/5">
-    <div class="max-w-3xl mx-auto text-center">
-      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-4">Ready to get started?</h2>
-      <p class="text-slate-400 mb-8 text-sm">Browse available tools or run tournaments with ArenaX AI.</p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/pages/shop/tools.html" class="btn-primary px-8 py-3.5 rounded-2xl text-base font-semibold text-white">
-          Browse Tools
-        </a>
-        <a href="https://roardiamond.github.io/ArenaX/" class="btn-secondary px-8 py-3.5 rounded-2xl text-base font-medium text-slate-200">
-          Try ArenaX
-        </a>
-        <a href="https://t.me/voidxhub" target="_blank" rel="noopener" class="btn-secondary px-8 py-3.5 rounded-2xl text-base font-medium text-slate-200">
-          Join Telegram
+        <a href="/www/tournaments.html" class="card rounded-2xl p-6 block">
+          <div class="text-purple-400 text-xs font-semibold uppercase tracking-wider mb-2">ArenaX inside</div>
+          <h2 class="text-xl font-bold text-white mb-1">Tournaments</h2>
+          <p class="text-sm text-slate-400">Live board, registration, AI create — same backend &amp; login.</p>
         </a>
       </div>
-    </div>
-  </section>
 
-  <!-- Footer -->
-  <footer class="py-12 px-6 border-t border-white/5">
-    <div class="max-w-5xl mx-auto">
-      <div class="flex flex-col md:flex-row justify-between gap-8 mb-8">
-        <div>
-          <div class="text-xl font-extrabold mb-2">VOID<span class="gradient-text">X</span>HUB</div>
-          <p class="text-sm text-slate-500 max-w-xs">Premium gaming tools and tournament platform for competitive players.</p>
-        </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-8 text-sm">
-          <div>
-            <div class="font-semibold text-white mb-3">Product</div>
-            <ul class="space-y-2 text-slate-400">
-              <li><a href="/pages/shop/tools.html" class="hover:text-cyan-400 transition">Tools</a></li>
-              <li><a href="https://roardiamond.github.io/ArenaX/" class="hover:text-cyan-400 transition">ArenaX</a></li>
-              <li><a href="/pages/account/login.html" class="hover:text-cyan-400 transition">Dashboard</a></li>
-            </ul>
-          </div>
-          <div>
-            <div class="font-semibold text-white mb-3">Support</div>
-            <ul class="space-y-2 text-slate-400">
-              <li><a href="https://t.me/voidxhub" target="_blank" rel="noopener" class="hover:text-cyan-400 transition">Telegram</a></li>
-              <li><a href="https://t.me/Voidxhubsupport_bot" target="_blank" rel="noopener" class="hover:text-cyan-400 transition">Support Bot</a></li>
-            </ul>
-          </div>
-          <div>
-            <div class="font-semibold text-white mb-3">Legal</div>
-            <ul class="space-y-2 text-slate-400">
-              <li><a href="/pages/misc/privacy.html" class="hover:text-cyan-400 transition">Privacy</a></li>
-              <li><a href="/pages/misc/terms.html" class="hover:text-cyan-400 transition">Terms</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="pt-6 border-t border-white/5 text-center text-sm text-slate-500">
-        © 2026 VoidXHub • Built by YashXChi
+      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/www/tournaments.html" class="btn-primary px-7 py-3 rounded-xl text-sm font-semibold text-white">Open tournaments</a>
+        <a href="/pages/shop/tools.html" class="btn-secondary px-7 py-3 rounded-xl text-sm font-medium text-slate-200">Browse tools</a>
       </div>
     </div>
+  </main>
+
+  <footer class="border-t border-white/5 py-8 px-6 text-center text-xs text-slate-500">
+    <div class="flex flex-wrap justify-center gap-4 mb-3">
+      <a href="/www/" class="hover:text-cyan-400">Tournament app</a>
+      <a href="/www/leaderboard.html" class="hover:text-cyan-400">Leaderboard</a>
+      <a href="/pages/account/dashboard.html" class="hover:text-cyan-400">Dashboard</a>
+      <a href="https://t.me/voidxhub" target="_blank" rel="noopener" class="hover:text-cyan-400">Telegram</a>
+    </div>
+    © 2026 VoidXHub · YashXChi
   </footer>
 
   <script src="/assets/js/auth.js"></script>
