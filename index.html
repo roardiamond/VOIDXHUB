@@ -3,138 +3,430 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VOIDXHUB — Site Disabled</title>
-  <meta name="description" content="VOIDXHUB has been disabled by the owner. Thank you for being a customer.">
-  <meta name="theme-color" content="#0a0a0f">
+  <title>VOIDXHUB is BACK — New Experience</title>
+  <meta name="description" content="VOIDXHUB is officially back. Cleaner. Faster. Stronger. Premium tools, configs & tournaments with a brand new experience.">
+  <meta name="theme-color" content="#05050a">
   <link rel="canonical" href="https://voidxhub.in/">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #05050a;
+      --card: rgba(12,12,20,0.85);
+      --border: rgba(148,163,184,0.12);
+      --cyan: #22d3ee;
+      --purple: #a78bfa;
+      --pink: #f472b6;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+    }
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: #0a0a0f;
-      color: #e2e8f0;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      text-align: center;
+      overflow-x: hidden;
+      position: relative;
     }
-    .gradient-text {
-      background: linear-gradient(135deg, #67e8f9 0%, #a78bfa 50%, #f472b6 100%);
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(34,211,238,0.15), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 10%, rgba(167,139,250,0.12), transparent),
+        radial-gradient(ellipse 50% 30% at 50% 100%, rgba(244,114,182,0.08), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .card {
-      background: rgba(15,15,25,0.85);
-      border: 1px solid rgba(148,163,184,0.12);
-      border-radius: 20px;
-      padding: 40px 32px;
-      max-width: 560px;
-      width: 100%;
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
     }
-    .tag {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(103,232,249,0.8);
-      margin-bottom: 16px;
-    }
-    h1 {
-      font-size: clamp(2rem, 6vw, 2.75rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-    }
-    .sub {
-      color: #94a3b8;
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
       font-size: 14px;
-      margin-bottom: 24px;
+      font-weight: 500;
+      transition: color 0.2s;
     }
-    .msg {
-      color: #cbd5e1;
-      font-size: 16px;
-      line-height: 1.7;
-      margin-bottom: 28px;
-    }
-    .age {
-      display: inline-block;
-      border: 1px solid rgba(148,163,184,0.2);
-      border-radius: 14px;
-      padding: 16px 24px;
-      margin-bottom: 28px;
-    }
-    .age-label {
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #64748b;
-      margin-bottom: 6px;
-    }
-    .age-value {
-      font-size: 15px;
-      font-weight: 600;
-      color: #e2e8f0;
-    }
-    .age-duration {
-      font-size: 13px;
-      color: #67e8f9;
-      margin-top: 4px;
-    }
+    .nav-links a:hover { color: var(--text); }
     .btn {
-      display: inline-block;
-      padding: 12px 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
       border-radius: 12px;
       font-size: 14px;
       font-weight: 600;
-      color: #fff;
       text-decoration: none;
+      transition: all 0.25s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary {
       background: linear-gradient(135deg, #06b6d4, #8b5cf6);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(6,182,212,0.25);
     }
-    .btn:hover {
+    .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(6,182,212,0.35);
+      box-shadow: 0 8px 30px rgba(6,182,212,0.4);
     }
-    .contact-note {
-      font-size: 13px;
-      color: #64748b;
-      margin-top: 14px;
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
     }
-    footer {
-      margin-top: 32px;
+    .btn-ghost:hover {
+      border-color: rgba(148,163,184,0.3);
+      background: rgba(255,255,255,0.03);
+    }
+    /* HERO */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(34,211,238,0.08);
+      border: 1px solid rgba(34,211,238,0.2);
+      color: var(--cyan);
       font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    h1 {
+      font-size: clamp(2.8rem, 8vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 18px;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #22d3ee 0%, #a78bfa 45%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 19px);
+      color: var(--muted);
+      max-width: 580px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-val {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 4px;
+    }
+    /* FEATURES */
+    .section {
+      padding: 70px 0;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .section-title h2 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+    .section-title p {
+      color: var(--muted);
+      font-size: 16px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 24px;
+      transition: all 0.3s ease;
+    }
+    .feature-card:hover {
+      border-color: rgba(34,211,238,0.25);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(34,211,238,0.15), rgba(167,139,250,0.15));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .feature-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    /* SLOGANS */
+    .slogans {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin: 40px 0;
+    }
+    .slogan-pill {
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+    .slogan-pill span {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    /* CTA BANNER */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(6,182,212,0.12), rgba(139,92,246,0.12));
+      border: 1px solid rgba(34,211,238,0.2);
+      border-radius: 24px;
+      padding: 48px 32px;
+      text-align: center;
+      margin: 40px 0 60px;
+    }
+    .cta-banner h2 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .cta-banner p {
+      color: var(--muted);
+      margin-bottom: 28px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+      text-align: center;
       color: #475569;
+      font-size: 13px;
+    }
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+    footer a:hover { color: var(--cyan); }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .stats { gap: 28px; }
+      .hero { padding: 60px 0 40px; }
     }
   </style>
 </head>
 <body>
-  <main class="card">
-    <p class="tag">VOIDXHUB</p>
-    <h1>Site <span class="gradient-text">Disabled</span></h1>
-    <p class="sub">This website has been disabled by the owner.</p>
+  <div class="wrap">
+    <!-- NAV -->
+    <nav>
+      <div class="logo">VOIDXHUB</div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="https://t.me/voidxhub" target="_blank" rel="noopener">Telegram</a>
+        <a href="https://t.me/voidxhub" class="btn btn-primary" target="_blank" rel="noopener">Join Now</a>
+      </div>
+    </nav>
 
-    <p class="msg">
-      Thank you to every customer who visited, shopped and supported VOIDXHUB.
-      We truly appreciate your trust and time.
-    </p>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        OFFICIALLY BACK ONLINE
+      </div>
+      <h1>
+        <span class="gradient-text">VOIDXHUB</span><br>
+        is BACK
+      </h1>
+      <p class="hero-sub">
+        The underground hub just leveled up. Cleaner delivery, stronger tools, smoother tournaments —
+        built for the next chapter of competitive gaming.
+      </p>
+      <div class="hero-ctas">
+        <a href="https://t.me/voidxhub" class="btn btn-primary" target="_blank" rel="noopener">
+          Enter the Void →
+        </a>
+        <a href="#features" class="btn btn-ghost">See what's new</a>
+      </div>
 
-    <div class="age">
-      <div class="age-label">Website Active Period</div>
-      <div class="age-value">12/11/2025 &nbsp;→&nbsp; 15/10/2026</div>
-      <div class="age-duration">About 11 months, 3 days</div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-val">50+</div>
+          <div class="stat-label">Tools & Configs</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">24/7</div>
+          <div class="stat-label">Support</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">New</div>
+          <div class="stat-label">Experience</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLOGANS -->
+    <div class="slogans">
+      <div class="slogan-pill"><span>VOIDXHUB is BACK</span></div>
+      <div class="slogan-pill">Stronger than before</div>
+      <div class="slogan-pill">New experience unlocked</div>
+      <div class="slogan-pill">Clean • Fast • Reliable</div>
+      <div class="slogan-pill">Built for the grind</div>
     </div>
 
-    <div>
-      <a href="https://t.me/voidxhub" target="_blank" rel="noopener" class="btn">Contact the Owner on Telegram</a>
-      <p class="contact-note">If you still need something, reach out directly.</p>
-    </div>
-  </main>
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <div class="section-title">
+        <h2>What's New This Time</h2>
+        <p>Same energy. Better system. Real upgrades.</p>
+      </div>
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Faster Delivery</h3>
+          <p>Instant access after payment. No more waiting around. Tools drop the moment you're confirmed.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>Cleaner & Safer</h3>
+          <p>Updated configs, better stability, reduced risk. Built for long sessions and rank pushes.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎮</div>
+          <h3>Tournaments Ready</h3>
+          <p>Paid scrims & cash prize events for Free Fire, BGMI and more. Real money. Real competition.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>Direct Support</h3>
+          <p>Telegram-first support. Fast replies. Real humans. No bot loops.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔥</div>
+          <h3>Premium Feel</h3>
+          <p>Dark neon aesthetic, mobile-first design, smooth experience from start to finish.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3>Always Evolving</h3>
+          <p>New tools, new configs, constant updates. VoidXHub never stays the same for long.</p>
+        </div>
+      </div>
+    </section>
 
-  <footer>© 2026 VoidXHub · YashXChi</footer>
+    <!-- CTA -->
+    <div class="cta-banner">
+      <h2>Ready for the new chapter?</h2>
+      <p>Join the community, grab your tools, and drop into the next tournament. The void is open again.</p>
+      <a href="https://t.me/voidxhub" class="btn btn-primary" target="_blank" rel="noopener">
+        Join VoidXHub on Telegram
+      </a>
+    </div>
+
+    <footer>
+      © 2026 VoidXHub · Built by YashXChi ·
+      <a href="https://t.me/voidxhub" target="_blank" rel="noopener">Telegram</a>
+    </footer>
+  </div>
 </body>
 </html>
