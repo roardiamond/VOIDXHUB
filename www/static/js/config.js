@@ -4,6 +4,7 @@
 
 window.VX_CONFIG = {
   // Unified backend (website + app both use this)
+  // Currently hosted on Render. If offline, frontend shows graceful message.
   API_BASE_URL: "https://voidxhub-backend.onrender.com",
 
   APP_NAME: "VOIDXHUB",
