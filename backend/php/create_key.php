@@ -1,13 +1,19 @@
 <?php
-$admin_pass = "9873987036yash";
+/**
+ * Create License Key
+ * Requires ADMIN_PASS environment variable.
+ */
 
-if (!isset($_GET['pass']) || $_GET['pass'] !== $admin_pass) {
+$admin_pass = getenv("ADMIN_PASS") ?: "";
+
+if (empty($admin_pass) || !isset($_GET["pass"]) || !hash_equals($admin_pass, (string)$_GET["pass"])) {
+    http_response_code(403);
     die("Access Denied");
 }
 
-$folder = strtolower(trim($_POST['folder'] ?? ''));
-$days = (int)($_POST['days'] ?? 0);
-$username = trim($_POST['username'] ?? '');
+$folder = strtolower(trim($_POST["folder"] ?? ""));
+$days = (int)($_POST["days"] ?? 0);
+$username = trim($_POST["username"] ?? "");
 
 if (empty($folder) || $days <= 0 || empty($username)) {
     die("❌ Sab fields bhar do bhai!");
@@ -24,13 +30,14 @@ $data = [
     "redeemed_time" => null
 ];
 
-$file = 'licenses.json';
+$file = "licenses.json";
 $current = file_exists($file) ? json_decode(file_get_contents($file), true) : [];
+if (!is_array($current)) $current = [];
 $current[$key] = $data;
 
 file_put_contents($file, json_encode($current, JSON_PRETTY_PRINT));
 
 echo "<h1 style='color:lime;text-align:center;margin-top:80px'>✅ KEY GENERATED SUCCESSFULLY!</h1>";
-echo "<h2 style='text-align:center;color:cyan;font-size:28px'>$key</h2>";
-echo "<p style='text-align:center'><a href='admin.php?pass=9873987036yash' style='color:orange;font-size:22px'>← Back to Admin Panel</a></p>";
+echo "<h2 style='text-align:center;color:cyan;font-size:28px'>" . htmlspecialchars($key) . "</h2>";
+echo "<p style='text-align:center'><a href='admin.php?pass=" . htmlspecialchars(urlencode($_GET["pass"])) . "' style='color:orange;font-size:22px'>← Back to Admin Panel</a></p>";
 ?>

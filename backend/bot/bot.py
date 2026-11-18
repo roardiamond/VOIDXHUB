@@ -8,14 +8,24 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
 from cryptography.fernet import Fernet
 
-TOKEN = "8743616862:AAHuCUK9ySpAFGqdhrxXnbgsuyP7t7Hnyz8"
-ADMIN_ID = 7994843509
-ENCRYPTION_KEY = b'3ZAX-JIA5PSPQxYKv0Tsxtml-Y6kRAHzIqRc2pvBkDI='
-cipher = Fernet(ENCRYPTION_KEY)
+# ============================================================
+# SECRETS MUST COME FROM ENVIRONMENT VARIABLES
+# Never hardcode tokens or keys in source code.
+# ============================================================
+TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+ADMIN_ID = int(os.environ.get("TELEGRAM_ADMIN_ID", "0"))
+ENCRYPTION_KEY = os.environ.get("FERNET_KEY")
+
+if not TOKEN:
+    raise RuntimeError("TELEGRAM_BOT_TOKEN environment variable is required")
+if not ENCRYPTION_KEY:
+    raise RuntimeError("FERNET_KEY environment variable is required")
+
+cipher = Fernet(ENCRYPTION_KEY.encode() if isinstance(ENCRYPTION_KEY, str) else ENCRYPTION_KEY)
 
 DB_FILE = "licenses.json"
 
-# Tere website ke tools
+# Tool folders (update as needed)
 TOOLS = ["hologram", "magic", "zombie", "arrow", "laser", "laser2", "laser3", "card", "shop", "paidpush"]
 
 def load_db():
@@ -23,7 +33,7 @@ def load_db():
         try:
             with open(DB_FILE, "r") as f:
                 return json.load(f)
-        except:
+        except Exception:
             return {}
     return {}
 
@@ -45,8 +55,21 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
     markup = InlineKeyboardMarkup(keyboard)
 
-    with open("sQz8x (1).jpg", "rb") as f:
-        await update.message.reply_photo(f, caption="**VOIDXHUB ILLEGAL BOT** 🔥\nTere website ka sabse powerful bot", reply_markup=markup, parse_mode='Markdown')
+    photo_path = "sQz8x (1).jpg"
+    if os.path.exists(photo_path):
+        with open(photo_path, "rb") as f:
+            await update.message.reply_photo(
+                f,
+                caption="**VOIDXHUB** 🔥\nOfficial tools bot",
+                reply_markup=markup,
+                parse_mode="Markdown",
+            )
+    else:
+        await update.message.reply_text(
+            "**VOIDXHUB** 🔥\nOfficial tools bot",
+            reply_markup=markup,
+            parse_mode="Markdown",
+        )
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -74,14 +97,17 @@ async def send_hack(query, folder, caption):
         if os.path.exists(path):
             with open(path, "rb") as f:
                 encrypted = cipher.encrypt(f.read())
-            await query.message.reply_document(encrypted, filename=f"{folder}_hack.zip", caption=f"🔥 {caption}\nDelivered by VOIDXHUB 💀")
+            await query.message.reply_document(
+                encrypted,
+                filename=f"{folder}_hack.zip",
+                caption=f"🔥 {caption}\nDelivered by VOIDXHUB",
+            )
         else:
             await query.message.reply_text(f"❌ {folder} folder mein hack.zip nahi mila")
     except Exception as e:
         await query.message.reply_text(f"Error: {str(e)}")
 
 async def handle_key(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # Tera purana key redeem logic yaha daal sakta hai
     await update.message.reply_text("Key system abhi under maintenance hai. Button se direct download kar lo.")
 
 def main():
@@ -89,9 +115,9 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(button_handler))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_key))
-    
-    print("✅ VOIDXHUB Top Tier Bot Live Ho Gaya")
+
+    print("✅ VOIDXHUB Bot started (secrets loaded from environment)")
     app.run_polling()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
