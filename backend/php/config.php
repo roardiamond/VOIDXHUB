@@ -1,6 +1,9 @@
 /**
  * Login System Configuration
  * Backend settings and security options
+ *
+ * IMPORTANT: In production always run over HTTPS and set
+ * environment variables for any secrets.
  */
 
 return [
@@ -14,7 +17,7 @@ return [
     'session' => [
         'timeout' => 2592000, // 30 days in seconds
         'httponly' => true,
-        'secure' => false, // Set to true in production with HTTPS
+        'secure' => true,     // Must be true on HTTPS production
         'samesite' => 'Lax',
     ],
 
@@ -49,7 +52,12 @@ return [
     // API settings
     'api' => [
         'cors' => true,
-        'allowed_origins' => ['*'], // Restrict in production
+        // Restrict to your own domains in production
+        'allowed_origins' => [
+            'https://voidxhub.in',
+            'https://www.voidxhub.in',
+            'https://roardiamond.github.io',
+        ],
         'request_timeout' => 30,
     ],
 
